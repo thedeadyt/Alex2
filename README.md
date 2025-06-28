@@ -2,8 +2,7 @@
 
 Ce projet est un site web PHP utilisant :
 
-- Symfony pour le backend (structure MVC)
-- Twig pour les templates
+- PHP en dur pour le backend
 - Alpine.js pour les interactions JS
 - Tailwind CSS pour la mise en page
 - Bootstrap pour certains composants rapides
