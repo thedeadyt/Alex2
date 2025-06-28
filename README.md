@@ -18,4 +18,4 @@ Ce projet est un site web PHP utilisant :
 
 ## 🪤 Contributeurs
 - @thedeadyt
-- @CollaborateurGitHub
+- @leroiBTV
