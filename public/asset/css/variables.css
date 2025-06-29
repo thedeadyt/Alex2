@@ -1,0 +1,70 @@
+/* Import Google Font Tinos */
+@import url('https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+/* Déclaration des polices locales */
+@font-face {
+  font-family: 'Bounded';
+  src: url('<?= BASE_URL ?>/assets/fonts/Bounded-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bounded';
+  src: url('<?= BASE_URL ?>/assets/fonts/Bounded-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* === COULEURS === */
+  --color-bg: #e8e8e8;
+  --color-white: #e8e8e8;
+  --color-black: #1f2020;
+  --color-green: #51845C;
+  --color-cyan: #30b8c6;
+
+  /* Variantes Accent (plus saturées ou plus foncées) */
+  --color-accent-1: #1f2020; /* noir foncé base */
+  --color-accent-2: #40503f; /* vert foncé (dark green) */
+  --color-accent-3: #25838e; /* cyan foncé */
+  --color-accent-4: #3a3a3a; /* gris foncé */
+
+  /* Variantes Hover (plus claires ou dé-saturées) */
+  --color-hover-1: #464646; /* gris moyen */
+  --color-hover-2: #729775; /* vert clair */
+  --color-hover-3: #56c9d3; /* cyan clair */
+  --color-hover-4: #f0f0f0; /* blanc cassé */
+  /* Variantes btn */
+    --btn-bg: rgba(31, 32, 32, 0.15);
+    --btn-hover-bg: rgba(31, 32, 32, 0.25);
+  /* === TYPOGRAPHIE === */
+  --font-tinos: 'Tinos', serif;
+  --font-bounded: 'Bounded', sans-serif;
+
+  --font-base: var(--font-tinos);
+  --font-heading: var(--font-bounded);
+
+  /* === TAILLES DE TEXTE === */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+
+  /* === RADIUS === */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+
+  /* === OMBRES === */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15);
+}
