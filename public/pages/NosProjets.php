@@ -20,7 +20,7 @@ include __DIR__ . '/../../includes/header.php';
 
     <h1 class="text-4xl font-bold mb-8">Nos Projets</h1>
 
-    <div class="pb-[460px]"><!-- padding bottom important pour scroller -->
+    <div class="pb-[160px]"><!-- padding bottom important pour scroller -->
 
       <template x-for="(projet, i) in projets" :key="i">
         <div
@@ -104,7 +104,7 @@ include __DIR__ . '/../../includes/header.php';
         </a>
       </div>
     </div>
-
+  </div>
 
 <script>
   function projetsData() {
@@ -153,6 +153,8 @@ include __DIR__ . '/../../includes/header.php';
     }
   }
 </script>
-
 </body>
 </html>
+<?php
+include __DIR__ . '/../../includes/footer.php';
+?>
