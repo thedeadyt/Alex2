@@ -9,8 +9,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- ✅ Alpine.js CDN -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
 </head>
 <body style="background-color: #e8e8e8;">
     <div class="header">
@@ -19,7 +17,7 @@
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <!-- Logo + Nom -->
             <div class="flex items-center space-x-2">
-            <img src="../public/asset/img/logo.png" alt="Logo" class="w-9 h-9" />
+            <img src="asset/img/logo.png" alt="Logo" class="w-9 h-9" />
             <span class="text-xl font-bold" style="color: #1f2020;">&lt;Alex²/&gt;</span>
             </div>
 
