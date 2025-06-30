@@ -2,44 +2,60 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'PHPMailer-master/src/Exception.php';
-require 'PHPMailer-master/src/PHPMailer.php';
-require 'PHPMailer-master/src/SMTP.php';
+require __DIR__ . '/PHPMailer-master/src/Exception.php';
+require __DIR__ . '/PHPMailer-master/src/PHPMailer.php';
+require __DIR__ . '/PHPMailer-master/src/SMTP.php';
 
 function EnvoieMailFormulaire($infos) {
     $mail = new PHPMailer(true);
 
     try {
-        $mail->SMTPDebug = 2;
-        $mail->Debugoutput = 'error_log';
+        // Debug
+        $mail->SMTPDebug = 0; // 0 = off, 2 = verbose pour développement
+        $mail->Debugoutput = function($str, $level) {
+            error_log("PHPMailer [$level]: $str");
+        };
 
+        // Config SMTP Gmail
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'contact.alex2.dev@gmail.com';
-        $mail->Password = 'ntlddwqckndygfyy';
-        $mail->SMTPSecure = 'tls';
+        $mail->Password = 'ntlddwqckndygfyy'; // ⚠️ change-moi si compromis
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
+        // Expéditeur et destinataires
         $mail->setFrom('contact.alex2.dev@gmail.com', 'Formulaire Web');
-        $mail->addReplyTo($infos['email'], trim($infos['prenom'] . ' ' . $infos['nom']));
-        $mail->addAddress('contact.alex2.dev@gmail.com');
+        $mail->addAddress('contact.alex2.dev@gmail.com', 'Contact Alex²');
+        
+        if (!empty($infos['email'])) {
+            $mail->addReplyTo($infos['email'], trim($infos['prenom'] . ' ' . $infos['nom']));
+        }
 
-        $mail->isHTML(false);
-        $mail->Subject = $infos['sujet'] ?: '(Sans sujet)';
+        // Contenu du mail
+        $mail->isHTML(false); // en texte brut
+        $mail->Subject = $infos['sujet'] ?: 'Message depuis le formulaire';
 
-        $contenu = "Nouveau message depuis le formulaire :\n\n";
-        $contenu .= "Nom : " . $infos['nom'] . "\n";
-        $contenu .= "Prénom : " . $infos['prenom'] . "\n";
-        $contenu .= "Email : " . $infos['email'] . "\n";
-        $contenu .= "Téléphone : " . $infos['telephone'] . "\n";
-        $contenu .= "Entreprise : " . $infos['entreprise'] . "\n";
-        $contenu .= "Message :\n" . $infos['message'];
+        $contenu = <<<EOT
+Nouveau message depuis le formulaire de contact :
+
+Nom        : {$infos['nom']}
+Prénom     : {$infos['prenom']}
+Email      : {$infos['email']}
+Téléphone  : {$infos['telephone']}
+Société    : {$infos['entreprise']}
+Objet      : {$infos['sujet']}
+
+Message :
+{$infos['message']}
+EOT;
 
         $mail->Body = $contenu;
 
         $mail->send();
         return true;
+
     } catch (Exception $e) {
         error_log("Erreur PHPMailer : " . $mail->ErrorInfo);
         return false;
