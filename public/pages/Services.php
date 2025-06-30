@@ -1,8 +1,3 @@
-<?php
-require_once __DIR__ . '/../../config/config.php';
-include __DIR__ . '/../../includes/header.php';
-// ... le reste
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +11,6 @@ include __DIR__ . '/../../includes/header.php';
 <body>
     <div class="bg-black text-green-400 font-mono p-6 rounded-xl shadow-lg max-w-2xl mx-auto space-y-3 text-sm">
   <div><span class="text-blue-400">&lt;Alex²/&gt;</span> ➜ <span>run branding</span></div>
-
   <div x-data="{ open: true }" x-show="open" x-transition>
     <div class="pl-4">> Initialisation du service...</div>
     <div class="pl-4">> Création d'identités visuelles sur-mesure</div>
@@ -26,6 +20,3 @@ include __DIR__ . '/../../includes/header.php';
 </div>
 </body>
 </html>
-<?php
-include __DIR__ . '/../../includes/footer.php';
-?>
