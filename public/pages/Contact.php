@@ -137,6 +137,53 @@ include __DIR__ . '/../../includes/header.php';
     </form>
   </div>
 
+<br>
+<div
+  x-data="{ open: true }"
+  class="mx-auto bg-gray-50 rounded-xl shadow-md p-6 md:p-8 w-[90vw] max-w-[1200px] flex flex-col md:flex-row gap-6 md:gap-12"
+>
+
+  <!-- Carte -->
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d391.91388894218875!2d-0.025944830846995486!3d43.09618670956462!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd57d677cb5a0c7f%3A0xfcead0c8cffff259!2s8%20Rue%20Charles%20Baudelaire%2C%2065100%20Lourdes!5e1!3m2!1sfr!2sfr!4v1751382382544!5m2!1sfr!2sfr"
+    class="w-full md:w-[600px] h-[240px] md:h-[360px] rounded-lg border-0"
+    allowfullscreen=""
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+  ></iframe>
+
+  <!-- Bouton toggle visible sur mobile -->
+  <button
+    @click="open = !open"
+    class="md:hidden bg-blue-600 text-white rounded-md px-4 py-2 self-start"
+  >
+    <span x-text="open ? 'Masquer les infos' : 'Afficher les infos'"></span>
+  </button>
+
+  <!-- Infos contact -->
+  <div
+    x-show="open"
+    x-transition
+    class="flex-grow font-sans text-gray-800"
+  >
+    <h2 class="text-2xl font-semibold mb-4">Contactez-nous</h2>
+    <p class="mb-3"><strong>Adresse :</strong><br>8 Rue Charles Baudelaire,<br>65100 Lourdes</p>
+    <p class="mb-3">
+      <strong>Téléphone :</strong><br>
+      <a href="tel:+33768882766" class="text-blue-600 hover:underline">+33 7 68 88 27 66</a><br>
+      <a href="tel:+33686825714" class="text-blue-600 hover:underline">+33 6 86 82 57 14</a>
+    </p>
+    <p class="mb-3">
+      <strong>Email :</strong><br>
+      <a href="mailto:contact.alex2.dev@gmail.com" class="text-blue-600 hover:underline">contact.alex2.dev@gmail.com</a>
+    </p>
+    <p><strong>Horaires de contact :</strong><br>Du lundi au vendredi, 9h - 18h</p>
+  </div>
+</div>
+
+</div>
+
+
 <script>
   window.contactForm = function () {
     return {
