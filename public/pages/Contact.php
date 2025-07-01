@@ -12,16 +12,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && strpos($_SERVER['CONTENT_TYPE'] ?? 
         exit;
     }
 
-    $recaptcha_secret = '6LcrE3MrAAAAABmdL8isJnmMJruwcAH6HQSLs6tt';
+    $recaptcha_secret = '6LfjEHQrAAAAAGR2TA9vJhZLRcpf3qPGITGMa-Tv';
     $recaptcha_response = $input['g-recaptcha-response'] ?? '';
     $remote_ip = $_SERVER['REMOTE_ADDR'] ?? '';
 
     $consent = isset($input['consent']) && $input['consent'] === true;
 
-    // Vérification reCAPTCHA via CURL (plus sûr et timeout)
     $ch = curl_init('https://www.google.com/recaptcha/api/siteverify');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+    curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
         'secret' => $recaptcha_secret,
         'response' => $recaptcha_response,
@@ -56,7 +56,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && strpos($_SERVER['CONTENT_TYPE'] ?? 
 
     $form_success = EnvoieMailFormulaire($infos);
 
-    // Log debug
     file_put_contents(__DIR__ . '/debug.log', json_encode([
         'success' => $form_success,
         'timestamp' => date('Y-m-d H:i:s'),
@@ -67,11 +66,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && strpos($_SERVER['CONTENT_TYPE'] ?? 
         'success' => (bool)$form_success,
         'recaptchaError' => false
     ]);
-    exit;  // Très important pour arrêter ici et ne pas envoyer le HTML
+    exit;
 }
 
-// Si on est ici, c'est une requête GET => affichage du formulaire
-
+// GET : affichage du formulaire
 require_once __DIR__ . '/../../config/config.php';
 include __DIR__ . '/../../includes/header.php';
 ?>
@@ -82,18 +80,15 @@ include __DIR__ . '/../../includes/header.php';
   <meta charset="UTF-8">
   <title>Contact</title>
   <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
-  <link rel='stylesheet' type='text/css' media='screen' href='<?= BASE_URL ?>/asset/css/Contact.css'>
+  <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/Contact.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/alpinejs" defer></script>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
-<br>
 <body class="bg-gray-100">
-
   <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md" x-data="contactForm()">
     <h2 class="text-2xl font-bold mb-6 text-center">Contactez-nous</h2>
 
-    <!-- Messages -->
     <template x-if="success">
       <div class="bg-green-100 text-green-800 p-4 rounded mb-4">
         ✅ Merci, votre message a bien été envoyé !
@@ -128,10 +123,9 @@ include __DIR__ . '/../../includes/header.php';
         <label>J'accepte que mes données soient utilisées pour être recontacté(e).</label>
       </div>
 
-      <div class="g-recaptcha" data-sitekey="6LcrE3MrAAAAAHHSndbMvqp7RSWAWZLo5Ycf4JkI"></div>
+      <div class="g-recaptcha" data-sitekey="6LfjEHQrAAAAAJL1CPME0KI24tMJvzbxFjFpHxOD"></div>
 
-
-      <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition">
+      <button type="submit" class="text-white px-6 py-3 rounded transition" style="background-color: var(--color-black); hover:background-color: var(--color-hover-1)">
         Envoyer
       </button>
     </form>
@@ -203,17 +197,27 @@ include __DIR__ . '/../../includes/header.php';
       recaptchaError: false,
 
       async submitForm() {
-        this.form['g-recaptcha-response'] = grecaptcha.getResponse();
-
         this.success = false;
         this.error = false;
         this.recaptchaError = false;
 
-        if (!this.form['g-recaptcha-response']) {
+        if (typeof grecaptcha === 'undefined') {
+          this.error = true;
+          this.recaptchaError = true;
+          alert("reCAPTCHA n'est pas chargé. Rechargez la page.");
+          return;
+        }
+
+        await grecaptcha.ready(() => {});
+        const token = grecaptcha.getResponse();
+
+        if (!token) {
           this.error = true;
           this.recaptchaError = true;
           return;
         }
+
+        this.form['g-recaptcha-response'] = token;
 
         try {
           const response = await fetch(window.location.href, {
@@ -230,37 +234,27 @@ include __DIR__ . '/../../includes/header.php';
             result = JSON.parse(text);
           } catch (e) {
             console.error('Erreur JSON :', e);
-            this.success = false;
             this.error = true;
-            this.recaptchaError = false;
             return;
           }
 
           if (result.success) {
             this.success = true;
-            this.error = false;
-            this.recaptchaError = false;
-            Object.keys(this.form).forEach(key => this.form[key] = (key === 'consent' ? false : ''));
+            Object.keys(this.form).forEach(key => this.form[key] = key === 'consent' ? false : '');
             grecaptcha.reset();
           } else {
-            this.success = false;
             this.error = true;
             this.recaptchaError = result.recaptchaError || false;
           }
         } catch (e) {
-          console.error('Erreur lors de l\'envoi du formulaire :', e);
-          this.success = false;
+          console.error("Erreur lors de l'envoi :", e);
           this.error = true;
-          this.recaptchaError = false;
         }
       }
     }
   }
 </script>
 </body>
-<br>
 </html>
 
-<?php
-include __DIR__ . '/../../includes/footer.php';
-?>
+<?php include __DIR__ . '/../../includes/footer.php'; ?>
