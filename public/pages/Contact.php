@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && strpos($_SERVER['CONTENT_TYPE'] ?? 
         exit;
     }
 
-    $recaptcha_secret = '6LcYx3ErAAAAAO7B6EMBSPhEyjhfAjl_gzba6a0s';
+    $recaptcha_secret = '6LcrE3MrAAAAABmdL8isJnmMJruwcAH6HQSLs6tt';
     $recaptcha_response = $input['g-recaptcha-response'] ?? '';
     $remote_ip = $_SERVER['REMOTE_ADDR'] ?? '';
 
@@ -128,9 +128,8 @@ include __DIR__ . '/../../includes/header.php';
         <label>J'accepte que mes données soient utilisées pour être recontacté(e).</label>
       </div>
 
-      <div class="my-4">
-        <div class="g-recaptcha" data-sitekey="6LcYx3ErAAAAANQjmtOFmVXeeD-YUKsPQ0ug9RQP"></div>
-      </div>
+      <div class="g-recaptcha" data-sitekey="6LcrE3MrAAAAAHHSndbMvqp7RSWAWZLo5Ycf4JkI"></div>
+
 
       <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition">
         Envoyer
