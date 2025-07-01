@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../config/config.php';
 include __DIR__ . '/../../includes/header.php';
-// ... le reste
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
