@@ -15,6 +15,7 @@ include __DIR__ . '/../../includes/header.php';
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 </head>
+<br>
 <body>
   <div class="bg-gray-100 p-10 mx-auto" style="max-width: 1200px;" x-data="projetsData()">
 
@@ -105,7 +106,7 @@ include __DIR__ . '/../../includes/header.php';
       </div>
     </div>
   </div>
-
+<br>
 <script>
   function projetsData() {
     return {
