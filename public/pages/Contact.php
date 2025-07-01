@@ -85,51 +85,54 @@ include __DIR__ . '/../../includes/header.php';
   <script src="https://unpkg.com/alpinejs" defer></script>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
-<body class="bg-gray-100">
-  <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md" x-data="contactForm()">
-    <h2 class="text-2xl font-bold mb-6 text-center">Contactez-nous</h2>
+<br>
+<body>
+  <div
+  class="mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-md max-w-full w-full px-4 sm:px-6 md:max-w-2xl" x-data="contactForm()">
+  <h2 class="text-2xl font-bold mb-6 text-center">Contactez-nous</h2>
 
-    <template x-if="success">
-      <div class="bg-green-100 text-green-800 p-4 rounded mb-4">
-        ✅ Merci, votre message a bien été envoyé !
-      </div>
-    </template>
+  <template x-if="success">
+    <div class="bg-green-100 text-green-800 p-4 rounded mb-4">
+      ✅ Merci, votre message a bien été envoyé !
+    </div>
+  </template>
 
-    <template x-if="error && recaptchaError">
-      <div class="bg-red-100 text-red-800 p-4 rounded mb-4">
-        ❌ Erreur reCAPTCHA ou consentement manquant, veuillez réessayer.
-      </div>
-    </template>
+  <template x-if="error && recaptchaError">
+    <div class="bg-red-100 text-red-800 p-4 rounded mb-4">
+      ❌ Erreur reCAPTCHA ou consentement manquant, veuillez réessayer.
+    </div>
+  </template>
 
-    <template x-if="error && !recaptchaError">
-      <div class="bg-red-100 text-red-800 p-4 rounded mb-4">
-        ❌ Une erreur est survenue lors de l'envoi du message. Merci de réessayer plus tard.
-      </div>
-    </template>
+  <template x-if="error && !recaptchaError">
+    <div class="bg-red-100 text-red-800 p-4 rounded mb-4">
+      ❌ Une erreur est survenue lors de l'envoi du message. Merci de réessayer plus tard.
+    </div>
+  </template>
 
-    <form @submit.prevent="submitForm" class="space-y-4" novalidate>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <input x-model="form.prenom" name="prenom" type="text" placeholder="Prénom" required class="p-3 border rounded w-full" />
-        <input x-model="form.nom" name="nom" type="text" placeholder="Nom" required class="p-3 border rounded w-full" />
-      </div>
-      <input x-model="form.email" name="email" type="email" placeholder="Adresse email" required class="p-3 border rounded w-full" />
-      <input x-model="form.telephone" name="telephone" type="tel" placeholder="Téléphone" required class="p-3 border rounded w-full" />
-      <input x-model="form.societe" name="societe" type="text" placeholder="Société" class="p-3 border rounded w-full" />
-      <input x-model="form.objet" name="objet" type="text" placeholder="Objet de la demande" required class="p-3 border rounded w-full" />
-      <textarea x-model="form.message" name="message" placeholder="Votre message" rows="5" required class="p-3 border rounded w-full"></textarea>
+  <form @submit.prevent="submitForm" class="space-y-4" novalidate>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input x-model="form.prenom" name="prenom" type="text" placeholder="Prénom" required class="p-3 border rounded w-full"/>
+      <input x-model="form.nom" name="nom" type="text" placeholder="Nom" required class="p-3 border rounded w-full"/>
+    </div>
 
-      <div class="flex items-start gap-2">
-        <input x-model="form.consent" type="checkbox" name="consent" required class="mt-1" />
-        <label>J'accepte que mes données soient utilisées pour être recontacté(e).</label>
-      </div>
+    <input x-model="form.email" name="email" type="email" placeholder="Adresse email" required class="p-3 border rounded w-full"/>
+    <input x-model="form.telephone" name="telephone" type="tel" placeholder="Téléphone" required class="p-3 border rounded w-full"/>
+    <input x-model="form.societe" name="societe" type="text" placeholder="Société" class="p-3 border rounded w-full"/>
+    <input x-model="form.objet" name="objet" type="text" placeholder="Objet de la demande" required class="p-3 border rounded w-full"/>
+    <textarea x-model="form.message" name="message" placeholder="Votre message" rows="5" required class="p-3 border rounded w-full resize-none"></textarea>
 
-      <div class="g-recaptcha" data-sitekey="6LfjEHQrAAAAAJL1CPME0KI24tMJvzbxFjFpHxOD"></div>
+    <div class="flex items-start gap-2">
+      <input x-model="form.consent" type="checkbox" name="consent" required class="mt-1"/>
+      <label>J'accepte que mes données soient utilisées pour être recontacté(e).</label>
+    </div>
 
-      <button type="submit" class="text-white px-6 py-3 rounded transition" style="background-color: var(--color-black); hover:background-color: var(--color-hover-1)">
-        Envoyer
-      </button>
-    </form>
-  </div>
+    <div class="g-recaptcha" data-sitekey="6LfjEHQrAAAAAJL1CPME0KI24tMJvzbxFjFpHxOD"></div>
+
+    <button type="submit" class="w-full md:w-auto bg-black hover:bg-gray-800 text-white font-semibold px-6 py-3 rounded transition-colors">
+      Envoyer
+    </button>
+  </form>
+</div>
 
 <br>
 <div
@@ -147,10 +150,7 @@ include __DIR__ . '/../../includes/header.php';
   ></iframe>
 
   <!-- Bouton toggle visible sur mobile -->
-  <button
-    @click="open = !open"
-    class="md:hidden bg-blue-600 text-white rounded-md px-4 py-2 self-start"
-  >
+  <button @click="open = !open" class="md:hidden bg-black hover:bg-gray-800 text-white rounded-md px-4 py-2 self-start">
     <span x-text="open ? 'Masquer les infos' : 'Afficher les infos'"></span>
   </button>
 
@@ -176,7 +176,7 @@ include __DIR__ . '/../../includes/header.php';
 </div>
 
 </div>
-
+<br>
 
 <script>
   window.contactForm = function () {
