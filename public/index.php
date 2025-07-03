@@ -3,6 +3,7 @@ require_once __DIR__ . '/../config/config.php';
 include __DIR__ . '/../includes/header.php';
 ?>
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html>
 <head>
     <meta charset='utf-8'>
@@ -17,6 +18,23 @@ include __DIR__ . '/../includes/header.php';
     
 </section>
     <?php
+=======
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page d'accueil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+
+<h1 class="text-center text-2xl font-bold mb-4">Bienvenue sur le site</h1>
+
+</body>
+</html>
+<?php
+>>>>>>> 357da3b43dd5d64b9c7142d081efc36997fd7998
 include __DIR__ . '/../includes/footer.php';
 ?>
 <?php if (!isset($_COOKIE['accept_cookie'])): ?>
