@@ -78,7 +78,7 @@ include __DIR__ . '/../../includes/header.php';
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Contact</title>
+  <title>Contact | &lt;alex²/&gt;</title>
   <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
   <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/Contact.css">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -86,7 +86,7 @@ include __DIR__ . '/../../includes/header.php';
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body class="bg-gray-100">
-  <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md" x-data="contactForm()">
+  <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md" x-data="contactForm()" id="content">
     <h2 class="text-2xl font-bold mb-6 text-center">Contactez-nous</h2>
 
     <template x-if="success">
@@ -130,7 +130,7 @@ include __DIR__ . '/../../includes/header.php';
       </button>
     </form>
   </div>
-
+<?php include __DIR__ . '/../../includes/footer.php'; ?>
 <script>
   window.contactForm = function () {
     return {
@@ -207,7 +207,8 @@ include __DIR__ . '/../../includes/header.php';
     }
   }
 </script>
+
 </body>
 </html>
 
-<?php include __DIR__ . '/../../includes/footer.php'; ?>
+

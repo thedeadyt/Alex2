@@ -7,7 +7,7 @@ include __DIR__ . '/../../includes/header.php';
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title><Alex²/> - Service</title>
+    <title>Service | &lt;alex²/&gt;</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
@@ -68,7 +68,7 @@ include __DIR__ . '/../../includes/header.php';
     ]
   }"
 >
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto p-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto p-4" id="content">
 
     <template x-for="(service, idx) in services" :key="idx">
     <div
@@ -108,7 +108,9 @@ include __DIR__ . '/../../includes/header.php';
     </template>
 
   </div>
-
+  <?php
+  include __DIR__ . '/../../includes/footer.php';
+  ?>
   <script>
     function typingService(lines) {
       return {
@@ -150,6 +152,4 @@ include __DIR__ . '/../../includes/header.php';
   </script>
 </body>
 </html>
-<?php
-include __DIR__ . '/../../includes/footer.php';
-?>
+

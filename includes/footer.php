@@ -1,21 +1,5 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
-  <!-- ✅ Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- ✅ Alpine.js -->
-  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-</head>
-<body style="background-color: var(--color-bg);">
-
-  <!-- ✅ FOOTER -->
-<div class="pt-10 pb-6 px-6" x-data="{ open: false }" style="background-color: var(--color-black)">
+<footer class="pt-10 pb-6 px-6" x-data="{ open: false }" style="background-color: var(--color-black)">
   <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-    
     <!-- Navigation -->
     <div>
       <h3 class="text-xl mb-4 text-center" style="color: var(--color-white); font-family: var(--font-base);">Navigation</h3>
@@ -24,7 +8,7 @@
         <li><a href="<?= BASE_URL ?>/pages/NosProjets.php" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">Projets réalisés</a></li>
         <li><a href="<?= BASE_URL ?>/pages/Services.php" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">Nos services</a></li>
         <li><a href="<?= BASE_URL ?>/pages/Apropos.php" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">À propos</a></li>
-        <li><a href="#<?= BASE_URL ?>/pages/Contact.php" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">Contact</a></li>
+        <li><a href="<?= BASE_URL ?>/pages/Contact.php" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">Contact</a></li>
       </ul>
     </div>
 
@@ -44,8 +28,8 @@
         </button>
       </h3>
       <ul class="space-y-2 md:block text-center" x-show="open || window.innerWidth >= 768" x-transition>
-        <li><a href="/mentions-legales.html" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">Mentions légales</a></li>
-        <li><a href="/confidentialite.html" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">Politique de confidentialité</a></li>
+        <li><a href="<?= BASE_URL ?>/pages/Mentions.php" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">Mentions légales</a></li>
+        <li><a href="<?= BASE_URL ?>/pages/Confidentialité.php" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">Politique de confidentialité</a></li>
       </ul>
     </div>
 
@@ -67,7 +51,7 @@
         </a>
         <a href="https://github.com/alex2-dev" target="_blank" class="flex items-center space-x-2 hover:underline">
           <svg class="w-5 h-5 fill-white" viewBox="0 0 24 24">
-            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.333-1.754-1.333-1.754-1.09-.744.083-.729.083-.729 1.205.084 1.84 1.237 1.84 1.237 1.07 1.835 2.807 1.305 3.492.998.108-.775.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.933 0-1.31.468-2.38 1.235-3.22-.123-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.49 11.49 0 0 1 3-.405 11.5 11.5 0 0 1 3 .405c2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.24 2.873.118 3.176.77.84 1.233 1.91 1.233 3.22 0 4.61-2.807 5.625-5.48 5.922.43.37.823 1.1.823 2.22 0 1.604-.014 2.896-.014 3.286 0 .322.217.694.825.576C20.565 22.092 24 17.592 24 12.297 24 5.67 18.63.297 12 .297z"/>
+            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.333-1.754-1.333-1.754-1.09-.744.083-.729.083-.729 1.205.084 1.84 1.237 1.84 1.237 1.07 1.835 2.807 1.305 3.492.998.108-.775.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.933 0-1.31.468-2.38 1.235-3.22-.123-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.49 11.49 0 0 1 3-.405 11.5 11.5 0 0 1 3 .405c2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.24 2.873.118 3.176.77.84 1.233 1.91 1.233 3.22 0 4.61-2.807 5.625-5.48 5.922.43.37.823 1.102.823 2.222 0 1.606-.015 2.898-.015 3.293 0 .32.218.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
           </svg>
           <span style="color: var(--color-white); font-family: var(--font-base);">@alex2-dev</span>
         </a>
@@ -78,7 +62,4 @@
   <div class="mt-10 text-center text-sm text-gray-400">
     &copy; 2025 <span class="font-semibold text-white">&lt;Alex²/&gt;</span>. Tous droits réservés.
   </div>
-</div>
-
-</body>
-</html>
+</footer>

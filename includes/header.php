@@ -108,7 +108,7 @@
                 <a href="<?= BASE_URL ?>/index.php" class="block bg-white px-4 py-2 rounded shadow" style="color: var(--color-black); font-family: var(--font-base);">Accueil</a>
                 <a href="<?= BASE_URL ?>/pages/NosProjets.php" class="block bg-white px-4 py-2 rounded shadow" style="color: var(--color-black); font-family: var(--font-base);">Projets réalisés</a>
                 <a href="<?= BASE_URL ?>/pages/Services.php" class="block bg-white px-4 py-2 rounded shadow" style="color: var(--color-black); font-family: var(--font-base);">Nos services</a>
-                <a href="<?= BASE_URL ?>/pages/Apropos.php" class="block bg-white px-4 py-2 rounded shadow" style="color: var(--color-black); font-family: var(--font-base);">À propos de l'entreprise</a>
+                <a href="<?= BASE_URL ?>/pages/Apropos.php" class="block bg-white px-4 py-2 rounded shadow" style="color: var(--color-black); font-family: var(--font-base);">À propos</a>
                 <a href="<?= BASE_URL ?>/pages/Contact.php" class="block bg-white px-4 py-2 rounded shadow" style="color: var(--color-black); font-family: var(--font-base);">Contact</a>
             </div>
         </nav>
@@ -122,7 +122,7 @@
                     { name: 'Accueil', href: '<?= BASE_URL ?>/index.php', file: 'index.php' },
                     { name: 'Projets réalisés', href: '<?= BASE_URL ?>/pages/NosProjets.php', file: 'NosProjets.php' },
                     { name: 'Nos services', href: '<?= BASE_URL ?>/pages/Services.php', file: 'Services.php' },
-                    { name: "À propos de l'entreprise", href: '<?= BASE_URL ?>/pages/Apropos.php', file: 'Apropos.php' },
+                    { name: "À propos", href: '<?= BASE_URL ?>/pages/Apropos.php', file: 'Apropos.php' },
                     { name: 'Contact', href: '<?= BASE_URL ?>/pages/Contact.php', file: 'Contact.php' }
                 ],
                 highlight: { left: 0, width: 0 },

@@ -8,7 +8,7 @@ include __DIR__ . '/../../includes/header.php';
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Projets sticky superposés - fix scroll</title>
+<title>Projets | &lt;alex²/&gt;</title>
 <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
 <link rel='stylesheet' type='text/css' media='screen' href='<?= BASE_URL ?>/asset/css/NosProjets.css'>
 <script src="https://cdn.tailwindcss.com"></script>
@@ -16,7 +16,7 @@ include __DIR__ . '/../../includes/header.php';
 
 </head>
 <body>
-  <div class="bg-gray-100 p-10 mx-auto" style="max-width: 1200px;" x-data="projetsData()">
+  <div class="bg-gray-100 p-10 mx-auto" style="max-width: 1200px;" x-data="projetsData()" id="content">
 
     <h1 class="text-4xl font-bold mb-8">Nos Projets</h1>
 
@@ -105,7 +105,9 @@ include __DIR__ . '/../../includes/header.php';
       </div>
     </div>
   </div>
-
+<?php
+include __DIR__ . '/../../includes/footer.php';
+?>
 <script>
   function projetsData() {
     return {
@@ -155,6 +157,3 @@ include __DIR__ . '/../../includes/header.php';
 </script>
 </body>
 </html>
-<?php
-include __DIR__ . '/../../includes/footer.php';
-?>
