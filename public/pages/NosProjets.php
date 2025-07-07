@@ -9,6 +9,8 @@ include __DIR__ . '/../../includes/header.php';
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Projets | &lt;alex²/&gt;</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
+<link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/favicon.ico">
 <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
 <link rel='stylesheet' type='text/css' media='screen' href='<?= BASE_URL ?>/asset/css/NosProjets.css'>
 <script src="https://cdn.tailwindcss.com"></script>
