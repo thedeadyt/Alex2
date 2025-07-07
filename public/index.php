@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/config.php';
 include __DIR__ . '/../includes/header.php';
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -8,7 +9,7 @@ include __DIR__ . '/../includes/header.php';
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Accueil | &lt;alex²/&gt;</title>
-    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/asset/icons/Alex2.ico">
+    <link rel="icon" type="image/x-icon" href="favicon.png">
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -16,7 +17,7 @@ include __DIR__ . '/../includes/header.php';
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
     <script src='main.js'></script>
 </head>
-<body style="background-color: var(--color-white);">
+<body>
     <section id="content">
 
     </section>
