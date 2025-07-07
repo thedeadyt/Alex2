@@ -128,7 +128,7 @@ include __DIR__ . '/../../includes/header.php';
 
     <div class="g-recaptcha" data-sitekey="6LfjEHQrAAAAAJL1CPME0KI24tMJvzbxFjFpHxOD"></div>
 
-      <button type="submit" class="text-white px-6 py-3 rounded transition" style="background-color: var(--color-black); hover:background-color: var(--color-hover-1)">
+      <button type="submit" class="text-white px-6 py-3 rounded transition" style="background-color: var(--color-black);">
         Envoyer
       </button>
     </form>
