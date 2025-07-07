@@ -10,7 +10,7 @@ include __DIR__ . '/../../includes/header.php';
     <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- ✅ Favicon -->
-    <link rel="icon" type="image/x-icon" href="/Alex2/public/asset/icons/logo.ico">
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/asset/icons/favicon.ico.ico">
     <!-- ✅ Scripts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
