@@ -16,7 +16,8 @@ include __DIR__ . '/../../includes/header.php';
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<body
+<body style="background-color: var(--color-white); color: var(--color-black);">
+<div
   x-data="{
     services: [
       {
