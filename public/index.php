@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../../config/config.php';
-include __DIR__ . '/../../includes/header.php';
+require_once __DIR__ . '/../config/config.php';
+include __DIR__ . '/../includes/header.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -17,7 +17,7 @@ include __DIR__ . '/../../includes/header.php';
 
     </section>
       <?php
-  include __DIR__ . '/../../includes/footer.php';
+  include __DIR__ . '/../includes/footer.php';
   ?>
 </body>
 </html>
