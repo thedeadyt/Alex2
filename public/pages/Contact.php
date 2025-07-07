@@ -177,7 +177,9 @@ include __DIR__ . '/../../includes/header.php';
 
 </div>
 <br>
-
+<?php
+  include __DIR__ . '/../../includes/footer.php';
+  ?>
 <script>
   window.contactForm = function () {
     return {
