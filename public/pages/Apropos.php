@@ -18,8 +18,8 @@ include __DIR__ . '/../../includes/header.php';
     <section class="py-16 px-6 md:px-20" id="content">
         <!-- Titre principal -->
         <div class="text-center max-w-4xl mx-auto mb-16">
-            <h1 class="text-5xl font-extrabold tracking-tight mb-6"><span style="color: var(--color-green);">&lt;alex²/&gt;</span></h1>
-            <p class="text-lg">
+            <h1 class="text-5xl font-extrabold tracking-tight mb-6"><span style="color: var(--color-green); font-family: var(--font-bounded)">&lt;alex²/&gt;</span></h1>
+            <p class="text-lg" style="font-family: var(--font-tinos)">
             Nous concevons des sites sobres, rapides et durables. Simples à utiliser, performants par nature, éco-responsables par conviction.
             </p>
         </div>
@@ -27,19 +27,19 @@ include __DIR__ . '/../../includes/header.php';
         <!-- Mission & Valeurs -->
         <div class="max-w-5xl mx-auto space-y-12">
             <div>
-            <h2 class="text-3xl font-bold mb-4 border-l-4  pl-4"style="border-color: var(--color-green);">Mission & Valeurs</h2>
+            <h2 class="text-3xl font-bold mb-4 border-l-4  pl-4" style="border-color: var(--color-green); font-family: var(--font-bounded)">Mission & Valeurs</h2>
             <p class="mb-4"><strong>Notre mission :</strong> Créer des sites web simples, performants et responsables, pensés pour durer et conçus pour avoir un impact minimal sur l’environnement.</p>
             <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none">
-                <li class="p-4 rounded-lg shadow-sm border-l-4" style="background-color: var(--color-white); border-color: var(--color-green);">
+                <li class="p-4 rounded-lg shadow-sm border-l-4" style="background-color: var(--color-white); border-color: var(--color-green); font-family: var(--font-tinos)">
                 <strong>Qualité :</strong> un code propre, optimisé et fiable.
                 </li>
-                <li class="p-4 rounded-lg shadow-sm border-l-4 "style="background-color: var(--color-white); border-color: var(--color-green);">
+                <li class="p-4 rounded-lg shadow-sm border-l-4 "style="background-color: var(--color-white); border-color: var(--color-green); font-family: var(--font-tinos)">
                 <strong>Simplicité :</strong> des sites efficaces, utiles, sans superflu.
                 </li>
-                <li class="p-4 rounded-lg shadow-sm border-l-4 "style="background-color: var(--color-white); border-color: var(--color-green);">
+                <li class="p-4 rounded-lg shadow-sm border-l-4 "style="background-color: var(--color-white); border-color: var(--color-green); font-family: var(--font-tinos)">
                 <strong>Responsabilité :</strong> sobriété numérique, hébergement éco responsable, optimisation des ressources.
                 </li>
-                <li class="p-4 rounded-lg shadow-sm border-l-4 "style="background-color: var(--color-white); border-color: var(--color-green);">
+                <li class="p-4 rounded-lg shadow-sm border-l-4 "style="background-color: var(--color-white); border-color: var(--color-green); font-family: var(--font-tinos)">
                 <strong>Accessibilité :</strong> des solutions adaptées à tous les budgets.
                 </li>
             </ul>
@@ -47,8 +47,8 @@ include __DIR__ . '/../../includes/header.php';
 
             <!-- Positionnement -->
             <div>
-            <h2 class="text-3xl font-bold mb-4 border-l-4  pl-4" style="border-color: var(--color-green);">Positionnement</h2>
-            <p class="mb-2">
+            <h2 class="text-3xl font-bold mb-4 border-l-4  pl-4" style="border-color: var(--color-green); font-family: var(--font-bounded)">Positionnement</h2>
+            <p class="mb-2" style="font-family: var(--font-tinos)">
                 Nous nous adressons à toute personne ou structure ayant besoin d’un site — personnel, professionnel ou associatif — et qui recherche :
             </p>
             <ul class="list-disc list-inside space-y-1">
@@ -60,16 +60,16 @@ include __DIR__ . '/../../includes/header.php';
 
             <!-- Avantage Concurrentiel -->
             <div>
-            <h2 class="text-3xl font-bold mb-4 border-l-4 pl-4" style="border-color: var(--color-green);">Notre avantage concurrentiel</h2>
-            <p class="text-gray-700">
+            <h2 class="text-3xl font-bold mb-4 border-l-4 pl-4" style="border-color: var(--color-green); font-family: var(--font-bounded)">Notre avantage concurrentiel</h2>
+            <p class="" style="font-family: var(--font-tinos)">
                 Nous créons des sites sobres, rapides et durables, conçus pour minimiser la consommation de ressources tout en offrant une expérience utilisateur fluide. Notre approche allie performance et responsabilité écologique pour garantir une présence web efficace et pérenne.
             </p>
             </div>
 
             <!-- Ton & Personnalité -->
             <div>
-            <h2 class="text-3xl font-bold mb-4 border-l-4 pl-4"style="border-color: var(--color-green);">Personnalité & Ton</h2>
-            <ul class="list-disc list-inside text-gray-700 space-y-1">
+            <h2 class="text-3xl font-bold mb-4 border-l-4 pl-4"style="border-color: var(--color-green); font-family: var(--font-bounded)">Personnalité & Ton</h2>
+            <ul class="list-disc list-inside space-y-1" style="font-family: var(--font-tinos)">
                 <li>Professionnel, sans jargon inutile</li>
                 <li>Sincère et rigoureux, mais accessible</li>
                 <li>Sobres comme nos sites : pas d’effets tape-à-l’œil, mais une vraie solidité technique</li>
@@ -90,11 +90,11 @@ include __DIR__ . '/../../includes/header.php';
 
             cards.forEach(card => observer.observe(card));
         }" class="mt-24 max-w-7xl mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center mb-16">Les fondateurs</h2>
+            <h2 class="text-4xl font-bold text-center mb-16" style="font-family: var(--font-bounded)">Les fondateurs</h2>
 
             <div class="grid md:grid-cols-2 gap-12 place-items-center" style="background-color: var(--color-white);">
                 <!-- Alexandre -->
-                <div class="founder-card opacity-0 transform translate-y-10 transition-all duration-700 border border-gray-200 rounded-2xl shadow-xl p-10 w-full max-w-2xl hover:shadow-2xl text-center">
+                <div class="founder-card opacity-0 transform translate-y-10 transition-all duration-700 border border-gray-200 rounded-2xl shadow-xl p-10 w-full max-w-2xl hover:shadow-2xl text-center" style="font-family: var(--font-tinos)">
                     <img src="<?= BASE_URL ?>/asset/img/alexandre.webp" alt="Alexandre" class="w-36 h-36 rounded-full object-cover border-4 mb-6 shadow mx-auto"style="border-color: var(--color-green);">
                     <h3 class="text-3xl font-semibold text-blue-600 mb-4"style="color: var(--color-green);">Alexandre</h3>
                     <p class="text-gray-700 text-base mb-6 max-w-xl mx-auto">
@@ -133,7 +133,7 @@ include __DIR__ . '/../../includes/header.php';
                 </div>
 
                 <!-- Alexis -->
-                <div class="founder-card opacity-0 transform translate-y-10 transition-all duration-700  rounded-2xl shadow-xl p-10 w-full max-w-2xl hover:shadow-2xl text-center">
+                <div class="founder-card opacity-0 transform translate-y-10 transition-all duration-700  rounded-2xl shadow-xl p-10 w-full max-w-2xl hover:shadow-2xl text-center" style="font-family: var(--font-tinos)">
                     <img src="<?= BASE_URL ?>/asset/img/alexis.webp" alt="Alexis" class="w-36 h-36 rounded-full object-cover border-4 mb-6 shadow mx-auto" style="border-color: var(--color-green);">
                     <h3 class="text-3xl font-semibold mb-4"style="color: var(--color-green);">Alexis</h3>
                     <p class="text-gray-700 text-base mb-6 max-w-xl mx-auto">
@@ -174,8 +174,8 @@ include __DIR__ . '/../../includes/header.php';
         </section>
     </section>
     <?php
-include __DIR__ . '/../../includes/footer.php';
-?>
+    include __DIR__ . '/../../includes/footer.php';
+    ?>
 </body>
 </html>
 
