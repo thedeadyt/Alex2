@@ -14,8 +14,8 @@ include __DIR__ . '/../../includes/header.php';
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
-<body>
-    <section class="py-16 px-6 md:px-20" style="background-color: var(--color-white); color: var(--color-black);" id="content">
+<body style="background-color: var(--color-white); color: var(--color-black);">
+    <section class="py-16 px-6 md:px-20" id="content">
         <!-- Titre principal -->
         <div class="text-center max-w-4xl mx-auto mb-16">
             <h1 class="text-5xl font-extrabold tracking-tight mb-6"><span style="color: var(--color-green);">&lt;alex²/&gt;</span></h1>
