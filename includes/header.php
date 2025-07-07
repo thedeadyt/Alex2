@@ -2,7 +2,7 @@
 $currentPage = basename($_SERVER['PHP_SELF']);
 ?>
 <header>
-    <nav x-data="{ open: false }" class="bg-white shadow px-6 py-4">
+    <nav x-data="{ open: false }" class="shadow px-6 py-4" style="background-color: var(--color-white); color: var(--color-black);">
         <!-- Ligne principale -->
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <!-- Logo + Nom -->
