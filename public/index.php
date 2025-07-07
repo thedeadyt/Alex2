@@ -16,7 +16,7 @@ include __DIR__ . '/../includes/header.php';
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
     <script src='main.js'></script>
 </head>
-<body>
+<body style="background-color: var(--color-white);">
     <section id="content">
 
     </section>

@@ -16,8 +16,8 @@ include __DIR__ . '/../../includes/header.php';
 
 </head>
 <br>
-<body>
-  <div class="bg-gray-100 p-10 mx-auto" style="max-width: 1200px;" x-data="projetsData()" id="content">
+<body style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)">
+  <div class="p-10 mx-auto" style="max-width: 1200px;" x-data="projetsData()" id="content">
 
     <h1 class="text-4xl font-bold mb-8">Nos Projets</h1>
 

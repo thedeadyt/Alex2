@@ -86,9 +86,9 @@ include __DIR__ . '/../../includes/header.php';
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <br>
-<body>
+<body style="background-color: var(--color-white); color: var(--color-black);">
   <div
-  class="mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-md max-w-full w-full px-4 sm:px-6 md:max-w-2xl" x-data="contactForm()" id="content">
+  class="mx-auto p-6 sm:p-8 rounded-xl shadow-md max-w-full w-full px-4 sm:px-6 md:max-w-2xl" x-data="contactForm()" style="background-color: var(--color-white); color: var(--color-black);" id="content">
   <h2 class="text-2xl font-bold mb-6 text-center">Contactez-nous</h2>
 
   <template x-if="success">
@@ -111,15 +111,15 @@ include __DIR__ . '/../../includes/header.php';
 
   <form @submit.prevent="submitForm" class="space-y-4" novalidate>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <input x-model="form.prenom" name="prenom" type="text" placeholder="Prénom" required class="p-3 border rounded w-full"/>
-      <input x-model="form.nom" name="nom" type="text" placeholder="Nom" required class="p-3 border rounded w-full"/>
+      <input x-model="form.prenom" name="prenom" type="text" placeholder="Prénom" required class="p-3 border rounded w-full" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"/>
+      <input x-model="form.nom" name="nom" type="text" placeholder="Nom" required class="p-3 border rounded w-full" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"/>
     </div>
 
-    <input x-model="form.email" name="email" type="email" placeholder="Adresse email" required class="p-3 border rounded w-full"/>
-    <input x-model="form.telephone" name="telephone" type="tel" placeholder="Téléphone" required class="p-3 border rounded w-full"/>
-    <input x-model="form.societe" name="societe" type="text" placeholder="Société" class="p-3 border rounded w-full"/>
-    <input x-model="form.objet" name="objet" type="text" placeholder="Objet de la demande" required class="p-3 border rounded w-full"/>
-    <textarea x-model="form.message" name="message" placeholder="Votre message" rows="5" required class="p-3 border rounded w-full resize-none"></textarea>
+    <input x-model="form.email" name="email" type="email" placeholder="Adresse email" required class="p-3 border rounded w-full" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"/>
+    <input x-model="form.telephone" name="telephone" type="tel" placeholder="Téléphone" required class="p-3 border rounded w-full" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"/>
+    <input x-model="form.societe" name="societe" type="text" placeholder="Société" class="p-3 border rounded w-full" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"/>
+    <input x-model="form.objet" name="objet" type="text" placeholder="Objet de la demande" required class="p-3 border rounded w-full" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"/>
+    <textarea x-model="form.message" name="message" placeholder="Votre message" rows="5" required class="p-3 border rounded w-full resize-none" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"></textarea>
 
     <div class="flex items-start gap-2">
       <input x-model="form.consent" type="checkbox" name="consent" required class="mt-1"/>
@@ -135,9 +135,9 @@ include __DIR__ . '/../../includes/header.php';
   </div>
 
   <br>
-<div
+<div style="background-color: var(--color-white); color: var(--color-black);"
   x-data="{ open: true }"
-  class="mx-auto bg-gray-50 rounded-xl shadow-md p-6 md:p-8 w-[90vw] max-w-[1200px] flex flex-col md:flex-row gap-6 md:gap-12"
+  class="mx-auto rounded-xl shadow-md p-6 md:p-8 w-[90vw] max-w-[1200px] flex flex-col md:flex-row gap-6 md:gap-12"
 >
 
   <!-- Carte -->

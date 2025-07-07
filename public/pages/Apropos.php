@@ -19,7 +19,7 @@ include __DIR__ . '/../../includes/header.php';
         <!-- Titre principal -->
         <div class="text-center max-w-4xl mx-auto mb-16">
             <h1 class="text-5xl font-extrabold tracking-tight mb-6"><span style="color: var(--color-green);">&lt;alex²/&gt;</span></h1>
-            <p class="text-lg text-gray-600">
+            <p class="text-lg">
             Nous concevons des sites sobres, rapides et durables. Simples à utiliser, performants par nature, éco-responsables par conviction.
             </p>
         </div>
@@ -28,18 +28,18 @@ include __DIR__ . '/../../includes/header.php';
         <div class="max-w-5xl mx-auto space-y-12">
             <div>
             <h2 class="text-3xl font-bold mb-4 border-l-4  pl-4"style="border-color: var(--color-green);">Mission & Valeurs</h2>
-            <p class="mb-4 text-gray-700"><strong>Notre mission :</strong> Créer des sites web simples, performants et responsables, pensés pour durer et conçus pour avoir un impact minimal sur l’environnement.</p>
+            <p class="mb-4"><strong>Notre mission :</strong> Créer des sites web simples, performants et responsables, pensés pour durer et conçus pour avoir un impact minimal sur l’environnement.</p>
             <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none">
-                <li class="bg-gray-50 p-4 rounded-lg shadow-sm border-l-4" style="border-color: var(--color-green);">
+                <li class="p-4 rounded-lg shadow-sm border-l-4" style="background-color: var(--color-white); border-color: var(--color-green);">
                 <strong>Qualité :</strong> un code propre, optimisé et fiable.
                 </li>
-                <li class="bg-gray-50 p-4 rounded-lg shadow-sm border-l-4 "style="border-color: var(--color-green);">
+                <li class="p-4 rounded-lg shadow-sm border-l-4 "style="background-color: var(--color-white); border-color: var(--color-green);">
                 <strong>Simplicité :</strong> des sites efficaces, utiles, sans superflu.
                 </li>
-                <li class="bg-gray-50 p-4 rounded-lg shadow-sm border-l-4 "style="border-color: var(--color-green);">
+                <li class="p-4 rounded-lg shadow-sm border-l-4 "style="background-color: var(--color-white); border-color: var(--color-green);">
                 <strong>Responsabilité :</strong> sobriété numérique, hébergement éco responsable, optimisation des ressources.
                 </li>
-                <li class="bg-gray-50 p-4 rounded-lg shadow-sm border-l-4 "style="border-color: var(--color-green);">
+                <li class="p-4 rounded-lg shadow-sm border-l-4 "style="background-color: var(--color-white); border-color: var(--color-green);">
                 <strong>Accessibilité :</strong> des solutions adaptées à tous les budgets.
                 </li>
             </ul>
@@ -48,10 +48,10 @@ include __DIR__ . '/../../includes/header.php';
             <!-- Positionnement -->
             <div>
             <h2 class="text-3xl font-bold mb-4 border-l-4  pl-4" style="border-color: var(--color-green);">Positionnement</h2>
-            <p class="text-gray-700 mb-2">
+            <p class="mb-2">
                 Nous nous adressons à toute personne ou structure ayant besoin d’un site — personnel, professionnel ou associatif — et qui recherche :
             </p>
-            <ul class="list-disc list-inside text-gray-700 space-y-1">
+            <ul class="list-disc list-inside space-y-1">
                 <li>Une solution claire et sans artifice</li>
                 <li>Un site éco-conçu avec une faible empreinte carbone</li>
                 <li>Un accompagnement humain et transparent</li>
@@ -92,9 +92,9 @@ include __DIR__ . '/../../includes/header.php';
         }" class="mt-24 max-w-7xl mx-auto px-6">
             <h2 class="text-4xl font-bold text-center mb-16">Les fondateurs</h2>
 
-            <div class="grid md:grid-cols-2 gap-12 place-items-center">
+            <div class="grid md:grid-cols-2 gap-12 place-items-center" style="background-color: var(--color-white);">
                 <!-- Alexandre -->
-                <div class="founder-card opacity-0 transform translate-y-10 transition-all duration-700 bg-white border border-gray-200 rounded-2xl shadow-xl p-10 w-full max-w-2xl hover:shadow-2xl text-center">
+                <div class="founder-card opacity-0 transform translate-y-10 transition-all duration-700 border border-gray-200 rounded-2xl shadow-xl p-10 w-full max-w-2xl hover:shadow-2xl text-center">
                     <img src="<?= BASE_URL ?>/asset/img/alexandre.webp" alt="Alexandre" class="w-36 h-36 rounded-full object-cover border-4 mb-6 shadow mx-auto"style="border-color: var(--color-green);">
                     <h3 class="text-3xl font-semibold text-blue-600 mb-4"style="color: var(--color-green);">Alexandre</h3>
                     <p class="text-gray-700 text-base mb-6 max-w-xl mx-auto">
@@ -133,7 +133,7 @@ include __DIR__ . '/../../includes/header.php';
                 </div>
 
                 <!-- Alexis -->
-                <div class="founder-card opacity-0 transform translate-y-10 transition-all duration-700 bg-white border border-gray-200 rounded-2xl shadow-xl p-10 w-full max-w-2xl hover:shadow-2xl text-center">
+                <div class="founder-card opacity-0 transform translate-y-10 transition-all duration-700  rounded-2xl shadow-xl p-10 w-full max-w-2xl hover:shadow-2xl text-center">
                     <img src="<?= BASE_URL ?>/asset/img/alexis.webp" alt="Alexis" class="w-36 h-36 rounded-full object-cover border-4 mb-6 shadow mx-auto" style="border-color: var(--color-green);">
                     <h3 class="text-3xl font-semibold mb-4"style="color: var(--color-green);">Alexis</h3>
                     <p class="text-gray-700 text-base mb-6 max-w-xl mx-auto">
