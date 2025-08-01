@@ -92,7 +92,7 @@ require_once __DIR__ . '/../../config/config.php';
   ?>
   <div
   class="mx-auto p-6 sm:p-8 rounded-xl shadow-md max-w-full w-full px-4 sm:px-6 md:max-w-2xl" x-data="contactForm()" style="background-color: var(--color-white); color: var(--color-black);" id="content">
-  <h2 class="text-2xl font-bold mb-6 text-center">Contactez-nous</h2>
+  <h2 class="text-2xl font-bold mb-6 text-center" style="font-family: var(--font-bounded)">Contactez-nous</h2>
 
   <template x-if="success">
     <div class="bg-green-100 text-green-800 p-4 rounded mb-4">
@@ -124,21 +124,21 @@ require_once __DIR__ . '/../../config/config.php';
     <input x-model="form.objet" name="objet" type="text" placeholder="Objet de la demande *" required class="p-3 border rounded w-full" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"/>
     <textarea x-model="form.message" name="message" placeholder="Votre message *" rows="5" required class="p-3 border rounded w-full resize-none" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"></textarea>
 
-    <div class="flex items-start gap-2">
+    <div class="flex items-start gap-2" style="font-family: var(--font-tinos)">
       <input x-model="form.consent" type="checkbox" name="consent" required class="mt-1"/>
       <label>J'accepte que mes données soient utilisées pour être recontacté(e).</label>
     </div>
 
     <div class="g-recaptcha" data-sitekey="6LfjEHQrAAAAAJL1CPME0KI24tMJvzbxFjFpHxOD"></div>
 
-      <button type="submit" class="text-white px-6 py-3 rounded transition" style="background-color: var(--color-black);">
+      <button type="submit" class="text-white px-6 py-3 rounded transition" style="background-color: var(--color-black); font-family: var(--font-tinos)">
         Envoyer
       </button>
     </form>
   </div>
 
   <br>
-<div style="background-color: var(--color-white); color: var(--color-black);"
+<div style="background-color: var(--color-white); color: var(--color-black); font-family: var(--font-tinos)"
   x-data="{ open: true }"
   class="mx-auto rounded-xl shadow-md p-6 md:p-8 w-[90vw] max-w-[1200px] flex flex-col md:flex-row gap-6 md:gap-12"
 >
@@ -161,20 +161,20 @@ require_once __DIR__ . '/../../config/config.php';
   <div
     x-show="open"
     x-transition
-    class="flex-grow font-sans text-gray-800"
+    class="flex-grow font-sans"
   >
-    <h2 class="text-2xl font-semibold mb-4">Contactez-nous</h2>
-    <p class="mb-3"><strong>Adresse :</strong><br>8 Rue Charles Baudelaire,<br>65100 Lourdes</p>
-    <p class="mb-3">
+    <h2 class="text-2xl font-semibold mb-4" style="font-family: var(--font-bounded)">Contactez-nous</h2>
+    <p class="mb-3" style="font-family: var(--font-tinos)"><strong>Adresse :</strong><br>8 Rue Charles Baudelaire,<br>65100 Lourdes</p>
+    <p class="mb-3" style="font-family: var(--font-tinos)">
       <strong>Téléphone :</strong><br>
       <a href="tel:+33768882766" class="text-blue-600 hover:underline">+33 7 68 88 27 66</a><br>
       <a href="tel:+33686825714" class="text-blue-600 hover:underline">+33 6 86 82 57 14</a>
     </p>
-    <p class="mb-3">
+    <p class="mb-3" style="font-family: var(--font-tinos)">
       <strong>Email :</strong><br>
       <a href="mailto:contact.alex2.dev@gmail.com" class="text-blue-600 hover:underline">contact.alex2.dev@gmail.com</a>
     </p>
-    <p><strong>Horaires de contact :</strong><br>Du lundi au vendredi, 9h - 18h</p>
+    <p style="font-family: var(--font-tinos)"><strong>Horaires de contact :</strong><br>Du lundi au vendredi, 9h - 18h</p>
   </div>
 </div>
 
