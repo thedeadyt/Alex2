@@ -20,8 +20,8 @@ function EnvoieMailFormulaire($infos) {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'contact.alex2.dev@gmail.com';
-        $mail->Password = 'ntlddwqckndygfyy'; // ⚠️ change-moi si compromis
+        $mail->Username = 'no.replay.alex2@gmail.com';
+        $mail->Password = 'ptublgmyxmsiqjds'; // ⚠️ change-moi si compromis
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 

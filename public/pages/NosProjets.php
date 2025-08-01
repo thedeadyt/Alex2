@@ -1,33 +1,39 @@
 <?php
 require_once __DIR__ . '/../../config/config.php';
-include __DIR__ . '/../../includes/header.php';
-
+require_once __DIR__ . '/../../config/database.php';
+// Récupération des projets depuis la BDD
+$projets = [];
+$stmt = $pdo->query("SELECT * FROM projets");
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    // Ici pas de features, tu peux adapter si besoin
+    $projets[] = $row;
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Projets | &lt;alex²/&gt;</title>
-<link rel="icon" href="favicon.ico" type="image/x-icon" />
-<link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/favicon.ico">
+<link rel="icon" href="<?= BASE_URL ?>/Alex2logo.png" type="image/x-icon">
 <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
 <link rel='stylesheet' type='text/css' media='screen' href='<?= BASE_URL ?>/asset/css/NosProjets.css'>
 <script src="https://cdn.tailwindcss.com"></script>
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
 </head>
-<br>
-<body style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)">
-  <div class="p-10 mx-auto" style="max-width: 1200px;" x-data="projetsData()" id="content">
 
+<body style="background-color: var(--color-white); color: var(--color-black);">
+  <?php
+  include __DIR__ . '/../../includes/header.php';
+  ?>
+  <div class="p-10 mx-auto" style="max-width: 1200px;" x-data="projetsData()" id="content">
     <h1 class="text-4xl font-bold mb-8">Nos Projets</h1>
 
-    <div class="pb-[160px]"><!-- padding bottom important pour scroller -->
-
+    <div class="pb-[160px]">
       <template x-for="(projet, i) in projets" :key="i">
         <div
-          :class="projet.couleur + ' projet sticky-top relative flex flex-col justify-between'"
+          class="bg-[var(--color-black)] text-[var(--color-white)] projet sticky-top relative flex flex-col justify-between p-6 rounded mb-10 shadow-lg"
           :style="{ zIndex: 1000 + i }"
         >
           <!-- En haut à droite: année + type + image -->
@@ -40,28 +46,22 @@ include __DIR__ . '/../../includes/header.php';
           </div>
 
           <!-- Nom projet / entreprise -->
-          <h2 class="text-2xl font-bold mb-2" style="color: var(--color-white); font-family: var(--font-heading);"x-text="projet.nom"></h2>
+          <h2 class="text-2xl font-bold mb-2" style="font-family: var(--font-heading);" x-text="projet.nom"></h2>
 
-          <!-- Description -->
-          <p class="mb-4" style="color: var(--color-white); font-family: var(--font-base);" x-text="projet.description"></p>
+          <!-- Description courte -->
+          <p class="mb-4" style="font-family: var(--font-base);" x-text="projet.description_courte"></p>
 
-          <!-- Features (avec pictos) -->
-          <ul class="flex space-x-6 mb-6"style="color: var(--color-white); font-family: var(--font-base);">
-            <template x-for="feature in projet.features" :key="feature.name">
-              <li class="flex items-center space-x-2">
-                <span x-html="feature.icon" class="w-5 h-5"></span>
-                <span x-text="feature.name"></span>
-              </li>
-            </template>
-          </ul>
-
-          <!-- Bouton semi-transparent en bas -->
+          <!-- Bouton -->
           <button
             @click="openPopup(i)"
-            class="w-full py-2 rounded font-semibold"
-            style="background-color: var(--btn-bg); color:var(--color-white); transition: background-color 0.3s;"
-            @mouseenter="$el.style.backgroundColor = 'var(--btn-hover-bg)'"
-            @mouseleave="$el.style.backgroundColor = 'var(--btn-bg)'"
+            class="w-full py-2 rounded font-semibold border transition"
+            style="
+              border-color: var(--color-white);
+              background-color: transparent;
+              color: var(--color-white);
+            "
+            @mouseenter="$el.style.backgroundColor = 'var(--color-white)'; $el.style.color = 'var(--color-black)'"
+            @mouseleave="$el.style.backgroundColor = 'transparent'; $el.style.color = 'var(--color-white)'"
           >
             Plus d'infos
           </button>
@@ -75,8 +75,9 @@ include __DIR__ . '/../../includes/header.php';
       x-transition
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1100]"
       style="backdrop-filter: blur(5px);"
+      @click.outside="closePopup()"
     >
-      <div class="bg-white rounded-lg w-[700px] p-6 relative shadow-xl">
+      <div class="bg-white rounded-lg w-[700px] p-6 relative shadow-xl" @click.stop>
         <!-- Bouton fermeture -->
         <button
           @click="closePopup()"
@@ -86,9 +87,14 @@ include __DIR__ . '/../../includes/header.php';
           &times;
         </button>
 
-        <!-- Contenu pop-up -->
-        <h3 class="text-3xl mb-2"style="color: var(--color-black); font-family: var(--font-base);" x-text="popupProjet.nom"></h3>
-        <p class="mb-4" style="color: var(--color-black); font-family: var(--font-base);" x-text="popupProjet.descriptionDetail"></p>
+        <!-- IMAGE EN GRAND -->
+        <img :src="popupProjet.image" alt="Image grand projet" class="w-full h-auto rounded mb-4" />
+
+        <!-- NOM DU PROJET -->
+        <h3 class="text-3xl mb-2" style="color: var(--color-black); font-family: var(--font-base);" x-text="popupProjet.nom"></h3>
+
+        <!-- DESCRIPTION DÉTAILLÉE -->
+        <p class="mb-4" style="color: var(--color-black); font-family: var(--font-base);" x-text="popupProjet.description_detaillee"></p>
 
         <!-- Bouton vers projet -->
         <a
@@ -96,67 +102,31 @@ include __DIR__ . '/../../includes/header.php';
           target="_blank"
           rel="noopener noreferrer"
           class="block mt-6 w-full text-center py-3 rounded transition"
-          style="
-            background-color: var(--color-black);
-            color: var(--color-white);
-          "
-          @mouseenter="$el.style.backgroundColor = 'var(--color-black)'"
-          @mouseleave="$el.style.backgroundColor = 'var(--color-black)'"
+          style="background-color: var(--color-black); color: var(--color-white);"
         >
           Voir le projet
         </a>
       </div>
     </div>
   </div>
-<?php
-include __DIR__ . '/../../includes/footer.php';
-?>
-<script>
-  function projetsData() {
-    return {
-      projets: [
-        {
-          annee: '2023',
-          type: 'Dev Web / SEO',
-          image: 'https://placehold.co/300x200/png',
-          nom: 'Entreprise XYZ',
-          description: 'Projet de refonte complète du site web avec optimisation SEO.',
-          descriptionDetail: 'Description plus détaillée du projet XYZ, objectifs, challenges, solutions mises en place.',
-          features: [
-            { name: 'Développement', icon: '💻' },
-            { name: 'SEO', icon: '🔍' },
-            { name: 'Design', icon: '🎨' }
-          ],
-          lien: 'https://placehold.co/300x200/png',
-          couleur: 'bg-blue-600 text-white'
+
+  <?php include __DIR__ . '/../../includes/footer.php'; ?>
+
+  <script>
+    function projetsData() {
+      return {
+        projets: <?= json_encode($projets, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>,
+        popupOpen: false,
+        popupProjet: {},
+        openPopup(index) {
+          this.popupProjet = this.projets[index];
+          this.popupOpen = true;
         },
-        {
-          annee: '2022',
-          type: 'Application Mobile',
-          image: 'https://placehold.co/300x200/png',
-          nom: 'Startup ABC',
-          description: 'Application mobile native iOS et Android.',
-          descriptionDetail: 'Détails approfondis sur l\'application mobile développée pour ABC.',
-          features: [
-            { name: 'iOS', icon: '📱' },
-            { name: 'Android', icon: '🤖' }
-          ],
-          lien: 'https://placehold.co/300x200/png',
-          couleur: 'bg-green-500 text-white'
+        closePopup() {
+          this.popupOpen = false;
         }
-        // Ajoute d'autres projets ici
-      ],
-      popupOpen: false,
-      popupProjet: {},
-      openPopup(index) {
-        this.popupProjet = this.projets[index];
-        this.popupOpen = true;
-      },
-      closePopup() {
-        this.popupOpen = false;
       }
     }
-  }
-</script>
+  </script>
 </body>
 </html>

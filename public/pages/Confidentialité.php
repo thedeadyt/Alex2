@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../../config/config.php';
-include __DIR__ . '/../../includes/header.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -8,11 +7,15 @@ include __DIR__ . '/../../includes/header.php';
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Politique de confidentialité | &lt;alex²/&gt;</title>
+  <link rel="icon" href="<?= BASE_URL ?>/Alex2logo.png" type="image/x-icon">
   <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 <body style="background-color: var(--color-white); color: var(--color-black);">
+  <?php
+  include __DIR__ . '/../../includes/header.php';
+  ?>
   <section class="py-16 px-6 md:px-20 max-w-5xl mx-auto" id="content">
     <h1 class="text-4xl font-bold mb-8 text-center">
       <span style="color: var(--color-green);">&lt;alex²/&gt;</span> — Politique de confidentialité

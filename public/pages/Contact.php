@@ -71,7 +71,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && strpos($_SERVER['CONTENT_TYPE'] ?? 
 
 // GET : affichage du formulaire
 require_once __DIR__ . '/../../config/config.php';
-include __DIR__ . '/../../includes/header.php';
 ?>
 
 <!DOCTYPE html>
@@ -79,6 +78,7 @@ include __DIR__ . '/../../includes/header.php';
 <head>
   <meta charset="UTF-8">
   <title>Contact | &lt;alex²/&gt;</title>
+  <link rel="icon" href="<?= BASE_URL ?>/Alex2logo.png" type="image/x-icon">
   <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
   <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/Contact.css">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -87,6 +87,9 @@ include __DIR__ . '/../../includes/header.php';
 </head>
 <br>
 <body style="background-color: var(--color-white); color: var(--color-black);">
+  <?php
+  include __DIR__ . '/../../includes/header.php';
+  ?>
   <div
   class="mx-auto p-6 sm:p-8 rounded-xl shadow-md max-w-full w-full px-4 sm:px-6 md:max-w-2xl" x-data="contactForm()" style="background-color: var(--color-white); color: var(--color-black);" id="content">
   <h2 class="text-2xl font-bold mb-6 text-center">Contactez-nous</h2>
@@ -111,15 +114,15 @@ include __DIR__ . '/../../includes/header.php';
 
   <form @submit.prevent="submitForm" class="space-y-4" novalidate>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <input x-model="form.prenom" name="prenom" type="text" placeholder="Prénom" required class="p-3 border rounded w-full" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"/>
-      <input x-model="form.nom" name="nom" type="text" placeholder="Nom" required class="p-3 border rounded w-full" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"/>
+      <input x-model="form.prenom" name="prenom" type="text" placeholder="Prénom *" required class="p-3 border rounded w-full" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"/>
+      <input x-model="form.nom" name="nom" type="text" placeholder="Nom *" required class="p-3 border rounded w-full" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"/>
     </div>
 
-    <input x-model="form.email" name="email" type="email" placeholder="Adresse email" required class="p-3 border rounded w-full" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"/>
-    <input x-model="form.telephone" name="telephone" type="tel" placeholder="Téléphone" required class="p-3 border rounded w-full" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"/>
+    <input x-model="form.email" name="email" type="email" placeholder="Adresse email *" required class="p-3 border rounded w-full" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"/>
+    <input x-model="form.telephone" name="telephone" type="tel" placeholder="Téléphone *" required class="p-3 border rounded w-full" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"/>
     <input x-model="form.societe" name="societe" type="text" placeholder="Société" class="p-3 border rounded w-full" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"/>
-    <input x-model="form.objet" name="objet" type="text" placeholder="Objet de la demande" required class="p-3 border rounded w-full" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"/>
-    <textarea x-model="form.message" name="message" placeholder="Votre message" rows="5" required class="p-3 border rounded w-full resize-none" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"></textarea>
+    <input x-model="form.objet" name="objet" type="text" placeholder="Objet de la demande *" required class="p-3 border rounded w-full" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"/>
+    <textarea x-model="form.message" name="message" placeholder="Votre message *" rows="5" required class="p-3 border rounded w-full resize-none" style="background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black)"></textarea>
 
     <div class="flex items-start gap-2">
       <input x-model="form.consent" type="checkbox" name="consent" required class="mt-1"/>

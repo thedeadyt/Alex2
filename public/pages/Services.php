@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../../config/config.php';
-include __DIR__ . '/../../includes/header.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -10,13 +9,16 @@ include __DIR__ . '/../../includes/header.php';
     <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- ✅ Favicon -->
-    <link rel="icon" type="../favicon.ico">
+    <link rel="icon" href="<?= BASE_URL ?>/Alex2logo.png" type="image/x-icon">
     <!-- ✅ Scripts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
 <body style="background-color: var(--color-white); color: var(--color-black);">
+  <?php
+  include __DIR__ . '/../../includes/header.php';
+  ?>
 <div
   x-data="{
     services: [

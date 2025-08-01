@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../../config/config.php';
-include __DIR__ . '/../../includes/header.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -8,6 +7,7 @@ include __DIR__ . '/../../includes/header.php';
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>À propos | &lt;alex²/&gt;</title>
+    <link rel="icon" href="<?= BASE_URL ?>/Alex2logo.png" type="image/x-icon">
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/Apropos.css">
@@ -15,6 +15,9 @@ include __DIR__ . '/../../includes/header.php';
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 <body style="background-color: var(--color-white); color: var(--color-black);">
+    <?php
+    include __DIR__ . '/../../includes/header.php';
+    ?>
     <section class="py-16 px-6 md:px-20" id="content">
         <!-- Titre principal -->
         <div class="text-center max-w-4xl mx-auto mb-16">
