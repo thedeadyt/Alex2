@@ -13,15 +13,11 @@ require_once __DIR__ . '/../config/config.php';
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
     <script src='main.js'></script>
-
-    <link rel="icon" href="favicon.ico" type="image/x-icon" />
-    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/favicon.ico">
     <link rel='stylesheet' type='text/css' media='screen' href='<?= BASE_URL ?>/asset/css/index.css'>
-
     <!-- Garder UNE SEULE inclusion d'Alpine.js avec defer -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body>
+<body style="background-color: var(--color-white); color: var(--color-black);">
   <?php
   include __DIR__ . '/../includes/header.php';
   ?>

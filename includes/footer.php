@@ -4,11 +4,11 @@
     <div>
       <h3 class="text-xl mb-4 text-center" style="color: var(--color-white); font-family: var(--font-base);">Navigation</h3>
       <ul class="space-y-2 text-center">
-        <li><a href="<?= BASE_URL ?>/index.php" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">Accueil</a></li>
-        <li><a href="<?= BASE_URL ?>/pages/NosProjets.php" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">Projets réalisés</a></li>
-        <li><a href="<?= BASE_URL ?>/pages/Services.php" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">Nos services</a></li>
-        <li><a href="<?= BASE_URL ?>/pages/Apropos.php" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">À propos</a></li>
-        <li><a href="<?= BASE_URL ?>/pages/Contact.php" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">Contact</a></li>
+        <li><a href="<?= BASE_URL ?>/" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">Accueil</a></li>
+        <li><a href="<?= BASE_URL ?>/pages/NosProjets" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">Projets réalisés</a></li>
+        <li><a href="<?= BASE_URL ?>/pages/Services" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">Nos services</a></li>
+        <li><a href="<?= BASE_URL ?>/pages/Apropos" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">À propos</a></li>
+        <li><a href="<?= BASE_URL ?>/pages/Contact" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">Contact</a></li>
       </ul>
     </div>
 
@@ -28,8 +28,8 @@
         </button>
       </h3>
       <ul class="space-y-2 md:block text-center" x-show="open || window.innerWidth >= 768" x-transition>
-        <li><a href="<?= BASE_URL ?>/pages/Mentions.php" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">Mentions légales</a></li>
-        <li><a href="<?= BASE_URL ?>/pages/Confidentialité.php" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">Politique de confidentialité</a></li>
+        <li><a href="<?= BASE_URL ?>/pages/Mentions-Légales" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">Mentions légales</a></li>
+        <li><a href="<?= BASE_URL ?>/pages/Politique-de-confidentialité" style="color: var(--color-white); font-family: var(--font-base);" class="hover:underline">Politique de confidentialité</a></li>
       </ul>
     </div>
 

@@ -4,120 +4,123 @@ require_once __DIR__ . '/../../config/config.php';
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Service | &lt;alex²/&gt;</title>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Accueil | &lt;alex²/&gt;</title>
+    <link rel="icon" href="./Alex2logo.png" type="image/x-icon">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- ✅ Favicon -->
-    <link rel="icon" href="<?= BASE_URL ?>/Alex2logo.png" type="image/x-icon">
-    <!-- ✅ Scripts -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+    <link rel='stylesheet' type='text/css' media='screen' href='<?= BASE_URL ?>/asset/css/index.css'>
+    <!-- Garder UNE SEULE inclusion d'Alpine.js avec defer -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-
 <body style="background-color: var(--color-white); color: var(--color-black);">
   <?php
   include __DIR__ . '/../../includes/header.php';
   ?>
-<div
-  x-data="{
-    services: [
-      {
-        name: 'create_site',
-        lines: [
-          '<Alex²/> ➜ run create_site',
-          '> Création de sites vitrines, e-commerce & blogs',
-          '> Avec ou sans identité visuelle (logo, charte)',
-          '> Responsive, rapide, moderne',
-          '> Statut : DISPONIBLE',
-        ],
-      },
-      {
-        name: 'seo_boost',
-        lines: [
-          '<Alex²/> ➜ run seo_boost',
-          '> Audit SEO technique & sémantique',
-          '> Optimisation des balises, performance, accessibilité',
-          '> Suivi de positionnement Google',
-          '> Statut : DISPONIBLE',
-        ],
-      },
-      {
-        name: 'redesign',
-        lines: [
-          '<Alex²/> ➜ run redesign',
-          '> Refonte graphique et technique',
-          '> Amélioration UX / UI',
-          '> Migration sans perte de contenu',
-          '> Statut : DISPONIBLE',
-        ],
-      },
-      {
-        name: 'maintenance',
-        lines: [
-          '<Alex²/> ➜ run maintenance',
-          '> Sauvegardes automatiques & monitoring',
-          '> Mises à jour CMS / plugins',
-          '> Support technique réactif',
-          '> Statut : DISPONIBLE',
-        ],
-      },
-      {
-        name: 'custom_dev',
-        lines: [
-          '<Alex²/> ➜ run custom_dev',
-          '> Fonctions & outils adaptés à vos besoins',
-          '> Intégration API, CRM, bases de données',
-          '> Interfaces administrables',
-          '> Statut : DISPONIBLE',
-        ],
-      },
-    ]
-  }"
->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto p-4" id="content">
+    <section id="content">
+      <div
+        x-data="{
+          services: [
+            {
+              name: 'create_site',
+              lines: [
+                '<Alex²/> ➜ run create_site',
+                '> Création de sites vitrines, e-commerce & blogs',
+                '> Avec ou sans identité visuelle (logo, charte)',
+                '> Responsive, rapide, moderne',
+                '> Statut : DISPONIBLE',
+              ],
+            },
+            {
+              name: 'seo_boost',
+              lines: [
+                '<Alex²/> ➜ run seo_boost',
+                '> Audit SEO technique & sémantique',
+                '> Optimisation des balises, performance, accessibilité',
+                '> Suivi de positionnement Google',
+                '> Statut : DISPONIBLE',
+              ],
+            },
+            {
+              name: 'redesign',
+              lines: [
+                '<Alex²/> ➜ run redesign',
+                '> Refonte graphique et technique',
+                '> Amélioration UX / UI',
+                '> Migration sans perte de contenu',
+                '> Statut : DISPONIBLE',
+              ],
+            },
+            {
+              name: 'maintenance',
+              lines: [
+                '<Alex²/> ➜ run maintenance',
+                '> Sauvegardes automatiques & monitoring',
+                '> Mises à jour CMS / plugins',
+                '> Support technique réactif',
+                '> Statut : DISPONIBLE',
+              ],
+            },
+            {
+              name: 'custom_dev',
+              lines: [
+                '<Alex²/> ➜ run custom_dev',
+                '> Fonctions & outils adaptés à vos besoins',
+                '> Intégration API, CRM, bases de données',
+                '> Interfaces administrables',
+                '> Statut : DISPONIBLE',
+              ],
+            },
+          ]
+        }"
+        id="content"
+      >
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto p-4" id="content">
 
-    <template x-for="(service, idx) in services" :key="idx">
-    <div
-      x-data="typingService(service.lines)"
-      x-init="init()"
-      class="bg-black text-green-400 font-mono rounded-lg shadow-xl"
-      style="min-height: 10rem;"
-    >
-      <!-- Couleur de la barre du haut (fond et texte) -->
-      <div class="flex items-center px-3 py-1.5 rounded-t-lg" style="background-color: var( --color-hover-1);">
-        <!-- Boutons rouges, jaunes, verts -->
-        <div class="flex space-x-1.5 mr-3">
-          <!-- Couleur bouton rouge -->
-          <span class="w-3 h-3 bg-red-500 rounded-full"></span>
-          <!-- Couleur bouton jaune -->
-          <span class="w-3 h-3 bg-yellow-400 rounded-full"></span>
-          <!-- Couleur bouton vert -->
-          <span class="w-3 h-3 bg-green-500 rounded-full"></span>
-        </div>
-        <!-- Couleur texte du titre -->
-        <span class="text-sm" style="color: var( --color-hover-4);" x-text="service.name + ' - terminal'"></span>
-      </div>
-
-      <!-- Contenu tapé ligne par ligne -->
-      <div class="p-4 text-sm space-y-1 min-h-[7rem]">
-        <template x-for="(line, i) in shownLines" :key="i">
+          <template x-for="(service, idx) in services" :key="idx">
           <div
-            x-text="line"
-            :style="i === 0 || line.includes('DISPONIBLE') 
-                      ? 'color: var(--color-hover-3)' 
-                      : 'color: var(--color-green)'"
-          ></div>
-        </template>
-      </div>
+            x-data="typingService(service.lines)"
+            x-init="init()"
+            class="bg-black text-green-400 font-mono rounded-lg shadow-xl"
+            style="min-height: 10rem;"
+          >
+            <!-- Couleur de la barre du haut (fond et texte) -->
+            <div class="flex items-center px-3 py-1.5 rounded-t-lg" style="background-color: var( --color-hover-1);">
+              <!-- Boutons rouges, jaunes, verts -->
+              <div class="flex space-x-1.5 mr-3">
+                <!-- Couleur bouton rouge -->
+                <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                <!-- Couleur bouton jaune -->
+                <span class="w-3 h-3 bg-yellow-400 rounded-full"></span>
+                <!-- Couleur bouton vert -->
+                <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+              </div>
+              <!-- Couleur texte du titre -->
+              <span class="text-sm" style="color: var( --color-hover-4);" x-text="service.name + ' - terminal'"></span>
+            </div>
 
-    </div>
-    </template>
+            <!-- Contenu tapé ligne par ligne -->
+            <div class="p-4 text-sm space-y-1 min-h-[7rem]">
+              <template x-for="(line, i) in shownLines" :key="i">
+                <div
+                  x-text="line"
+                  :style="i === 0 || line.includes('DISPONIBLE') 
+                            ? 'color: var(--color-hover-3)' 
+                            : 'color: var(--color-green)'"
+                ></div>
+              </template>
+            </div>
 
-  </div>
-  <?php
-  include __DIR__ . '/../../includes/footer.php';
-  ?>
+          </div>
+          </template>
+
+        </div>
+    </section>
+    
   <script>
     function typingService(lines) {
       return {
@@ -157,6 +160,8 @@ require_once __DIR__ . '/../../config/config.php';
       }
     }
   </script>
+<?php
+include __DIR__ . '/../../includes/footer.php';
+?>
 </body>
 </html>
-

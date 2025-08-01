@@ -63,11 +63,11 @@ $currentPage = basename($_SERVER['PHP_SELF']);
              x-transition:leave-start="opacity-100 translate-y-0"
              x-transition:leave-end="opacity-0 -translate-y-2"
              class="md:hidden mt-4 space-y-2">
-            <a href="<?= BASE_URL ?>/index.php" class="block bg-white px-4 py-2 rounded shadow" style="color: var(--color-black); font-family: var(--font-base);">Accueil</a>
-            <a href="<?= BASE_URL ?>/pages/NosProjets.php" class="block bg-white px-4 py-2 rounded shadow" style="color: var(--color-black); font-family: var(--font-base);">Projets réalisés</a>
-            <a href="<?= BASE_URL ?>/pages/Services.php" class="block bg-white px-4 py-2 rounded shadow" style="color: var(--color-black); font-family: var(--font-base);">Nos services</a>
-            <a href="<?= BASE_URL ?>/pages/Apropos.php" class="block bg-white px-4 py-2 rounded shadow" style="color: var(--color-black); font-family: var(--font-base);">À propos</a>
-            <a href="<?= BASE_URL ?>/pages/Contact.php" class="block bg-white px-4 py-2 rounded shadow" style="color: var(--color-black); font-family: var(--font-base);">Contact</a>
+            <a href="<?= BASE_URL ?>/" class="block bg-white px-4 py-2 rounded shadow" style="color: var(--color-black); font-family: var(--font-base);">Accueil</a>
+            <a href="<?= BASE_URL ?>/pages/NosProjets" class="block bg-white px-4 py-2 rounded shadow" style="color: var(--color-black); font-family: var(--font-base);">Projets réalisés</a>
+            <a href="<?= BASE_URL ?>/pages/Services" class="block bg-white px-4 py-2 rounded shadow" style="color: var(--color-black); font-family: var(--font-base);">Nos services</a>
+            <a href="<?= BASE_URL ?>/pages/Apropos" class="block bg-white px-4 py-2 rounded shadow" style="color: var(--color-black); font-family: var(--font-base);">À propos</a>
+            <a href="<?= BASE_URL ?>/pages/Contact" class="block bg-white px-4 py-2 rounded shadow" style="color: var(--color-black); font-family: var(--font-base);">Contact</a>
         </div>
     </nav>
 
@@ -76,11 +76,11 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             const padding = 12;
             return {
                 items: [
-                    { name: 'Accueil', href: '<?= BASE_URL ?>/index.php', file: 'index.php' },
-                    { name: 'Projets réalisés', href: '<?= BASE_URL ?>/pages/NosProjets.php', file: 'NosProjets.php' },
-                    { name: 'Nos services', href: '<?= BASE_URL ?>/pages/Services.php', file: 'Services.php' },
-                    { name: 'À propos', href: '<?= BASE_URL ?>/pages/Apropos.php', file: 'Apropos.php' },
-                    { name: 'Contact', href: '<?= BASE_URL ?>/pages/Contact.php', file: 'Contact.php' }
+                    { name: 'Accueil', href: '<?= BASE_URL ?>/', file: 'index.php' },
+                    { name: 'Projets réalisés', href: '<?= BASE_URL ?>/pages/NosProjets', file: 'NosProjets.php' },
+                    { name: 'Nos services', href: '<?= BASE_URL ?>/pages/Services', file: 'Services.php' },
+                    { name: 'À propos', href: '<?= BASE_URL ?>/pages/Apropos', file: 'Apropos.php' },
+                    { name: 'Contact', href: '<?= BASE_URL ?>/pages/Contact', file: 'Contact.php' }
                 ],
                 highlight: { left: 0, width: 0 },
                 activeIndex: 0,
