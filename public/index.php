@@ -22,6 +22,9 @@ require_once __DIR__ . '/../config/config.php';
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body>
+  <?php
+  include __DIR__ . '/../includes/header.php';
+  ?>
     <section id="content">
 
     </section>
