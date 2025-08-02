@@ -1,21 +1,18 @@
 RewriteEngine On
 
-# Redirection personnalisée : Mentions-legales → Mentions.php et Politique de confidentialité → Confidentialité.php
-RewriteRule ^pages/Mentions-Légales$ pages/Mentions.php [L]
-RewriteRule ^pages/Politique-de-confidentialité$ pages/Mentions.php [L]
+# Redirection Mentions légales / confidentialité
+RewriteRule ^Mentions-Légales$ pages/Mentions.php [L]
+RewriteRule ^Politique-de-confidentialité$ pages/Confidentialité.php [L]
 
-# Exclure certains fichiers comme SendMailFunction et PHPMailer
-RewriteCond %{REQUEST_URI} ^/Alex2/public/pages/SendMailFunction\.php$ [NC,OR]
-RewriteCond %{REQUEST_URI} ^/Alex2/public/pages/PHPMailer-master/ [NC]
+# Exclusion des fichiers sensibles
+RewriteCond %{REQUEST_URI} ^/SendMailFunction\.php$ [NC,OR]
+RewriteCond %{REQUEST_URI} ^/PHPMailer-master/ [NC]
 RewriteRule .* - [L]
 
-# Réécriture propre pour les autres pages
+# Réécriture d’URL à la racine : /NosProjets → pages/NosProjets.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^pages/([a-zA-Z0-9À-ÿ_-]+)$ pages/$1.php [NC,L]
+RewriteRule ^([a-zA-Z0-9À-ÿ_-]+)$ pages/$1.php [NC,L]
 
-# Page d'accueil
 DirectoryIndex index.php
-
-# Page 404
 ErrorDocument 404 /pages/404.php

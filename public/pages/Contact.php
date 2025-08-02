@@ -55,13 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && strpos($_SERVER['CONTENT_TYPE'] ?? 
     ];
 
     $form_success = EnvoieMailFormulaire($infos);
-
-    file_put_contents(__DIR__ . '/debug.log', json_encode([
-        'success' => $form_success,
-        'timestamp' => date('Y-m-d H:i:s'),
-        'input' => $infos
-    ]) . "\n", FILE_APPEND);
-
     echo json_encode([
         'success' => (bool)$form_success,
         'recaptchaError' => false
@@ -82,7 +75,10 @@ require_once __DIR__ . '/../../config/config.php';
   <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
   <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/Contact.css">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/alpinejs" defer></script>
+  <!-- React & ReactDOM -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <br>

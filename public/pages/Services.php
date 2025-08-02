@@ -1,167 +1,147 @@
 <?php
 require_once __DIR__ . '/../../config/config.php';
+require_once __DIR__ . '/../../config/database.php';
+
+try {
+    $stmt = $pdo->query("SELECT * FROM services ORDER BY id ASC");
+    $services = [];
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $lines = array_unique(array_filter([
+            $row['line1'],
+            $row['line2'],
+            $row['line3'],
+            $row['line4'],
+            $row['line5']
+        ]));
+        $services[] = [
+            'name' => $row['name'],
+            'lines' => array_values($lines)
+        ];
+    }
+} catch (PDOException $e) {
+    echo "Erreur DB : " . $e->getMessage();
+    $services = [];
+}
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Accueil | &lt;alex²/&gt;</title>
-    <link rel="icon" href="./Alex2logo.png" type="image/x-icon">
+    <title>Services | &lt;alex²/&gt;</title>
+    <link rel="icon" href="<?= BASE_URL ?>/Alex2logo.png" type="image/x-icon">
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
     <link rel='stylesheet' type='text/css' media='screen' href='<?= BASE_URL ?>/asset/css/index.css'>
-    <!-- Garder UNE SEULE inclusion d'Alpine.js avec defer -->
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- React + Babel CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+      body {
+        background-color: var(--color-white);
+        color: var(--color-black);
+      }
+    </style>
 </head>
-<body style="background-color: var(--color-white); color: var(--color-black);">
-  <?php
-  include __DIR__ . '/../../includes/header.php';
-  ?>
-    <section id="content">
-      <div
-        x-data="{
-          services: [
-            {
-              name: 'create_site',
-              lines: [
-                '<Alex²/> ➜ run create_site',
-                '> Création de sites vitrines, e-commerce & blogs',
-                '> Avec ou sans identité visuelle (logo, charte)',
-                '> Responsive, rapide, moderne',
-                '> Statut : DISPONIBLE',
-              ],
-            },
-            {
-              name: 'seo_boost',
-              lines: [
-                '<Alex²/> ➜ run seo_boost',
-                '> Audit SEO technique & sémantique',
-                '> Optimisation des balises, performance, accessibilité',
-                '> Suivi de positionnement Google',
-                '> Statut : DISPONIBLE',
-              ],
-            },
-            {
-              name: 'redesign',
-              lines: [
-                '<Alex²/> ➜ run redesign',
-                '> Refonte graphique et technique',
-                '> Amélioration UX / UI',
-                '> Migration sans perte de contenu',
-                '> Statut : DISPONIBLE',
-              ],
-            },
-            {
-              name: 'maintenance',
-              lines: [
-                '<Alex²/> ➜ run maintenance',
-                '> Sauvegardes automatiques & monitoring',
-                '> Mises à jour CMS / plugins',
-                '> Support technique réactif',
-                '> Statut : DISPONIBLE',
-              ],
-            },
-            {
-              name: 'custom_dev',
-              lines: [
-                '<Alex²/> ➜ run custom_dev',
-                '> Fonctions & outils adaptés à vos besoins',
-                '> Intégration API, CRM, bases de données',
-                '> Interfaces administrables',
-                '> Statut : DISPONIBLE',
-              ],
-            },
-          ]
-        }"
-        id="content"
-      >
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto p-4" id="content">
+<body>
+<?php include __DIR__ . '/../../includes/header.php'; ?>
 
-          <template x-for="(service, idx) in services" :key="idx">
-          <div
-            x-data="typingService(service.lines)"
-            x-init="init()"
-            class="bg-black text-green-400 font-mono rounded-lg shadow-xl"
-            style="min-height: 10rem;"
-          >
-            <!-- Couleur de la barre du haut (fond et texte) -->
-            <div class="flex items-center px-3 py-1.5 rounded-t-lg" style="background-color: var( --color-hover-1);">
-              <!-- Boutons rouges, jaunes, verts -->
-              <div class="flex space-x-1.5 mr-3">
-                <!-- Couleur bouton rouge -->
-                <span class="w-3 h-3 bg-red-500 rounded-full"></span>
-                <!-- Couleur bouton jaune -->
-                <span class="w-3 h-3 bg-yellow-400 rounded-full"></span>
-                <!-- Couleur bouton vert -->
-                <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+<section id="content" class="py-10">
+  <script>
+    window.SERVICES = <?= json_encode($services, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG); ?>;
+  </script>
+
+  <div id="services-root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    function TypingService({ name, lines }) {
+      const [shownLines, setShownLines] = useState([]);
+      const [lineIndex, setLineIndex] = useState(0);
+      const [charIndex, setCharIndex] = useState(0);
+      const [currentLine, setCurrentLine] = useState('');
+
+      const uniqueLines = [...new Set(lines)];
+
+      useEffect(() => {
+        if (lineIndex >= uniqueLines.length) return;
+
+        const current = uniqueLines[lineIndex];
+
+        if (charIndex < current.length) {
+          const timeout = setTimeout(() => {
+            setCurrentLine(prev => prev + current.charAt(charIndex));
+            setCharIndex(prev => prev + 1);
+          }, 40);
+          return () => clearTimeout(timeout);
+        } else {
+          const timeout = setTimeout(() => {
+            setShownLines(prev => [...prev, currentLine]);
+            setCurrentLine('');
+            setCharIndex(0);
+            setLineIndex(prev => prev + 1);
+          }, 300);
+          return () => clearTimeout(timeout);
+        }
+      }, [charIndex, lineIndex, currentLine]);
+
+      return (
+        <div className="bg-black text-green-400 font-mono rounded-lg shadow-xl min-h-[10rem]">
+          <div className="flex items-center px-3 py-1.5 rounded-t-lg" style={{ backgroundColor: 'var(--color-hover-1)' }}>
+            <div className="flex space-x-1.5 mr-3">
+              <span className="w-3 h-3 bg-red-500 rounded-full"></span>
+              <span className="w-3 h-3 bg-yellow-400 rounded-full"></span>
+              <span className="w-3 h-3 bg-green-500 rounded-full"></span>
+            </div>
+            <span className="text-sm" style={{ color: 'var(--color-hover-4)' }}>{name} - Service</span>
+          </div>
+          <div className="p-4 text-sm space-y-1 min-h-[7rem]">
+          {shownLines.map((line, i) => {
+            const isFirst = i === 0;
+            const isLast = i === shownLines.length - 1 && currentLine === '';
+            const lineColor = (isFirst || isLast)
+              ? 'var(--color-cyan)'
+              : (line.trim() === 'DISPONIBLE' ? 'var(--color-hover-3)' : 'var(--color-green)');
+            return (
+              <div key={i} style={{ color: lineColor }}>
+                {line}
               </div>
-              <!-- Couleur texte du titre -->
-              <span class="text-sm" style="color: var( --color-hover-4);" x-text="service.name + ' - terminal'"></span>
+            );
+          })}
+          {currentLine && (
+            <div style={{ color: (lineIndex === 0 || lineIndex === shownLines.length + 1) ? 'var(--color-cyan)' : 'var(--color-green)' }}>
+              {currentLine}
             </div>
-
-            <!-- Contenu tapé ligne par ligne -->
-            <div class="p-4 text-sm space-y-1 min-h-[7rem]">
-              <template x-for="(line, i) in shownLines" :key="i">
-                <div
-                  x-text="line"
-                  :style="i === 0 || line.includes('DISPONIBLE') 
-                            ? 'color: var(--color-hover-3)' 
-                            : 'color: var(--color-green)'"
-                ></div>
-              </template>
-            </div>
+          )}
 
           </div>
-          </template>
-
         </div>
-    </section>
-    
-  <script>
-    function typingService(lines) {
-      return {
-        lines,
-        shownLines: [],
-        currentLineText: '',
-        lineIndex: 0,
-        charIndex: 0,
-
-        typeNextChar() {
-          if (this.lineIndex >= this.lines.length) return;
-
-          let currentLine = this.lines[this.lineIndex];
-
-          if (this.charIndex < currentLine.length) {
-            this.currentLineText += currentLine.charAt(this.charIndex);
-            this.charIndex++;
-
-            if (this.shownLines.length <= this.lineIndex) {
-              this.shownLines.push(this.currentLineText);
-            } else {
-              this.shownLines[this.lineIndex] = this.currentLineText;
-            }
-
-            setTimeout(() => this.typeNextChar(), 50);
-          } else {
-            this.lineIndex++;
-            this.charIndex = 0;
-            this.currentLineText = '';
-            setTimeout(() => this.typeNextChar(), 400);
-          }
-        },
-
-        init() {
-          this.typeNextChar();
-        }
-      }
+      );
     }
+
+    function ServicesList() {
+      const [services, setServices] = useState(window.SERVICES || []);
+
+      return (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto p-4">
+          {services.map((service, idx) => (
+            <TypingService key={idx} name={service.name} lines={service.lines} />
+          ))}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('services-root'));
+    root.render(<ServicesList />);
   </script>
-<?php
-include __DIR__ . '/../../includes/footer.php';
-?>
+</section>
+
+<?php include __DIR__ . '/../../includes/footer.php'; ?>
 </body>
 </html>

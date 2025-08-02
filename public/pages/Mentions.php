@@ -10,7 +10,10 @@ require_once __DIR__ . '/../../config/config.php';
   <link rel="icon" href="<?= BASE_URL ?>/Alex2logo.png" type="image/x-icon">
   <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <!-- React & ReactDOM -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body style="background-color: var(--color-white); color: var(--color-black);">
   <?php

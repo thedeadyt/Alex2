@@ -1,132 +1,139 @@
 <?php
 require_once __DIR__ . '/../../config/config.php';
 require_once __DIR__ . '/../../config/database.php';
-// Récupération des projets depuis la BDD
-$projets = [];
-$stmt = $pdo->query("SELECT * FROM projets");
-while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    // Ici pas de features, tu peux adapter si besoin
-    $projets[] = $row;
-}
+
+// Récupérer les projets depuis la BDD
+$sql = "SELECT id, nom, annee, type, image, description_courte, description_detaillee, lien FROM projets ORDER BY annee DESC";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$projets = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Projets | &lt;alex²/&gt;</title>
-<link rel="icon" href="<?= BASE_URL ?>/Alex2logo.png" type="image/x-icon">
-<link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
-<link rel='stylesheet' type='text/css' media='screen' href='<?= BASE_URL ?>/asset/css/NosProjets.css'>
-<script src="https://cdn.tailwindcss.com"></script>
-<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Projets | &lt;alex²/&gt;</title>
+  <link rel="icon" href="<?= BASE_URL ?>/Alex2logo.png" type="image/x-icon">
+  <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
+  <link rel="stylesheet" type="text/css" media="screen" href="<?= BASE_URL ?>/asset/css/NosProjets.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React & ReactDOM -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Projets injectés depuis PHP -->
+  <script>
+    window.projetsFromPHP = <?= json_encode($projets, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
+  </script>
 </head>
 
 <body style="background-color: var(--color-white); color: var(--color-black);">
-  <?php
-  include __DIR__ . '/../../includes/header.php';
-  ?>
-  <div class="p-10 mx-auto" style="max-width: 1200px;" x-data="projetsData()" id="content">
-    <h1 class="text-4xl font-bold mb-8">Nos Projets</h1>
+  <?php include __DIR__ . '/../../includes/header.php'; ?>
 
-    <div class="pb-[160px]">
-      <template x-for="(projet, i) in projets" :key="i">
-        <div
-          class="bg-[var(--color-black)] text-[var(--color-white)] projet sticky-top relative flex flex-col justify-between p-6 rounded mb-10 shadow-lg"
-          :style="{ zIndex: 1000 + i }"
-        >
-          <!-- En haut à droite: année + type + image -->
-          <div class="flex justify-end items-start space-x-4 mb-4">
-            <div class="text-right">
-              <div class="text-sm font-semibold" x-text="projet.annee"></div>
-              <div class="text-xs" x-text="projet.type"></div>
-            </div>
-            <img :src="projet.image" alt="Image projet" class="w-20 h-20 object-cover rounded" />
-          </div>
-
-          <!-- Nom projet / entreprise -->
-          <h2 class="text-2xl font-bold mb-2" style="font-family: var(--font-heading);" x-text="projet.nom"></h2>
-
-          <!-- Description courte -->
-          <p class="mb-4" style="font-family: var(--font-base);" x-text="projet.description_courte"></p>
-
-          <!-- Bouton -->
-          <button
-            @click="openPopup(i)"
-            class="w-full py-2 rounded font-semibold border transition"
-            style="
-              border-color: var(--color-white);
-              background-color: transparent;
-              color: var(--color-white);
-            "
-            @mouseenter="$el.style.backgroundColor = 'var(--color-white)'; $el.style.color = 'var(--color-black)'"
-            @mouseleave="$el.style.backgroundColor = 'transparent'; $el.style.color = 'var(--color-white)'"
-          >
-            Plus d'infos
-          </button>
-        </div>
-      </template>
-    </div>
-
-    <!-- Pop-up détails -->
-    <div
-      x-show="popupOpen"
-      x-transition
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1100]"
-      style="backdrop-filter: blur(5px);"
-      @click.outside="closePopup()"
-    >
-      <div class="bg-white rounded-lg w-[700px] p-6 relative shadow-xl" @click.stop>
-        <!-- Bouton fermeture -->
-        <button
-          @click="closePopup()"
-          class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-2xl font-bold"
-          aria-label="Fermer"
-        >
-          &times;
-        </button>
-
-        <!-- IMAGE EN GRAND -->
-        <img :src="popupProjet.image" alt="Image grand projet" class="w-full h-auto rounded mb-4" />
-
-        <!-- NOM DU PROJET -->
-        <h3 class="text-3xl mb-2" style="color: var(--color-black); font-family: var(--font-base);" x-text="popupProjet.nom"></h3>
-
-        <!-- DESCRIPTION DÉTAILLÉE -->
-        <p class="mb-4" style="color: var(--color-black); font-family: var(--font-base);" x-text="popupProjet.description_detaillee"></p>
-
-        <!-- Bouton vers projet -->
-        <a
-          :href="popupProjet.lien"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="block mt-6 w-full text-center py-3 rounded transition"
-          style="background-color: var(--color-black); color: var(--color-white);"
-        >
-          Voir le projet
-        </a>
-      </div>
-    </div>
-  </div>
+  <section id="content">
+    <div id="projets-root" class="px-6 py-10"></div>
+  </section>
 
   <?php include __DIR__ . '/../../includes/footer.php'; ?>
 
-  <script>
-    function projetsData() {
-      return {
-        projets: <?= json_encode($projets, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>,
-        popupOpen: false,
-        popupProjet: {},
-        openPopup(index) {
-          this.popupProjet = this.projets[index];
-          this.popupOpen = true;
-        },
-        closePopup() {
-          this.popupOpen = false;
-        }
-      }
-    }
+  <!-- React Logic -->
+  <script type="text/babel">
+    const ProjectCard = ({ projet, onClick }) => (
+      <div
+        className="bg-white rounded-2xl shadow-md p-4 mx-2 md:mx-0 w-full md:min-w-[300px] md:max-w-sm flex-shrink-0 transition-transform hover:scale-105 cursor-pointer"
+        onClick={() => onClick(projet)}
+      >
+        <img src={projet.image} alt={projet.nom} className="w-32 h-32 object-cover rounded-lg mx-auto mb-4" />
+        <h3 className="text-xl font-bold mb-1 text-center">{projet.nom}</h3>
+        <p className="text-sm text-gray-500 text-center mb-2">{projet.annee} · {projet.type}</p>
+        <p className="text-sm text-gray-700 text-center">{projet.description_courte}</p>
+      </div>
+    );
+
+    const Modal = ({ projet, onClose }) => {
+      if (!projet) return null;
+
+      return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center" onClick={onClose}>
+          <div
+            className="bg-white rounded-xl w-full max-w-xl mx-4 shadow-xl relative p-6"
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl"
+              onClick={onClose}
+            >
+              &times;
+            </button>
+            <img src={projet.image} alt={projet.nom} className="w-full h-64 object-cover rounded-lg mb-4" />
+            <h2 className="text-2xl font-bold mb-2">{projet.nom}</h2>
+            <p className="text-sm text-gray-500 mb-4">{projet.annee} · {projet.type}</p>
+            <p className="text-gray-700 mb-6 whitespace-pre-line">{projet.description_detaillee}</p>
+            <a
+              href={projet.lien}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition"
+            >
+              Voir le projet
+            </a>
+          </div>
+        </div>
+      );
+    };
+
+    const ScrollStack = () => {
+      const [projets, setProjets] = React.useState([]);
+      const [selectedProjet, setSelectedProjet] = React.useState(null);
+      const [showAll, setShowAll] = React.useState(false);
+
+      React.useEffect(() => {
+        setProjets(window.projetsFromPHP || []);
+      }, []);
+
+      const isMobile = window.innerWidth < 768;
+      const visibleProjets = showAll || !isMobile ? projets : projets.slice(0, 2);
+
+      return (
+        <>
+          {/* Mobile (stacked) */}
+          <div className="block md:hidden space-y-4">
+            {visibleProjets.map(projet => (
+              <ProjectCard key={projet.id} projet={projet} onClick={setSelectedProjet} />
+            ))}
+            {!showAll && projets.length > 2 && (
+              <div className="text-center mt-4">
+                <button
+                  className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition"
+                  onClick={() => setShowAll(true)}
+                >
+                  Afficher plus
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Desktop (horizontal scroll) */}
+          <div className="hidden md:block overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+            <div className="flex space-x-4 pb-4">
+              {projets.map(projet => (
+                <ProjectCard key={projet.id} projet={projet} onClick={setSelectedProjet} />
+              ))}
+            </div>
+          </div>
+
+          {selectedProjet && (
+            <Modal projet={selectedProjet} onClose={() => setSelectedProjet(null)} />
+          )}
+        </>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('projets-root')).render(<ScrollStack />);
   </script>
+
 </body>
 </html>
