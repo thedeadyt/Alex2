@@ -115,15 +115,13 @@ $projets = $stmt->fetchAll(PDO::FETCH_ASSOC);
               </div>
             )}
           </div>
-
-          {/* Desktop (horizontal scroll) */}
-          <div className="hidden md:block overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
-            <div className="flex space-x-4 pb-4">
-              {projets.map(projet => (
-                <ProjectCard key={projet.id} projet={projet} onClick={setSelectedProjet} />
-              ))}
-            </div>
+          {/* Desktop (grid responsive) */}
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center px-4">
+            {projets.map(projet => (
+              <ProjectCard key={projet.id} projet={projet} onClick={setSelectedProjet} />
+            ))}
           </div>
+
 
           {selectedProjet && (
             <Modal projet={selectedProjet} onClose={() => setSelectedProjet(null)} />

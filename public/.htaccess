@@ -1,18 +1,23 @@
 RewriteEngine On
 
+# Accès direct à /animation → pages/animation.php
+RewriteRule ^animation$ pages/animation.php [L,NC]
+
 # Redirection Mentions légales / confidentialité
 RewriteRule ^Mentions-Légales$ pages/Mentions.php [L]
 RewriteRule ^Politique-de-confidentialité$ pages/Confidentialité.php [L]
+RewriteRule ^Nos-Réalisations$ pages/NosProjets.php [L]
 
 # Exclusion des fichiers sensibles
 RewriteCond %{REQUEST_URI} ^/SendMailFunction\.php$ [NC,OR]
 RewriteCond %{REQUEST_URI} ^/PHPMailer-master/ [NC]
 RewriteRule .* - [L]
-
-# Réécriture d’URL à la racine : /NosProjets → pages/NosProjets.php
+# Réécriture URL générique vers pages/XXX.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^([a-zA-Z0-9À-ÿ_-]+)$ pages/$1.php [NC,L]
 
+# Page d'accueil par défaut : index.php à la racine (ou pages/index.php selon config)
 DirectoryIndex index.php
+
 ErrorDocument 404 /pages/404.php

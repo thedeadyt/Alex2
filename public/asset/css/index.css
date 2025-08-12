@@ -13,34 +13,45 @@
     animation: fadeInUp 1s ease-out forwards;
   }
 
-  @keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
-  }
+.typewriter-text {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;             /* ✅ Par défaut, tout tient sur une ligne */
+  border-right: 2px solid black;
+  animation: typing 3.5s steps(40, end), blink 0.75s step-end infinite;
+  max-width: 100%;
+}
 
-  @keyframes blink {
-    0%, 100% { border-color: transparent; }
-    50% { border-color: black; }
-  }
-
+/* Autoriser les retours à la ligne sur les petits écrans */
+@media (max-width: 768px) {
   .typewriter-text {
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-    border-right: 2px solid black;
-    animation: typing 3.5s steps(40, end), blink 0.75s step-end infinite;
+    white-space: normal;
+    word-break: break-word;
   }
+}
 
-  .hover-effect {
-    transition: color 0.3s ease, text-shadow 0.3s ease;
-    cursor: default;
-    position: relative;
-  }
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
 
-  .hover-effect:hover {
-    color: var(--color-green);
-    text-shadow: 0 0 6px rgba(34, 197, 94, 0.4);
-  }
+@keyframes blink {
+  0%, 100% { border-color: transparent; }
+  50% { border-color: black; }
+}
+
+
+.hover-effect {
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+  cursor: default;
+  position: relative;
+}
+
+.hover-effect:hover {
+  color: var(--color-green);
+  text-shadow: 0 0 6px rgba(34, 197, 94, 0.4);
+}
+
 
   .hover-effect::after {
     content: '';
@@ -62,6 +73,31 @@
   50% { transform: scale(1.2) rotate(2deg); }
   100% { transform: scale(1.05); }
 }
+/* Conteneur du bloc code */
+.description-code-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 2.5rem;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+/* Bloc avec les styles du code */
+.description-code {
+  width: 100%;
+  max-width: 360px;
+  overflow-x: auto;
+  background-color: rgba(240, 240, 240, 0.5);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  font-family: monospace;
+  font-size: 0.875rem;
+  color: #1f2937;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
 
 .service-bubble {
   position: relative;
@@ -81,7 +117,6 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 /* Liquid glass overlay */
 .service-bubble::before {
   content: "";

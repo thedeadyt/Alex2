@@ -48,7 +48,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 
 
     return (
-      <nav style={{ backgroundColor: "white", color: "black" }} className="shadow px-6 py-4">
+      <nav style={{ backgroundColor: "var(--color-white)", color: "var(--color-black)", fontFamily: "var(--font-tinos)"}} className="px-6 py-4 rounded-md">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <a href="<?= BASE_URL ?>" className="flex items-center space-x-2">
             <img src="<?= BASE_URL ?>/asset/img/logo.png" alt="Logo" className="w-12 h-12" />

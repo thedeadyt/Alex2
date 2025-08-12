@@ -24,87 +24,85 @@ require_once __DIR__ . '/../../config/config.php';
       <span style="color: var(--color-green);">&lt;alex²/&gt;</span> — Politique de confidentialité
     </h1>
 
-    <div class="space-y-6 text-base leading-relaxed">
-
-      <div x-data="{ open: false }" class="border-l-4 pl-4" :style="{ borderColor: 'var(--color-green)' }">
-        <h2 @click="open = !open" class="text-xl font-semibold cursor-pointer" :class="open ? 'text-[var(--color-accent-2)]' : 'hover:text-[var(--color-accent-2)]'">1. Introduction</h2>
-        <div x-show="open" x-transition>
-          <p class="mt-2">
-            La présente politique de confidentialité décrit comment <strong style="color: var(--color-green);">&lt;alex²/&gt;</strong> collecte, utilise et protège vos données personnelles lors de votre navigation sur ce site.
-          </p>
-        </div>
-      </div>
-
-      <div x-data="{ open: false }" class="border-l-4 pl-4" :style="{ borderColor: 'var(--color-green)' }">
-        <h2 @click="open = !open" class="text-xl font-semibold cursor-pointer" :class="open ? 'text-[var(--color-accent-2)]' : 'hover:text-[var(--color-accent-2)]'">2. Données collectées</h2>
-        <div x-show="open" x-transition>
-          <ul class="list-disc list-inside mt-2">
-            <li>Données techniques : adresse IP, type de navigateur, temps de visite.</li>
-            <li>Données transmises volontairement : via le formulaire de contact, email, etc.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div x-data="{ open: false }" class="border-l-4 pl-4" :style="{ borderColor: 'var(--color-green)' }">
-        <h2 @click="open = !open" class="text-xl font-semibold cursor-pointer" :class="open ? 'text-[var(--color-accent-2)]' : 'hover:text-[var(--color-accent-2)]'">3. Utilisation des données</h2>
-        <div x-show="open" x-transition>
-          <p class="mt-2">
-            Les données collectées sont utilisées uniquement pour :
-          </p>
-          <ul class="list-disc list-inside mt-2">
-            <li>Améliorer l’expérience utilisateur.</li>
-            <li>Répondre aux demandes via le formulaire de contact.</li>
-            <li>Assurer la sécurité et le bon fonctionnement du site.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div x-data="{ open: false }" class="border-l-4 pl-4" :style="{ borderColor: 'var(--color-green)' }">
-        <h2 @click="open = !open" class="text-xl font-semibold cursor-pointer" :class="open ? 'text-[var(--color-accent-2)]' : 'hover:text-[var(--color-accent-2)]'">4. Cookies</h2>
-        <div x-show="open" x-transition>
-          <p class="mt-2">
-            Le site utilise des cookies nécessaires au bon fonctionnement du site. Aucun cookie tiers à des fins publicitaires n’est utilisé.
-          </p>
-        </div>
-      </div>
-
-      <div x-data="{ open: false }" class="border-l-4 pl-4" :style="{ borderColor: 'var(--color-green)' }">
-        <h2 @click="open = !open" class="text-xl font-semibold cursor-pointer" :class="open ? 'text-[var(--color-accent-2)]' : 'hover:text-[var(--color-accent-2)]'">5. Conservation des données</h2>
-        <div x-show="open" x-transition>
-          <p class="mt-2">
-            Les données sont conservées pendant la durée nécessaire aux finalités pour lesquelles elles sont collectées, dans le respect de la législation en vigueur.
-          </p>
-        </div>
-      </div>
-
-      <div x-data="{ open: false }" class="border-l-4 pl-4" :style="{ borderColor: 'var(--color-green)' }">
-        <h2 @click="open = !open" class="text-xl font-semibold cursor-pointer" :class="open ? 'text-[var(--color-accent-2)]' : 'hover:text-[var(--color-accent-2)]'">6. Vos droits</h2>
-        <div x-show="open" x-transition>
-          <p class="mt-2">
-            Conformément au RGPD, vous disposez des droits suivants :
-          </p>
-          <ul class="list-disc list-inside mt-2">
-            <li>Droit d’accès, de rectification, d’opposition et de suppression de vos données.</li>
-            <li>Droit à la portabilité et à la limitation du traitement.</li>
-            <li>Droit d’introduire une réclamation auprès de la CNIL.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div x-data="{ open: false }" class="border-l-4 pl-4" :style="{ borderColor: 'var(--color-green)' }">
-        <h2 @click="open = !open" class="text-xl font-semibold cursor-pointer" :class="open ? 'text-[var(--color-accent-2)]' : 'hover:text-[var(--color-accent-2)]'">7. Contact</h2>
-        <div x-show="open" x-transition>
-          <p class="mt-2">
-            Pour exercer vos droits ou poser une question, vous pouvez nous contacter à l’adresse : 
-            <a href="mailto:contact.alex2.dev@gmail.com" class="text-[var(--color-green)] underline">contact.alex2.dev@gmail.com</a>.
-          </p>
-        </div>
-      </div>
-
-    </div>
+    <div id="privacy-root"></div>
   </section>
   <?php
-include __DIR__ . '/../../includes/footer.php';
-?>
+  include __DIR__ . '/../../includes/footer.php';
+  ?>
+  <script type="text/babel">
+
+function Section({ title, children }) {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <div className="border-l-4 pl-4 mb-6" style={{ borderColor: "var(--color-green)" }}>
+      <h2
+        onClick={() => setOpen(!open)}
+        className={`text-xl font-semibold cursor-pointer ${
+          open ? 'text-[var(--color-accent-2)]' : 'hover:text-[var(--color-accent-2)]'
+        }`}
+      >
+        {title}
+      </h2>
+      {open && <div className="mt-2">{children}</div>}
+    </div>
+  );
+}
+
+function PrivacyPolicy() {
+  return (
+    <div className="space-y-6 text-base leading-relaxed">
+      <Section title="1. Introduction">
+        <p>
+          La présente politique de confidentialité décrit comment <strong style={{ color: 'var(--color-green)' }}>&lt;alex²/&gt;</strong> collecte, utilise et protège vos données personnelles lors de votre navigation sur ce site.
+        </p>
+      </Section>
+
+      <Section title="2. Données collectées">
+        <ul className="list-disc list-inside">
+          <li>Données techniques : adresse IP, type de navigateur, temps de visite.</li>
+          <li>Données transmises volontairement : via le formulaire de contact, email, etc.</li>
+        </ul>
+      </Section>
+
+      <Section title="3. Utilisation des données">
+        <p>Les données collectées sont utilisées uniquement pour :</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>Améliorer l’expérience utilisateur.</li>
+          <li>Répondre aux demandes via le formulaire de contact.</li>
+          <li>Assurer la sécurité et le bon fonctionnement du site.</li>
+        </ul>
+      </Section>
+
+      <Section title="4. Cookies">
+        <p>Le site utilise des cookies nécessaires au bon fonctionnement du site. Aucun cookie tiers à des fins publicitaires n’est utilisé.</p>
+      </Section>
+
+      <Section title="5. Conservation des données">
+        <p>Les données sont conservées pendant la durée nécessaire aux finalités pour lesquelles elles sont collectées, dans le respect de la législation en vigueur.</p>
+      </Section>
+
+      <Section title="6. Vos droits">
+        <p>Conformément au RGPD, vous disposez des droits suivants :</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>Droit d’accès, de rectification, d’opposition et de suppression de vos données.</li>
+          <li>Droit à la portabilité et à la limitation du traitement.</li>
+          <li>Droit d’introduire une réclamation auprès de la CNIL.</li>
+        </ul>
+      </Section>
+
+      <Section title="7. Contact">
+        <p>
+          Pour exercer vos droits ou poser une question, vous pouvez nous contacter à l’adresse :
+          <a href="mailto:contact.alex2.dev@gmail.com" className="text-[var(--color-green)] underline"> contact.alex2.dev@gmail.com</a>.
+        </p>
+      </Section>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('privacy-root')).render(<PrivacyPolicy />);
+</script>
+
 </body>
 </html>

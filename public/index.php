@@ -27,6 +27,12 @@ if ($stmt) {
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script>
+      if (!sessionStorage.getItem('animation_done')) {
+        sessionStorage.setItem('animation_done', 'true');
+        window.location.href = "<?= BASE_URL ?>/animation";
+      }
+    </script>
 </head>
 <body style="background-color: var(--color-white); color: var(--color-black);">
   <?php
@@ -34,19 +40,21 @@ if ($stmt) {
   ?>
   <section id="content">
     <!-- Description -->
-    <section id="description" class="py-20 px-6 text-center bg-white overflow-hidden">
+    <section id="description" class="py-20 px-6 text-center overflow-hidden">
       <div class="max-w-5xl mx-auto space-y-12">
         
         <!-- Titre avec machine à écrire (sans clignotement) -->
-        <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight text-black" style="font-family: var(--font-bounded);">
-          <span class="typewriter-text hover-effect">&lt;alex²/&gt; — écrire du code qui a du sens</span>
+        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-black text-center px-4 leading-snug md:leading-tight"
+            style="font-family: var(--font-bounded);">
+          <span class="typewriter-text hover-effect">
+            &lt;Alex²/&gt; — écrire du code qui a du sens
+          </span>
         </h2>
-
         <!-- Bloc animé -->
         <div class="md:flex md:items-center md:justify-center gap-12 animate-fade-in-up">
           <div class="text-left md:w-1/2 space-y-4 text-gray-700 text-lg" style="font-family: var(--font-tinos);">
             <p>
-              Chez <strong class="text-black">&lt;alex²/&gt;</strong>, chaque balise, chaque classe, chaque requête est pensée pour faire <span class="text-green-600 font-semibold">mieux avec moins</span>.
+              Chez <strong class="text-black">&lt;Alex²/&gt;</strong>, chaque balise, chaque classe, chaque requête est pensée pour faire <span class="text-green-600 font-semibold">mieux avec moins</span>.
             </p>
             <p>
               Notre code est <span class="bg-green-100 text-green-800 font-medium px-1 rounded">lisible</span>, <span class="bg-green-100 text-green-800 font-medium px-1 rounded">maintenable</span> et <span class="bg-green-100 text-green-800 font-medium px-1 rounded">durable</span> : pas de frameworks inutiles, pas d’effets tape-à-l’œil, juste l’essentiel.
@@ -56,18 +64,19 @@ if ($stmt) {
             </p>
           </div>
 
-          <div class="mt-10 md:mt-0 md:w-1/2 text-center">
-            <div class="inline-block p-6 rounded-xl border border-gray-200 shadow-md hover:shadow-xl transition duration-300 ease-in-out">
-              <code class="text-sm text-left block font-mono text-gray-800 whitespace-pre">
-    <span class="text-green-600">// Notre philosophie</span>
-    <span class="text-blue-600">function</span> <span class="text-black">buildWebsite</span>() {"{"}
-      <br>  <span class="text-purple-600">return</span> <span class="text-black">[</span>"performance", "accessibilité", "sobriété"<span class="text-black">];</span>
-    <br>{"}"}
-              </code>
-            </div>
-          </div>
-        </div>
+<div class="mt-6 md:mt-0 md:w-1/2 w-full px-4">
+  <div class="bg-white/70 backdrop-blur-md rounded-lg border border-gray-300 shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-x-auto p-5">
+    <pre class="text-sm sm:text-base font-mono text-left text-gray-900 leading-relaxed whitespace-pre-wrap">
+<span class="text-green-600">// Notre philosophie</span>
+<span class="text-blue-600">function</span> <span class="text-black">buildWebsite</span>() {
+    <span class="text-purple-600">return</span> <span class="text-black">[</span>"performance", "accessibilité", "sobriété"<span class="text-black">];</span>
+}
+    </pre>
+  </div>
+</div>
 
+
+        </div>
       </div>
     </section>
 
@@ -77,7 +86,7 @@ if ($stmt) {
       <h2 class="text-3xl font-bold mb-4">Projet</h2>
       <div id="projets-accueil-root" class="px-4 py-6"></div>
       <div class="mt-6">
-        <a href="<?= BASE_URL ?>/NosProjets" class="inline-block bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition">
+        <a href="<?= BASE_URL ?>/Nos-Réalisations" class="inline-block bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition">
           Voir tous les projets
         </a>
       </div>
@@ -88,13 +97,13 @@ if ($stmt) {
     </section>
 
     <!-- Services -->
-    <section id="services" class="text-center py-16 px-6 bg-white">
+    <section id="services" class="text-center py-16 px-6">
       <h2 class="text-4xl font-bold mb-12">Services</h2>
 
       <div id="react-bubbles" class="grid grid-cols-2 md:grid-cols-4 gap-10 max-w-6xl mx-auto"></div>
 
       <div class="mt-12">
-        <a href="<?= BASE_URL ?>/pages/services.php"
+        <a href="<?= BASE_URL ?>/Services"
           class="inline-block text-white px-6 py-3 rounded-full font-medium shadow-md hover:shadow-lg transition duration-300"
           style="background: linear-gradient(to right, var(--color-green), var(--color-cyan)); font-family: var(--font-tinos);">
           Voir tous les services
@@ -139,8 +148,8 @@ if ($stmt) {
             <img src={projet.image} alt={projet.nom} className="w-full h-64 object-cover rounded-lg mb-4" />
             <h2 className="text-2xl font-bold mb-2">{projet.nom}</h2>
             <p className="text-sm text-gray-500 mb-4">{projet.annee} · {projet.type}</p>
-            <p className="text-gray-700 mb-6 whitespace-pre-line">{projet.description_detaillee}</p>
-            <a href={projet.lien} target="_blank" rel="noopener noreferrer" className="inline-block bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition">
+            <p className=" mb-6 whitespace-pre-line">{projet.description_detaillee}</p>
+            <a href={projet.lien} target="_blank" rel="noopener noreferrer" className="inline-block bg-black px-6 py-2 rounded-lg hover:bg-gray-800 transition" style={{ color: "var(--color-white)" }}>
               Voir le projet
             </a>
           </div>
@@ -172,7 +181,7 @@ if ($stmt) {
 
       return (
         <div className="service-bubble mx-auto cursor-pointer hover:scale-[1.08] transition-transform duration-300">
-          <span className="service-name">{displayName}</span>
+          <span className="service-name" style={{ color: "var(--color-white)" }}>{displayName}</span>
         </div>
       );
     };

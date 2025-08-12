@@ -1,5 +1,0 @@
-body ::placeholder {
-  color: var(--color-black);
-  opacity: 1; /* Firefox */
-}
-
