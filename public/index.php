@@ -42,10 +42,8 @@ if ($stmt) {
     <!-- Description -->
     <section id="description" class="py-20 px-6 text-center overflow-hidden">
       <div class="max-w-5xl mx-auto space-y-12">
-        
         <!-- Titre avec machine à écrire (sans clignotement) -->
-        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-black text-center px-4 leading-snug md:leading-tight"
-            style="font-family: var(--font-bounded);">
+        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-black text-center px-4 leading-snug md:leading-tight" style="font-family: var(--font-bounded);">
           <span class="typewriter-text hover-effect">
             &lt;Alex²/&gt; — écrire du code qui a du sens
           </span>
