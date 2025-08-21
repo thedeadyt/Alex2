@@ -44,10 +44,20 @@ if ($stmt) {
       <div class="max-w-5xl mx-auto space-y-12">
         <!-- Titre avec machine à écrire (sans clignotement) -->
         <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-black text-center px-4 leading-snug md:leading-tight" style="font-family: var(--font-bounded);">
-          <span class="typewriter-text hover-effect">
+          
+          <!-- Version PC (une seule ligne) -->
+          <span class="typewriter-text single-typing hover-effect">
             &lt;Alex²/&gt; — écrire du code qui a du sens
           </span>
+
+          <!-- Version Mobile (multi lignes avec curseur séquentiel) -->
+          <span class="multi-typing">
+            <span class="typewriter-line line1 hover-effect">&lt;Alex²/&gt; — écrire</span>
+            <span class="typewriter-line line2 hover-effect">du code</span>
+            <span class="typewriter-line line3 hover-effect">qui a du sens</span>
+          </span>
         </h2>
+
         <!-- Bloc animé -->
         <div class="md:flex md:items-center md:justify-center gap-12 animate-fade-in-up">
           <div class="text-left md:w-1/2 space-y-4 text-gray-700 text-lg" style="font-family: var(--font-tinos);">
@@ -122,6 +132,19 @@ if ($stmt) {
   <?php
   include __DIR__ . '/../includes/footer.php';
   ?>
+  <script>
+    document.querySelectorAll(".typewriter-line").forEach((line, index, lines) => {
+  line.addEventListener("animationend", (e) => {
+    if (e.animationName.startsWith("typing")) {
+      // Supprime le curseur de la ligne terminée (sauf la dernière)
+      if (index < lines.length - 1) {
+        line.style.borderRight = "none";
+      }
+    }
+  });
+});
+
+  </script>
   <script type="text/babel">
     const ProjectCard = ({ projet, onClick }) => (
       <div

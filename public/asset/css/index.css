@@ -13,31 +13,94 @@
     animation: fadeInUp 1s ease-out forwards;
   }
 
-.typewriter-text {
+/* ---------------------- */
+/* Version PC = une ligne */
+/* ---------------------- */
+.single-typing {
   display: inline-block;
   overflow: hidden;
-  white-space: nowrap;             /* ✅ Par défaut, tout tient sur une ligne */
+  white-space: nowrap;
   border-right: 2px solid black;
   animation: typing 3.5s steps(40, end), blink 0.75s step-end infinite;
   max-width: 100%;
 }
 
-/* Autoriser les retours à la ligne sur les petits écrans */
-@media (max-width: 768px) {
-  .typewriter-text {
-    white-space: normal;
-    word-break: break-word;
-  }
-}
-
 @keyframes typing {
   from { width: 0 }
-  to { width: 100% }
+  to   { width: 100% }
 }
 
+/* ------------------------- */
+/* Version Mobile = multi-lignes */
+/* ------------------------- */
+.multi-typing {
+  display: none; /* caché par défaut (PC) */
+}
+
+.typewriter-line {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  opacity: 0; /* cachée par défaut */
+}
+
+/* Ligne 1 */
+.line1 {
+  border-right: 2px solid black;
+  opacity: 1; /* visible dès le départ */
+  animation: typing1 2s steps(15, end) forwards,
+             blink 0.75s step-end infinite;
+}
+
+/* Ligne 2 */
+.line2 {
+  border-right: 2px solid black;
+  animation: typing2 2s steps(20, end) forwards,
+             blink 0.75s step-end infinite;
+  animation-delay: 2.1s;   /* commence après ligne 1 */
+  animation-fill-mode: forwards;
+}
+
+/* Ligne 3 */
+.line3 {
+  border-right: 2px solid black;
+  animation: typing3 2s steps(20, end) forwards,
+             blink 0.75s step-end infinite;
+  animation-delay: 4.3s;   /* commence après ligne 2 */
+  animation-fill-mode: forwards;
+}
+
+/* Animations multi-lignes */
+@keyframes typing1 {
+  from { width: 0; opacity: 1; }
+  to   { width: 100%; opacity: 1; }
+}
+@keyframes typing2 {
+  from { width: 0; opacity: 1; }
+  to   { width: 100%; opacity: 1; }
+}
+@keyframes typing3 {
+  from { width: 0; opacity: 1; }
+  to   { width: 100%; opacity: 1; }
+}
+
+/* Curseur clignotant */
 @keyframes blink {
   0%, 100% { border-color: transparent; }
-  50% { border-color: black; }
+  50%      { border-color: black; }
+}
+
+/* ------------------------- */
+/* Switch PC / Mobile        */
+/* ------------------------- */
+@media (max-width: 768px) {
+  .single-typing {
+    display: none;
+  }
+  .multi-typing {
+    display: block;
+  }
 }
 
 
