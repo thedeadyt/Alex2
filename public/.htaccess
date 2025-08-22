@@ -1,23 +1,45 @@
 RewriteEngine On
 
-# Accès direct à /animation → pages/animation.php
-RewriteRule ^animation$ pages/animation.php [L,NC]
-
-# Redirection Mentions légales / confidentialité
-RewriteRule ^Mentions-Légales$ pages/Mentions.php [L]
-RewriteRule ^Politique-de-confidentialité$ pages/Confidentialité.php [L]
-RewriteRule ^Nos-Réalisations$ pages/NosProjets.php [L]
+###############################################
+# 1. Pages spécifiques (publiques)
+###############################################
+RewriteRule ^Mentions-Légales$ pages/Mentions.php [L,NC]
+RewriteRule ^Politique-de-confidentialité$ pages/Confidentialité.php [L,NC]
+RewriteRule ^Nos-Réalisations$ pages/NosProjets.php [L,NC]
 
 # Exclusion des fichiers sensibles
 RewriteCond %{REQUEST_URI} ^/SendMailFunction\.php$ [NC,OR]
 RewriteCond %{REQUEST_URI} ^/PHPMailer-master/ [NC]
 RewriteRule .* - [L]
-# Réécriture URL générique vers pages/XXX.php
+
+###############################################
+# 2. Redirection /admin ou /admin/ vers login
+###############################################
+RewriteRule ^admin/?$ pages/login.php [L,NC]
+
+###############################################
+# 3. Dashboard accessible via /admin/dashboard
+###############################################
+RewriteRule ^admin/dashboard/?$ admin/index.php [L,NC]
+
+###############################################
+# 4. Protection des autres fichiers dans /admin
+###############################################
+# Si on est dans /admin et que ce n'est ni index.php ni dashboard ni auth.php
+RewriteCond %{REQUEST_URI} ^/admin/ [NC]
+RewriteCond %{REQUEST_URI} !^/admin/auth\.php$ [NC]
+RewriteCond %{REQUEST_URI} !^/admin/index\.php$ [NC]
+RewriteCond %{REQUEST_URI} !^/admin/dashboard$ [NC]
+RewriteRule ^admin/.*$ admin/auth.php [QSA,L]
+
+###############################################
+# 5. Réécriture générique des pages propres (publiques)
+###############################################
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^([a-zA-Z0-9À-ÿ_-]+)$ pages/$1.php [NC,L]
 
-# Page d'accueil par défaut : index.php à la racine (ou pages/index.php selon config)
-DirectoryIndex index.php
-
+###############################################
+# 6. Page 404 personnalisée
+###############################################
 ErrorDocument 404 /pages/404.php

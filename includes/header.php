@@ -17,7 +17,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 
     const items = [
       { name: "Accueil", href: "<?= BASE_URL ?>", file: "index.php" },
-      { name: "Projets réalisés", href: "<?= BASE_URL ?>/NosProjets", file: "NosProjets.php" },
+      { name: "Projets réalisés", href: "<?= BASE_URL ?>/Nos-Réalisations", file: "NosProjets.php" },
       { name: "Nos services", href: "<?= BASE_URL ?>/Services", file: "Services.php" },
       { name: "À propos", href: "<?= BASE_URL ?>/Apropos", file: "Apropos.php" },
       { name: "Contact", href: "<?= BASE_URL ?>/Contact", file: "Contact.php" }

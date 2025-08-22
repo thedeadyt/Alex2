@@ -12,7 +12,7 @@ function Footer() {
 
   const items = [
     { name: "Accueil", href: "<?= BASE_URL ?>" },
-    { name: "Projets réalisés", href: "<?= BASE_URL ?>/NosProjets" },
+    { name: "Projets réalisés", href: "<?= BASE_URL ?>/Nos-Réalisations" },
     { name: "Nos services", href: "<?= BASE_URL ?>/Services" },
     { name: "À propos", href: "<?= BASE_URL ?>/Apropos" },
     { name: "Contact", href: "<?= BASE_URL ?>/Contact" }
