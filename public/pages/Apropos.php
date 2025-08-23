@@ -23,7 +23,7 @@ require_once __DIR__ . '/../../config/config.php';
 <section class="py-16 px-6 md:px-20" id="content">
     <div class="text-center max-w-4xl mx-auto mb-16">
         <h1 class="text-5xl font-extrabold tracking-tight mb-6">
-            <span style="color: var(--color-green); font-family: var(--font-bounded)">&lt;alex²/&gt;</span>
+            <span style="color: var(--color-green); font-family: var(--font-bounded)">&lt;lex²/&gt;</span>
         </h1>
         <p class="text-lg" style="font-family: var(--font-tinos)">
             Nous concevons des sites sobres, rapides et durables. Simples à utiliser, performants par nature, éco-responsables par conviction.
@@ -32,7 +32,7 @@ require_once __DIR__ . '/../../config/config.php';
 
     <div class="max-w-5xl mx-auto space-y-12">
         <div>
-            <h2 class="text-3xl font-bold mb-4 border-l-4  pl-4" style="border-color: var(--color-green); font-family: var(--font-bounded)">Mission & Valeurs</h2>
+            <h2 class="text-2xl font-bold mb-4 border-l-4  pl-4" style="border-color: var(--color-green); font-family: var(--font-bounded)">Mission & Valeurs</h2>
             <p class="mb-4"><strong>Notre mission :</strong> Créer des sites web simples, performants et responsables, pensés pour durer et conçus pour avoir un impact minimal sur l’environnement.</p>
             <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none">
                 <li class="p-4 rounded-lg shadow-sm border-l-4" style="background-color: var(--color-white); border-color: var(--color-green); font-family: var(--font-tinos)">
@@ -51,7 +51,7 @@ require_once __DIR__ . '/../../config/config.php';
         </div>
 
         <div>
-            <h2 class="text-3xl font-bold mb-4 border-l-4  pl-4" style="border-color: var(--color-green); font-family: var(--font-bounded)">Positionnement</h2>
+            <h2 class="text-2xl font-bold mb-4 border-l-4  pl-4" style="border-color: var(--color-green); font-family: var(--font-bounded)">Positionnement</h2>
             <p class="mb-2" style="font-family: var(--font-tinos)">
                 Nous nous adressons à toute personne ou structure ayant besoin d’un site — personnel, professionnel ou associatif — et qui recherche :
             </p>
@@ -63,14 +63,14 @@ require_once __DIR__ . '/../../config/config.php';
         </div>
 
         <div>
-            <h2 class="text-3xl font-bold mb-4 border-l-4 pl-4" style="border-color: var(--color-green); font-family: var(--font-bounded)">Notre avantage concurrentiel</h2>
+            <h2 class="text-2xl font-bold mb-4 border-l-4 pl-4" style="border-color: var(--color-green); font-family: var(--font-bounded)">Notre avantage concurrentiel</h2>
             <p style="font-family: var(--font-tinos)">
                 Nous créons des sites sobres, rapides et durables, conçus pour minimiser la consommation de ressources tout en offrant une expérience utilisateur fluide. Notre approche allie performance et responsabilité écologique pour garantir une présence web efficace et pérenne.
             </p>
         </div>
 
         <div>
-            <h2 class="text-3xl font-bold mb-4 border-l-4 pl-4" style="border-color: var(--color-green); font-family: var(--font-bounded)">Personnalité & Ton</h2>
+            <h2 class="text-2xl font-bold mb-4 border-l-4 pl-4" style="border-color: var(--color-green); font-family: var(--font-bounded)">Personnalité & Ton</h2>
             <ul class="list-disc list-inside space-y-1" style="font-family: var(--font-tinos)">
                 <li>Professionnel, sans jargon inutile</li>
                 <li>Sincère et rigoureux, mais accessible</li>

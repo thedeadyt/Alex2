@@ -56,7 +56,7 @@ const phpData = <?= $jsonData ?>;
 
 const columnsMap = {
     Clients: { 'ID':'id','Nom':'name','Société':'company','Email':'email','Téléphone':'phone','Adresse':'address' },
-    'Projets en cours': { 'ID':'id','Titre':'title','Client':'client_id','Statut':'status' },
+    'Projets en cours': { 'ID':'id','Titre':'title','Client':'client_name','Statut':'status','Deadline':'deadline' },
     'Projet portfolio': { 'ID':'id','Nom':'nom','Année':'annee','Type':'type','Image':'image','Description courte':'description_courte','Description détaillée':'description_detaillee','Lien':'lien' },
     Factures: { 'ID':'id','Type':'type','Numéro':'number','Client':'client_id','Projet':'project_id','Montant':'amount','Statut':'status' },
     Services: { 'ID':'id','Nom':'name','Line1':'line1','Line2':'line2','Line3':'line3','Line4':'line4','Line5':'line5' },
@@ -127,8 +127,9 @@ function Table({ type, data, onEdit, onDelete }) {
 }
 
 // Modal Form
-function ModalForm({ visible, onClose, onSubmit, data, type }) {
+function ModalForm({ visible, onClose, onSubmit, data, type, clients }) {
     const [formData, setFormData] = useState(data || {});
+    const [search, setSearch] = useState('');
     useEffect(()=>setFormData(data || {}),[data]);
 
     if(!visible) return null;
@@ -137,19 +138,124 @@ function ModalForm({ visible, onClose, onSubmit, data, type }) {
     const handleSubmit = e => { e.preventDefault(); onSubmit(formData); onClose(); };
 
     const fields = Object.values(columnsMap[type]).filter(f => f !== 'id');
+    const filteredClients = clients?.filter(c => c.company.toLowerCase().includes(search.toLowerCase())) || [];
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
             <div className="bg-white p-6 rounded-lg w-96">
                 <h2 className="text-xl font-bold mb-4">{data?"Modifier":"Ajouter"} {type}</h2>
                 <form onSubmit={handleSubmit} className="space-y-3">
-                    {fields.map(f => <input key={f} name={f} value={formData[f]||''} onChange={handleChange} placeholder={f} className="w-full border p-2 rounded" required />)}
+                    {fields.map(f => {
+                        if(f==='client_id' && type==="Projets en cours"){
+                            return (
+                                <div key={f}>
+                                    <input
+                                        type="text"
+                                        placeholder="Rechercher un client..."
+                                        value={search}
+                                        onChange={e => setSearch(e.target.value)}
+                                        className="w-full border p-2 rounded mb-1"
+                                    />
+                                    <select
+                                        name={f}
+                                        value={formData[f] || ''}
+                                        onChange={handleChange}
+                                        className="w-full border p-2 rounded"
+                                        required
+                                    >
+                                        <option value="">Sélectionnez un client</option>
+                                        {filteredClients.map(c => (
+                                            <option key={c.id} value={c.id}>{c.company}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            )
+                        }
+                        return <input key={f} name={f} value={formData[f]||''} onChange={handleChange} placeholder={f} className="w-full border p-2 rounded" required />
+                    })}
                     <div className="flex justify-end gap-2">
                         <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-300 rounded">Annuler</button>
                         <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded">{data?"Modifier":"Ajouter"}</button>
                     </div>
                 </form>
             </div>
+        </div>
+    );
+}
+
+// Widgets
+function CalendarWidget({ projects }) {
+    const [date, setDate] = useState(new Date());
+    const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+    const endOfMonth = new Date(date.getFullYear(), date.getMonth()+1, 0);
+    const days = [];
+    for(let d=startOfMonth; d<=endOfMonth; d.setDate(d.getDate()+1)) days.push(new Date(d));
+    return (
+        <div className="bg-white p-4 rounded-xl shadow w-full">
+            <h3 className="font-bold mb-2">Calendrier</h3>
+            <div className="grid grid-cols-7 gap-1 text-center">
+                {['L','M','M','J','V','S','D'].map((d, idx) => (
+                    <div key={d+idx} className="font-bold">{d}</div>
+                ))}
+                {days.map((d,i)=>{
+                    const dayProjects = projects.filter(p => new Date(p.deadline).toDateString()===d.toDateString());
+                    return (
+                        <div key={i} className="border h-12 flex items-center justify-center relative">
+                            {d.getDate()}
+                            {dayProjects.length>0 && <span className="bg-red-500 w-2 h-2 rounded-full absolute bottom-1 right-1"></span>}
+                        </div>
+                    )
+                })}
+            </div>
+        </div>
+    );
+}
+
+function ClockWidget() {
+    const [time,setTime] = useState(new Date());
+    useEffect(()=> { const interval = setInterval(()=>setTime(new Date()),1000); return ()=>clearInterval(interval); },[]);
+    return (
+        <div className="bg-white p-4 rounded-xl shadow flex flex-col items-center justify-center w-full">
+            <h3 className="font-bold mb-2">Horloge</h3>
+            <span className="text-2xl font-mono">{time.toLocaleTimeString()}</span>
+        </div>
+    );
+}
+
+function UrgentProjects({ projects }) {
+    const now = new Date();
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth()+1,0);
+    const urgent = projects.filter(p => { const d=new Date(p.deadline); return d>=now && d<=endOfMonth; });
+    if(urgent.length===0) return <div className="bg-white p-4 rounded-xl shadow w-full">Pas de projet urgent ce mois</div>;
+    return (
+        <div className="bg-white p-4 rounded-xl shadow w-full">
+            <h3 className="font-bold mb-2">Projets finissant ce mois</h3>
+            <ul className="list-disc pl-5">{urgent.map(p=><li key={p.id}>{p.title} - {new Date(p.deadline).toLocaleDateString()}</li>)}</ul>
+        </div>
+    );
+}
+
+function WeekProjects({ projects }) {
+    const now = new Date();
+    const endWeek = new Date();
+    endWeek.setDate(now.getDate() + 7);
+    const weekProjects = projects.filter(p => {
+        const d = new Date(p.deadline);
+        return d >= now && d <= endWeek;
+    });
+
+    return (
+        <div className="bg-white p-4 rounded-xl shadow w-full mb-6">
+            <h3 className="font-bold mb-2 text-red-700">Projets urgents cette semaine</h3>
+            {weekProjects.length === 0 ? (
+                <p>Aucun projet urgent cette semaine</p>
+            ) : (
+                <ul className="list-disc pl-5">
+                    {weekProjects.map(p => (
+                        <li key={p.id}>{p.title} - {new Date(p.deadline).toLocaleDateString()}</li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 }
@@ -164,27 +270,36 @@ function Dashboard() {
 
     const handleAdd = type => { setCurrentType(type); setEditData(null); setModalVisible(true); };
     const handleEdit = (type,item) => { setCurrentType(type); setEditData(item); setModalVisible(true); };
+    
     const handleDelete = async (type,id) => {
         if(!confirm("Confirmer la suppression ?")) return;
-        await fetch(`api/${type.toLowerCase().replace(/ /g,'_')}.php`,{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})});
-        const key = type.toLowerCase().replace(/ /g,'_');
-        setData({...data,[key]:data[key].filter(d=>d.id!==id)});
+        try {
+            const res = await fetch(`api/${type.toLowerCase().replace(/ /g,'_')}.php`,{
+                method:'DELETE',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({id})
+            });
+            const json = await res.json();
+            const key = type.toLowerCase().replace(/ /g,'_');
+            setData({...data,[key]:data[key].filter(d=>d.id!==id)});
+        } catch(err) { console.error('Erreur DELETE:', err); }
     };
+
     const handleSubmit = async (formData) => {
-        const method = editData?'PUT':'POST';
-        const res = await fetch(`api/${currentType.toLowerCase().replace(/ /g,'_')}.php`,{
-            method,
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify(formData)
-        });
-        const saved = await res.json();
-        const key = currentType.toLowerCase().replace(/ /g,'_');
-        setData({
-            ...data,
-            [key]:editData
-                ? data[key].map(d=>d.id===saved.id?saved:d)
-                : [...data[key],saved]
-        });
+        try {
+            const method = editData?'PUT':'POST';
+            const res = await fetch(`api/${currentType.toLowerCase().replace(/ /g,'_')}.php`,{
+                method,
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify(formData)
+            });
+            const text = await res.text();
+            let saved;
+            try { saved = JSON.parse(text); } 
+            catch(e){ console.error('Réponse non JSON:', text); return; }
+            const key = currentType.toLowerCase().replace(/ /g,'_');
+            setData({...data,[key]:editData?data[key].map(d=>d.id===saved.id?saved:d):[...data[key],saved]});
+        } catch(err){ console.error('Erreur SUBMIT:', err); }
     };
 
     const TableWithActions = ({ type, rows }) => (
@@ -194,56 +309,46 @@ function Dashboard() {
         </div>
     );
 
-    const cards = Object.entries(cardsMap).map(([title,key])=>({
-        title,
-        count:data[key]?.length || 0,
-        color:'green',
-        key:title
+    const cards = Object.entries(cardsMap).map(([title,key],idx)=>({
+        title, count:data[key]?.length||0, color:['green','cyan','purple','yellow','blue','black'][idx%6], key:title
     }));
 
     return (
-        <div className="flex flex-1">
+        <div className="flex flex-1 overflow-auto">
             <Sidebar setView={setView} />
-            <div className="flex-1 p-8 overflow-auto">
-                {view==='Tableau de bord' &&
+            <div className="flex-1 p-8 flex flex-col gap-8">
+                {/* Widgets uniquement sur le dashboard */}
+                {view==='Tableau de bord' && <WeekProjects projects={data.projects} />}
+                {view==='Tableau de bord' && 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {cards.map(card=>(<Card key={card.title} {...card} onClick={()=>setView(card.key)} />))}
                     </div>
                 }
+                {view==='Tableau de bord' &&
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
+                        <CalendarWidget projects={data.projects} />
+                        <ClockWidget />
+                        <UrgentProjects projects={data.projects} />
+                    </div>
+                }
+
+                {/* Tables */}
                 {view==='Clients' && <TableWithActions type="Clients" rows={data.clients} />}
                 {view==='Projets en cours' && <TableWithActions type="Projets en cours" rows={data.projects} />}
                 {view==='Projet portfolio' && <TableWithActions type="Projet portfolio" rows={data.projets} />}
-                {view==='Factures' && (
-                    <div>
-                        <button onClick={()=>handleAdd("Factures")} className="mb-4 px-4 py-2 bg-blue-500 text-white rounded">Ajouter Facture</button>
-                        <input
-                            type="file"
-                            accept="application/pdf"
-                            onChange={async e => {
-                                const file = e.target.files[0];
-                                const formData = new FormData();
-                                formData.append("pdf", file);
-                                const res = await fetch('api/factures.php', { method: 'POST', body: formData });
-                                const parsedData = await res.json();
-                                setCurrentType("Factures");
-                                setEditData(parsedData); // préremplir le formulaire
-                                setModalVisible(true);
-                            }}
-                            className="mb-4"
-                        />
-                        <Table type="Factures" data={data.invoices} onEdit={item=>handleEdit("Factures",item)} onDelete={id=>handleDelete("Factures",id)} />
-                    </div>
-                )}
+                {view==='Factures' && <TableWithActions type="Factures" rows={data.invoices} />}
                 {view==='Services' && <TableWithActions type="Services" rows={data.services} />}
                 {view==='Notes' && <TableWithActions type="Notes" rows={data.project_notes} />}
+
+                <ModalForm visible={modalVisible} onClose={()=>setModalVisible(false)} onSubmit={handleSubmit} data={editData} type={currentType} clients={data.clients} />
             </div>
-            <ModalForm visible={modalVisible} onClose={()=>setModalVisible(false)} onSubmit={handleSubmit} data={editData} type={currentType} />
         </div>
     );
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(<Dashboard />);
 </script>
+
 
 </body>
 </html>
