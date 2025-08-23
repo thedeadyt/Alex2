@@ -34,7 +34,7 @@ $jsonData = json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JS
 <head>
 <meta charset="UTF-8">
 <title>Tableau de bord Admin</title>
-
+<link rel="icon" href="<?= BASE_URL ?>/Alex2logo.png" type="image/x-icon">
 <script src="https://cdn.tailwindcss.com"></script>
 <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
