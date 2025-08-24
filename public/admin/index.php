@@ -127,55 +127,57 @@ function Table({ type, data, onEdit, onDelete }) {
 }
 
 // Modal Form
-function ModalForm({ visible, onClose, onSubmit, data, type, clients }) {
-    const [formData, setFormData] = useState(data || {});
-    const [search, setSearch] = useState('');
-    useEffect(()=>setFormData(data || {}),[data]);
+function ModalForm({ visible, onClose, onSubmit, data, type, clientId }) {
+    const [formData, setFormData] = useState(data || { client_id: clientId });
+    useEffect(() => setFormData(data || { client_id: clientId }), [data, clientId]);
 
-    if(!visible) return null;
+    if (!visible) return null;
 
-    const handleChange = e => setFormData({...formData,[e.target.name]:e.target.value});
+    const handleChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
     const handleSubmit = e => { e.preventDefault(); onSubmit(formData); onClose(); };
 
     const fields = Object.values(columnsMap[type]).filter(f => f !== 'id');
-    const filteredClients = clients?.filter(c => c.company.toLowerCase().includes(search.toLowerCase())) || [];
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
             <div className="bg-white p-6 rounded-lg w-96">
-                <h2 className="text-xl font-bold mb-4">{data?"Modifier":"Ajouter"} {type}</h2>
+                <h2 className="text-xl font-bold mb-4">{data ? "Modifier" : "Ajouter"} {type}</h2>
                 <form onSubmit={handleSubmit} className="space-y-3">
+
+                    {/* Champ caché client_id */}
+                    <input type="hidden" name="client_id" value={formData.client_id} />
+
                     {fields.map(f => {
-                        if(f==='client_id' && type==="Projets en cours"){
+                        if (f === 'deadline') {
                             return (
-                                <div key={f}>
-                                    <input
-                                        type="text"
-                                        placeholder="Rechercher un client..."
-                                        value={search}
-                                        onChange={e => setSearch(e.target.value)}
-                                        className="w-full border p-2 rounded mb-1"
-                                    />
-                                    <select
-                                        name={f}
-                                        value={formData[f] || ''}
-                                        onChange={handleChange}
-                                        className="w-full border p-2 rounded"
-                                        required
-                                    >
-                                        <option value="">Sélectionnez un client</option>
-                                        {filteredClients.map(c => (
-                                            <option key={c.id} value={c.id}>{c.company}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                            )
+                                <input
+                                    key={f}
+                                    type="date"
+                                    name={f}
+                                    value={formData[f] || ''}
+                                    onChange={handleChange}
+                                    className="w-full border p-2 rounded"
+                                    required
+                                />
+                            );
                         }
-                        return <input key={f} name={f} value={formData[f]||''} onChange={handleChange} placeholder={f} className="w-full border p-2 rounded" required />
+                        if (f === 'client_id') return null; // déjà géré
+                        return (
+                            <input
+                                key={f}
+                                name={f}
+                                value={formData[f] || ''}
+                                onChange={handleChange}
+                                placeholder={f}
+                                className="w-full border p-2 rounded"
+                                required
+                            />
+                        );
                     })}
+
                     <div className="flex justify-end gap-2">
                         <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-300 rounded">Annuler</button>
-                        <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded">{data?"Modifier":"Ajouter"}</button>
+                        <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded">{data ? "Modifier" : "Ajouter"}</button>
                     </div>
                 </form>
             </div>
@@ -186,38 +188,73 @@ function ModalForm({ visible, onClose, onSubmit, data, type, clients }) {
 // Widgets
 function CalendarWidget({ projects }) {
     const [date, setDate] = useState(new Date());
+
     const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-    const endOfMonth = new Date(date.getFullYear(), date.getMonth()+1, 0);
+    const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+    // Générer les jours du mois
     const days = [];
-    for(let d=startOfMonth; d<=endOfMonth; d.setDate(d.getDate()+1)) days.push(new Date(d));
+    for (let d = new Date(startOfMonth); d <= endOfMonth; d.setDate(d.getDate() + 1)) {
+        days.push(new Date(d));
+    }
+
+    // Navigation mois précédent/suivant
+    const prevMonth = () => setDate(new Date(date.getFullYear(), date.getMonth() - 1, 1));
+    const nextMonth = () => setDate(new Date(date.getFullYear(), date.getMonth() + 1, 1));
+
+    const monthNames = [
+        "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
+        "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
+    ];
+
     return (
         <div className="bg-white p-4 rounded-xl shadow w-full">
-            <h3 className="font-bold mb-2">Calendrier</h3>
+            <div className="flex justify-between items-center mb-4">
+                <button onClick={prevMonth} className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300">◀</button>
+                <h3 className="font-bold text-lg">
+                    {monthNames[date.getMonth()]} {date.getFullYear()}
+                </h3>
+                <button onClick={nextMonth} className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300">▶</button>
+            </div>
+
             <div className="grid grid-cols-7 gap-1 text-center">
                 {['L','M','M','J','V','S','D'].map((d, idx) => (
                     <div key={d+idx} className="font-bold">{d}</div>
                 ))}
-                {days.map((d,i)=>{
-                    const dayProjects = projects.filter(p => new Date(p.deadline).toDateString()===d.toDateString());
+                {days.map((d, i) => {
+                    const dayProjects = projects.filter(
+                        p => new Date(p.deadline).toDateString() === d.toDateString()
+                    );
                     return (
-                        <div key={i} className="border h-12 flex items-center justify-center relative">
+                        <div
+                            key={i}
+                            className="border h-12 flex items-center justify-center relative"
+                        >
                             {d.getDate()}
-                            {dayProjects.length>0 && <span className="bg-red-500 w-2 h-2 rounded-full absolute bottom-1 right-1"></span>}
+                            {dayProjects.length > 0 && (
+                                <span className="bg-red-500 w-2 h-2 rounded-full absolute bottom-1 right-1"></span>
+                            )}
                         </div>
-                    )
+                    );
                 })}
             </div>
         </div>
     );
 }
 
+
 function ClockWidget() {
     const [time,setTime] = useState(new Date());
     useEffect(()=> { const interval = setInterval(()=>setTime(new Date()),1000); return ()=>clearInterval(interval); },[]);
     return (
         <div className="bg-white p-4 rounded-xl shadow flex flex-col items-center justify-center w-full">
-            <h3 className="font-bold mb-2">Horloge</h3>
-            <span className="text-2xl font-mono">{time.toLocaleTimeString()}</span>
+            <span 
+                className="text-2xl" 
+                style={{ fontFamily: "var(--font-heading)" }}
+                >
+                {time.toLocaleTimeString()}
+            </span>
+
         </div>
     );
 }

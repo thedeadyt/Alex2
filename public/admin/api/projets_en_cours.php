@@ -3,89 +3,69 @@ session_start();
 header('Content-Type: application/json');
 require_once __DIR__ . '/../../../config/database.php';
 
+// Vérifie que l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['error' => 'Utilisateur non connecté']);
     exit;
 }
-
 $user_id = $_SESSION['user_id'];
 $method = $_SERVER['REQUEST_METHOD'];
 
 try {
     if ($method === 'GET') {
         // Récupère tous les projets de l'utilisateur
-        $stmt = $pdo->prepare("SELECT * FROM projets WHERE user_id = ?");
+        $stmt = $pdo->prepare("SELECT * FROM projects WHERE user_id=?");
         $stmt->execute([$user_id]);
         echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
-    } 
+    }
+
     elseif ($method === 'POST') {
-        // Crée un nouveau projet
         $data = json_decode(file_get_contents('php://input'), true);
 
-        $client_id = $data['client_id'] ?? null;
-        $title = $data['title'] ?? '';
-        $description = $data['description'] ?? '';
-        $status = $data['status'] ?? 'en cours';
-        $deadline = $data['deadline'] ?? null;
+        // Validation des champs obligatoires
+        if (empty($data['title']) || empty($data['client_id']) || empty($data['status']) || empty($data['deadline'])) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Tous les champs sont requis']);
+            exit;
+        }
 
-        $stmt = $pdo->prepare("
-            INSERT INTO projets (user_id, client_id, title, description, status, created_at, updated_at, deadline)
-            VALUES (?, ?, ?, ?, ?, NOW(), NOW(), ?)
-        ");
-        $stmt->execute([$user_id, $client_id, $title, $description, $status, $deadline]);
+        $stmt = $pdo->prepare("INSERT INTO projects (title, client_id, status, deadline, user_id) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([$data['title'], $data['client_id'], $data['status'], $data['deadline'], $user_id]);
 
-        echo json_encode([
-            'id' => $pdo->lastInsertId(),
-            'user_id' => $user_id,
-            'client_id' => $client_id,
-            'title' => $title,
-            'description' => $description,
-            'status' => $status,
-            'deadline' => $deadline
-        ]);
-    } 
+        // Retourne le projet créé
+        $data['id'] = $pdo->lastInsertId();
+        echo json_encode($data);
+    }
+
     elseif ($method === 'PUT') {
-        // Met à jour un projet existant
         $data = json_decode(file_get_contents('php://input'), true);
 
-        $id = $data['id'] ?? null;
-        $client_id = $data['client_id'] ?? null;
-        $title = $data['title'] ?? '';
-        $description = $data['description'] ?? '';
-        $status = $data['status'] ?? 'en cours';
-        $deadline = $data['deadline'] ?? null;
-
-        if ($id) {
-            $stmt = $pdo->prepare("
-                UPDATE projets 
-                SET client_id=?, title=?, description=?, status=?, updated_at=NOW(), deadline=?
-                WHERE id=? AND user_id=?
-            ");
-            $stmt->execute([$client_id, $title, $description, $status, $deadline, $id, $user_id]);
+        if (empty($data['id']) || empty($data['title']) || empty($data['client_id']) || empty($data['status']) || empty($data['deadline'])) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Tous les champs sont requis']);
+            exit;
         }
 
-        echo json_encode([
-            'id' => $id,
-            'user_id' => $user_id,
-            'client_id' => $client_id,
-            'title' => $title,
-            'description' => $description,
-            'status' => $status,
-            'deadline' => $deadline
-        ]);
-    } 
+        $stmt = $pdo->prepare("UPDATE projects SET title=?, client_id=?, status=?, deadline=? WHERE id=? AND user_id=?");
+        $stmt->execute([$data['title'], $data['client_id'], $data['status'], $data['deadline'], $data['id'], $user_id]);
+
+        echo json_encode($data);
+    }
+
     elseif ($method === 'DELETE') {
-        // Supprime un projet
         $data = json_decode(file_get_contents('php://input'), true);
-        $id = $data['id'] ?? null;
 
-        if ($id) {
-            $stmt = $pdo->prepare("DELETE FROM projets WHERE id=? AND user_id=?");
-            $stmt->execute([$id, $user_id]);
+        if (empty($data['id'])) {
+            http_response_code(400);
+            echo json_encode(['error' => 'ID manquant']);
+            exit;
         }
 
+        $stmt = $pdo->prepare("DELETE FROM projects WHERE id=? AND user_id=?");
+        $stmt->execute([$data['id'], $user_id]);
         echo json_encode(['success' => true]);
     }
+
 } catch (Exception $e) {
     echo json_encode(['error' => $e->getMessage()]);
 }

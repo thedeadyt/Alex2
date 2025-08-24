@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../config/config.php';
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>À propos | &lt;alex²/&gt;</title>
+    <title>À propos | &lt;Alex²/&gt;</title>
     <link rel="icon" href="<?= BASE_URL ?>/Alex2logo.png" type="image/x-icon">
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
@@ -23,7 +23,7 @@ require_once __DIR__ . '/../../config/config.php';
 <section class="py-16 px-6 md:px-20" id="content">
     <div class="text-center max-w-4xl mx-auto mb-16">
         <h1 class="text-5xl font-extrabold tracking-tight mb-6">
-            <span style="color: var(--color-green); font-family: var(--font-bounded)">&lt;lex²/&gt;</span>
+            <span style="color: var(--color-green); font-family: var(--font-bounded)">&lt;Alex²/&gt;</span>
         </h1>
         <p class="text-lg" style="font-family: var(--font-tinos)">
             Nous concevons des sites sobres, rapides et durables. Simples à utiliser, performants par nature, éco-responsables par conviction.

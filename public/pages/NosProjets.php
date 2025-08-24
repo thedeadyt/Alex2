@@ -14,7 +14,7 @@ $projets = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Projets | &lt;alex²/&gt;</title>
+  <title>Projets | &lt;Alex²/&gt;</title>
   <link rel="icon" href="<?= BASE_URL ?>/Alex2logo.png" type="image/x-icon">
   <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
   <link rel="stylesheet" type="text/css" media="screen" href="<?= BASE_URL ?>/asset/css/NosProjets.css">

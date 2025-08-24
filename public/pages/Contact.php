@@ -64,7 +64,7 @@ require_once __DIR__ . '/../../config/config.php';
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Contact | &lt;alex²/&gt;</title>
+  <title>Contact | &lt;Alex²/&gt;</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="icon" href="<?= BASE_URL ?>/Alex2logo.png" type="image/x-icon">
   <link rel="stylesheet" href="<?= BASE_URL ?>/asset/css/variables.css">
@@ -104,7 +104,7 @@ require_once __DIR__ . '/../../config/config.php';
 
     <p class="mb-3">
       <strong>Téléphone :</strong><br>
-      <strong>Alexandre R.</strong> — <a href="tel:+33768882766" class="text-blue-600 hover:underline">+33 7 68 88 27 66</a><br>
+      <strong>Alexis R.</strong> — <a href="tel:+33768882766" class="text-blue-600 hover:underline">+33 7 68 88 27 66</a><br>
       <strong>Alexandre B.</strong> — <a href="tel:+33686825714" class="text-blue-600 hover:underline">+33 6 86 82 57 14</a>
     </p>
 
