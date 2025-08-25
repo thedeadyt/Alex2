@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["user_id"] = $user["id"];
         $_SESSION["username"] = $user["username"];
         // Redirection vers /dashboard
-        header("Location: " . BASE_URL . "/admin/dashboard");
+        header("Location: " . BASE_URL . "admin/dashboard");
         exit;
     } else {
         $message = "❌ Identifiants incorrects.";
