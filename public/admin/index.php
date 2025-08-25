@@ -13,22 +13,50 @@ header('Content-Type: text/html; charset=utf-8');
 
 $user_id = $_SESSION["user_id"];
 
-$tables = ['clients','projects','projets','invoices','services','project_notes'];
+$tables = ['clients','projects','projets','services','project_notes'];
 $data = [];
 
 foreach($tables as $table){
-    if($table === 'services' || $table === 'projets'){
+    if ($table === 'services' || $table === 'projets') {
+        // 🔹 Ces tables ne sont pas liées à l’utilisateur
         $stmt = $pdo->query("SELECT * FROM $table");
-    } else {
-        $stmt = $pdo->prepare("SELECT * FROM $table WHERE user_id=?");
+        $data[$table] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    } elseif ($table === 'projects') {
+        // 🔹 Jointure pour récupérer aussi le client lié au projet
+        $stmt = $pdo->prepare("
+          SELECT p.*, c.name AS client_name, c.company AS client_company
+          FROM projects p
+          JOIN clients c ON p.client_id = c.id
+          WHERE p.user_id = ?
+
+        ");
         $stmt->execute([$user_id]);
+        $data[$table] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    } elseif ($table === 'project_notes') {
+        // 🔹 Jointure pour récupérer aussi le nom du projet associé
+        $stmt = $pdo->prepare("
+            SELECT pn.*, p.title AS project_title
+            FROM project_notes pn
+            JOIN projects p ON pn.project_id = p.id
+            WHERE pn.user_id = ?
+            ORDER BY pn.created_at DESC
+        ");
+        $stmt->execute([$user_id]);
+        $data[$table] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    } else {
+        // 🔹 Tables liées directement à l’utilisateur (ex: clients)
+        $stmt = $pdo->prepare("SELECT * FROM $table WHERE user_id = ?");
+        $stmt->execute([$user_id]);
+        $data[$table] = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    $data[$table] = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+// Encodage en JSON pour React
 $jsonData = json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -58,16 +86,14 @@ const columnsMap = {
     Clients: { 'ID':'id','Nom':'name','Société':'company','Email':'email','Téléphone':'phone','Adresse':'address' },
     'Projets en cours': { 'ID':'id','Titre':'title','Client':'client_name','Statut':'status','Deadline':'deadline' },
     'Projet portfolio': { 'ID':'id','Nom':'nom','Année':'annee','Type':'type','Image':'image','Description courte':'description_courte','Description détaillée':'description_detaillee','Lien':'lien' },
-    Factures: { 'ID':'id','Type':'type','Numéro':'number','Client':'client_id','Projet':'project_id','Montant':'amount','Statut':'status' },
     Services: { 'ID':'id','Nom':'name','Line1':'line1','Line2':'line2','Line3':'line3','Line4':'line4','Line5':'line5' },
-    Notes: { 'ID':'id','Projet':'project_id','Contenu':'content' }
+    Notes: { 'ID':'id', 'Projet':'project_title', 'Contenu':'content', 'Créé le':'created_at' }
 };
 
 const cardsMap = {
     Clients: 'clients',
     'Projets en cours': 'projects',
     'Projet portfolio': 'projets',
-    Factures: 'invoices',
     Services: 'services',
     Notes: 'project_notes'
 };
@@ -129,7 +155,18 @@ function Table({ type, data, onEdit, onDelete }) {
 // Modal Form
 function ModalForm({ visible, onClose, onSubmit, data, type, clientId }) {
     const [formData, setFormData] = useState(data || { client_id: clientId });
-    useEffect(() => setFormData(data || { client_id: clientId }), [data, clientId]);
+    const [projects, setProjects] = useState([]);
+
+    useEffect(() => {
+        setFormData(data || { client_id: clientId });
+
+        // Charger les projets uniquement si on est dans Notes
+        if (type === "Notes") {
+            fetch("api/projects.php")
+                .then(res => res.json())
+                .then(setProjects);
+        }
+    }, [data, clientId, type]);
 
     if (!visible) return null;
 
@@ -144,37 +181,62 @@ function ModalForm({ visible, onClose, onSubmit, data, type, clientId }) {
                 <h2 className="text-xl font-bold mb-4">{data ? "Modifier" : "Ajouter"} {type}</h2>
                 <form onSubmit={handleSubmit} className="space-y-3">
 
-                    {/* Champ caché client_id */}
-                    <input type="hidden" name="client_id" value={formData.client_id} />
+                    {/* Champ caché client_id (utile pour Projets/Factures) */}
+                    <input type="hidden" name="client_id" value={formData.client_id || ""} />
+                    {type === "Projets en cours" && (
+                      <div className="space-y-2">
+                        {/* Sélection du client (lié automatiquement) */}
+                        <select
+                          name="client_id"
+                          value={formData.client_id || ""}
+                          onChange={handleChange}
+                          className="w-full border p-2 rounded mb-2"
+                          required
+                        >
+                          <option value="">-- Choisir un client --</option>
+                          {phpData.clients.map(c => (
+                            <option key={c.id} value={c.id}>
+                              {c.name} ({c.company})
+                            </option>
+                          ))}
+                        </select>
 
-                    {fields.map(f => {
-                        if (f === 'deadline') {
-                            return (
-                                <input
-                                    key={f}
-                                    type="date"
-                                    name={f}
-                                    value={formData[f] || ''}
-                                    onChange={handleChange}
-                                    className="w-full border p-2 rounded"
-                                    required
-                                />
-                            );
-                        }
-                        if (f === 'client_id') return null; // déjà géré
-                        return (
-                            <input
-                                key={f}
-                                name={f}
-                                value={formData[f] || ''}
-                                onChange={handleChange}
-                                placeholder={f}
-                                className="w-full border p-2 rounded"
-                                required
-                            />
-                        );
-                    })}
+                        {/* Sélection du statut */}
+                        <select
+                          name="status"
+                          value={formData.status || ""}
+                          onChange={handleChange}
+                          className="w-full border p-2 rounded mb-2"
+                          required
+                        >
+                          <option value="">-- Choisir un statut --</option>
+                          <option value="En cours">En cours</option>
+                          <option value="Terminé">Terminé</option>
+                          <option value="À faire">À faire</option>
+                        </select>
 
+                        {/* Date de deadline */}
+                        <input
+                          type="date"
+                          name="deadline"
+                          value={formData.deadline || ''}
+                          onChange={handleChange}
+                          className="w-full border p-2 rounded"
+                          required
+                        />
+
+                        {/* Titre du projet */}
+                        <input
+                          type="text"
+                          name="title"
+                          value={formData.title || ''}
+                          onChange={handleChange}
+                          placeholder="Titre du projet"
+                          className="w-full border p-2 rounded"
+                          required
+                        />
+                      </div>
+                    )}
                     <div className="flex justify-end gap-2">
                         <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-300 rounded">Annuler</button>
                         <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded">{data ? "Modifier" : "Ajouter"}</button>
@@ -276,9 +338,11 @@ function WeekProjects({ projects }) {
     const now = new Date();
     const endWeek = new Date();
     endWeek.setDate(now.getDate() + 7);
+
+    // Filtrer les projets non terminés ET dans la semaine
     const weekProjects = projects.filter(p => {
         const d = new Date(p.deadline);
-        return d >= now && d <= endWeek;
+        return d >= now && d <= endWeek && p.status !== "Terminé";
     });
 
     return (
@@ -297,91 +361,238 @@ function WeekProjects({ projects }) {
     );
 }
 
-// Dashboard
-function Dashboard() {
-    const [view,setView] = useState('Tableau de bord');
-    const [data,setData] = useState(phpData);
-    const [modalVisible,setModalVisible] = useState(false);
-    const [editData,setEditData] = useState(null);
-    const [currentType,setCurrentType] = useState('');
-
-    const handleAdd = type => { setCurrentType(type); setEditData(null); setModalVisible(true); };
-    const handleEdit = (type,item) => { setCurrentType(type); setEditData(item); setModalVisible(true); };
-    
-    const handleDelete = async (type,id) => {
-        if(!confirm("Confirmer la suppression ?")) return;
-        try {
-            const res = await fetch(`api/${type.toLowerCase().replace(/ /g,'_')}.php`,{
-                method:'DELETE',
-                headers:{'Content-Type':'application/json'},
-                body:JSON.stringify({id})
-            });
-            const json = await res.json();
-            const key = type.toLowerCase().replace(/ /g,'_');
-            setData({...data,[key]:data[key].filter(d=>d.id!==id)});
-        } catch(err) { console.error('Erreur DELETE:', err); }
-    };
-
-    const handleSubmit = async (formData) => {
-        try {
-            const method = editData?'PUT':'POST';
-            const res = await fetch(`api/${currentType.toLowerCase().replace(/ /g,'_')}.php`,{
-                method,
-                headers:{'Content-Type':'application/json'},
-                body:JSON.stringify(formData)
-            });
-            const text = await res.text();
-            let saved;
-            try { saved = JSON.parse(text); } 
-            catch(e){ console.error('Réponse non JSON:', text); return; }
-            const key = currentType.toLowerCase().replace(/ /g,'_');
-            setData({...data,[key]:editData?data[key].map(d=>d.id===saved.id?saved:d):[...data[key],saved]});
-        } catch(err){ console.error('Erreur SUBMIT:', err); }
-    };
-
-    const TableWithActions = ({ type, rows }) => (
-        <div>
-            <button onClick={()=>handleAdd(type)} className="mb-4 px-4 py-2 bg-blue-500 text-white rounded">Ajouter {type}</button>
-            <Table type={type} data={rows} onEdit={item=>handleEdit(type,item)} onDelete={id=>handleDelete(type,id)} />
-        </div>
-    );
-
-    const cards = Object.entries(cardsMap).map(([title,key],idx)=>({
-        title, count:data[key]?.length||0, color:['green','cyan','purple','yellow','blue','black'][idx%6], key:title
-    }));
-
+// Portfolio Grid
+function PortfolioGrid({ projets, onEdit, onDelete }) {
     return (
-        <div className="flex flex-1 overflow-auto">
-            <Sidebar setView={setView} />
-            <div className="flex-1 p-8 flex flex-col gap-8">
-                {/* Widgets uniquement sur le dashboard */}
-                {view==='Tableau de bord' && <WeekProjects projects={data.projects} />}
-                {view==='Tableau de bord' && 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {cards.map(card=>(<Card key={card.title} {...card} onClick={()=>setView(card.key)} />))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {projets.map(p => (
+                <div key={p.id} className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col">
+                    <img src={p.image} alt={p.nom} className="h-48 w-full object-cover"/>
+                    <div className="p-4 flex flex-col flex-1">
+                        <h3 className="font-bold text-lg mb-1">{p.nom} ({p.annee})</h3>
+                        <p className="text-sm text-gray-600 mb-2">{p.type}</p>
+                        <p className="text-gray-700 text-sm flex-1">{p.description_courte}</p>
+                        {p.lien && (
+                            <a href={p.lien} target="_blank" rel="noopener noreferrer" className="mt-2 text-blue-500 hover:underline">
+                                Voir le projet
+                            </a>
+                        )}
+                        <div className="flex justify-end mt-2 gap-2">
+                            <button onClick={() => onEdit(p)} className="px-2 py-1 bg-yellow-400 rounded">Modifier</button>
+                            <button onClick={() => onDelete(p.id)} className="px-2 py-1 bg-red-500 text-white rounded">Supprimer</button>
+                        </div>
                     </div>
-                }
-                {view==='Tableau de bord' &&
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
-                        <CalendarWidget projects={data.projects} />
-                        <ClockWidget />
-                        <UrgentProjects projects={data.projects} />
-                    </div>
-                }
-
-                {/* Tables */}
-                {view==='Clients' && <TableWithActions type="Clients" rows={data.clients} />}
-                {view==='Projets en cours' && <TableWithActions type="Projets en cours" rows={data.projects} />}
-                {view==='Projet portfolio' && <TableWithActions type="Projet portfolio" rows={data.projets} />}
-                {view==='Factures' && <TableWithActions type="Factures" rows={data.invoices} />}
-                {view==='Services' && <TableWithActions type="Services" rows={data.services} />}
-                {view==='Notes' && <TableWithActions type="Notes" rows={data.project_notes} />}
-
-                <ModalForm visible={modalVisible} onClose={()=>setModalVisible(false)} onSubmit={handleSubmit} data={editData} type={currentType} clients={data.clients} />
-            </div>
+                </div>
+            ))}
         </div>
     );
 }
+// Dashboard
+function Dashboard() {
+  const [loading, setLoading] = useState(false);
+
+  // 🔹 Mapping des noms visibles -> fichiers API
+  const apiMap = {
+    "Clients": "clients",
+    "Projets en cours": "projects",   // correspond à projects.php
+    "Projet portfolio": "projets",    // correspond à projets.php
+    "Services": "services",
+    "Notes": "project_notes"
+  };
+
+  const buildApiUrl = (type, id = null) => {
+    const key = apiMap[type] || type.toLowerCase().replace(/ /g, "_");
+    return id ? `api/${key}.php?id=${id}` : `api/${key}.php`;
+  };
+
+  const refreshType = async (type) => {
+    try {
+      setLoading(true);
+      const res = await fetch(buildApiUrl(type));
+      const json = await res.json();
+      const key = apiMap[type] || type.toLowerCase().replace(/ /g, "_");
+      setData(prev => ({ ...prev, [key]: json }));
+    } catch (err) {
+      console.error("Erreur refresh", type, err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const [view, setView] = useState("Tableau de bord");
+  const [data, setData] = useState({
+    clients: phpData.clients || [],
+    projects: phpData.projects || [],
+    services: phpData.services || [],
+    projets: phpData.projets || [],
+    project_notes: phpData.project_notes || []
+  });
+  const [modalVisible, setModalVisible] = useState(false);
+  const [editData, setEditData] = useState(null);
+  const [currentType, setCurrentType] = useState("");
+
+  const handleAdd = (type) => {
+    setCurrentType(type);
+    setEditData(null);
+    setModalVisible(true);
+  };
+
+  const handleEdit = (type, item) => {
+    setCurrentType(type);
+    setEditData(item);
+    setModalVisible(true);
+  };
+
+  const handleDelete = async (type, id) => {
+    if (!id) return alert("ID manquant !");
+    if (!confirm("Confirmer la suppression ?")) return;
+
+    try {
+      const res = await fetch(buildApiUrl(type, id), {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" }
+      });
+
+      const json = await res.json();
+
+      if (res.ok) {
+        alert(json.message || "Supprimé !");
+        await refreshType(type);
+      } else {
+        alert(`Erreur : ${json.message || json.error || "Inconnue"}`);
+      }
+    } catch (err) {
+      console.error("Erreur DELETE:", err);
+      alert("Erreur réseau");
+    }
+  };
+
+  const handleSubmit = async (formData) => {
+    try {
+      const method = editData ? "PUT" : "POST";
+      const url = editData
+        ? buildApiUrl(currentType, editData.id)
+        : buildApiUrl(currentType);
+
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+
+      const contentType = res.headers.get("content-type");
+      let saved;
+      if (contentType && contentType.includes("application/json")) {
+        saved = await res.json();
+      } else {
+        const text = await res.text();
+        throw new Error("Réponse non-JSON : " + text);
+      }
+
+      if (!res.ok) {
+        alert(`Erreur : ${saved.message || saved.error || "Inconnue"}`);
+        return;
+      }
+
+      await refreshType(currentType);
+      setEditData(null);
+      setModalVisible(false);
+    } catch (err) {
+      console.error("Erreur SUBMIT:", err);
+      alert("Erreur réseau : " + err.message);
+    }
+  };
+
+  const TableWithActions = ({ type, rows }) => (
+    <div>
+      <button
+        onClick={() => handleAdd(type)}
+        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded"
+      >
+        Ajouter {type}
+      </button>
+      <Table
+        type={type}
+        data={rows}
+        onEdit={(item) => handleEdit(type, item)}
+        onDelete={(id) => handleDelete(type, id)}
+      />
+    </div>
+  );
+
+  const cards = Object.entries(cardsMap).map(([title, key], idx) => ({
+    title,
+    count: data[key]?.length || 0,
+    color: ["green", "cyan", "purple", "yellow", "blue", "black"][idx % 6],
+    key: title
+  }));
+
+  return (
+    <div className="flex flex-1 overflow-auto">
+      <Sidebar setView={setView} />
+      <div className="flex-1 p-8 flex flex-col gap-8">
+        {view === "Tableau de bord" && <WeekProjects projects={data.projects} />}
+        {view === "Tableau de bord" && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {cards.map((card) => (
+              <Card
+                key={card.title}
+                {...card}
+                onClick={() => setView(card.key)}
+              />
+            ))}
+          </div>
+        )}
+        {view === "Tableau de bord" && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
+            <CalendarWidget projects={data.projects.filter(p => p.status !== "Terminé")} />
+            <ClockWidget />
+            <UrgentProjects projects={data.projects.filter(p => p.status !== "Terminé")} />
+          </div>
+        )}
+
+        {view === "Clients" && (
+          <TableWithActions type="Clients" rows={data.clients} />
+        )}
+        {view === "Projets en cours" && (
+          <TableWithActions type="Projets en cours" rows={data.projects} />
+        )}
+        {view === "Projet portfolio" && (
+          <div>
+            <button
+              onClick={() => handleAdd("Projet portfolio")}
+              className="mb-4 px-4 py-2 bg-blue-500 text-white rounded"
+            >
+              Ajouter Projet
+            </button>
+            <PortfolioGrid
+              projets={data.projets}
+              onEdit={(item) => handleEdit("Projet portfolio", item)}
+              onDelete={(id) => handleDelete("Projet portfolio", id)}
+            />
+          </div>
+        )}
+        {view === "Services" && (
+          <TableWithActions type="Services" rows={data.services} />
+        )}
+        {view === "Notes" && (
+            <TableWithActions type="Notes" rows={data.project_notes} />
+        )}
+
+
+        <ModalForm
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          onSubmit={handleSubmit}
+          data={editData}
+          type={currentType}
+          clients={data.clients}
+        />
+      </div>
+    </div>
+  );
+}
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(<Dashboard />);
 </script>

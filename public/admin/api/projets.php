@@ -1,37 +1,76 @@
 <?php
 session_start();
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 require_once __DIR__ . '/../../../config/database.php';
 
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['error' => 'Utilisateur non connecté']);
-    exit;
-}
-$user_id = $_SESSION['user_id'];
 $method = $_SERVER['REQUEST_METHOD'];
+
+function json_body() {
+    $raw = file_get_contents('php://input');
+    $data = json_decode($raw, true);
+    return is_array($data) ? $data : [];
+}
 
 try {
     if ($method === 'GET') {
-        $stmt = $pdo->prepare("SELECT * FROM projets WHERE user_id=?");
-        $stmt->execute([$user_id]);
+        $stmt = $pdo->query("SELECT * FROM projets ORDER BY annee DESC");
         echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
     elseif ($method === 'POST') {
-        $data = json_decode(file_get_contents('php://input'), true);
-        $stmt = $pdo->prepare("INSERT INTO projets (user_id, nom, annee, type, image, description_courte, description_detaillee, lien) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$user_id, $data['nom'], $data['annee'], $data['type'], $data['image'], $data['description_courte'], $data['description_detaillee'], $data['lien']]);
-        echo json_encode(['id'=>$pdo->lastInsertId()] + $data);
+        $d = json_body();
+        $stmt = $pdo->prepare("INSERT INTO projets (nom, annee, type, image, description_courte, description_detaillee, lien) 
+                               VALUES (?,?,?,?,?,?,?)");
+        $stmt->execute([
+            $d['nom'] ?? '',
+            $d['annee'] ?? null,
+            $d['type'] ?? null,
+            $d['image'] ?? null,
+            $d['description_courte'] ?? null,
+            $d['description_detaillee'] ?? null,
+            $d['lien'] ?? null
+        ]);
+        echo json_encode(['success'=>true,'id'=>$pdo->lastInsertId()]);
     }
     elseif ($method === 'PUT') {
-        $data = json_decode(file_get_contents('php://input'), true);
-        $stmt = $pdo->prepare("UPDATE projets SET nom=?, annee=?, type=?, image=?, description_courte=?, description_detaillee=?, lien=? WHERE id=? AND user_id=?");
-        $stmt->execute([$data['nom'], $data['annee'], $data['type'], $data['image'], $data['description_courte'], $data['description_detaillee'], $data['lien'], $data['id'], $user_id]);
-        echo json_encode($data);
-    }
-    elseif ($method === 'DELETE') {
-        $data = json_decode(file_get_contents('php://input'), true);
-        $stmt = $pdo->prepare("DELETE FROM projets WHERE id=? AND user_id=?");
-        $stmt->execute([$data['id'], $user_id]);
+        $d = json_body();
+        $stmt = $pdo->prepare("UPDATE projets 
+                               SET nom=?, annee=?, type=?, image=?, description_courte=?, description_detaillee=?, lien=?
+                               WHERE id=?");
+        $stmt->execute([
+            $d['nom'],
+            $d['annee'],
+            $d['type'],
+            $d['image'],
+            $d['description_courte'],
+            $d['description_detaillee'],
+            $d['lien'],
+            $d['id']
+        ]);
         echo json_encode(['success'=>true]);
     }
-} catch (Exception $e) { echo json_encode(['error'=>$e->getMessage()]); }
+    elseif ($method === 'DELETE') {
+        $d = json_body();
+        $id = $d['id'] ?? ($_GET['id'] ?? null);
+
+        if (!$id) {
+            http_response_code(400);
+            echo json_encode(['error' => 'ID manquant pour la suppression']);
+            exit;
+        }
+
+        $stmt = $pdo->prepare("DELETE FROM projets WHERE id=?");
+        $stmt->execute([$id]);
+        echo json_encode(['success'=>true]);
+    }
+
+    else {
+        http_response_code(405);
+        echo json_encode(['error'=>'Méthode non autorisée']);
+    }
+} catch (PDOException $e) {
+    http_response_code(400);
+    echo json_encode(['error'=>$e->getMessage()]);
+} catch (Throwable $e) {
+    http_response_code(500);
+    echo json_encode(['error'=>$e->getMessage()]);
+}

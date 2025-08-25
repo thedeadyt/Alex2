@@ -4,7 +4,7 @@
 /* Déclaration des polices locales */
 @font-face {
   font-family: 'Bounded';
-  src: url('/Alex2/public/asset/fonts/Bounded-Regular.ttf') format('truetype');
+  src: url('/asset/fonts/Bounded-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -12,7 +12,7 @@
 
 @font-face {
   font-family: 'Bounded';
-  src: url('/Alex2/public/asset/fonts/Bounded-Black.ttf') format('truetype');
+  src: url('/asset/fonts/Bounded-Black.ttf') format('truetype');
   font-weight: 900;
   font-style: normal;
   font-display: swap;
