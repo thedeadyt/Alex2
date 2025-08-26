@@ -75,6 +75,9 @@ require_once __DIR__ . '/../../config/config.php';
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 </head>
 
 <body style="background-color: var(--color-white); color: var(--color-black);">
@@ -83,23 +86,32 @@ require_once __DIR__ . '/../../config/config.php';
 <!-- REACT ROOT -->
 <div id="react-contact-form"></div>
 
-<!-- CARTE ET INFOS CONTACT -->
+<!-- CARTES ET INFOS CONTACT -->
 <div class="mx-auto rounded-xl shadow-md p-6 md:p-8 w-[90vw] max-w-[1200px] flex flex-col md:flex-row gap-6 md:gap-12 my-8" style="background-color: var(--color-white); color: var(--color-black); font-family: var(--font-tinos)">
-  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d391.91388894218875!2d-0.025944830846995486!3d43.09618670956462!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd57d677cb5a0c7f%3A0xfcead0c8cffff259!2s8%20Rue%20Charles%20Baudelaire%2C%2065100%20Lourdes!5e1!3m2!1sfr!2sfr!4v1751382382544!5m2!1sfr!2sfr" class="w-full md:w-[600px] h-[240px] md:h-[360px] rounded-lg border-0" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
-  <div class="flex-grow">
+  <!-- Cartes -->
+  <div class="flex-1 flex flex-col gap-4">
+    <div>
+      <h3 class="text-xl font-semibold mb-2" style="font-family: var(--font-bounded)">Lourdes</h3>
+      <div id="map-lourdes" class="w-full h-48 md:h-56 rounded-lg shadow-md"></div>
+      <p class="mt-2">8 Rue Charles Baudelaire, 65100 Lourdes</p>
+    </div>
+
+    <div>
+      <h3 class="text-xl font-semibold mb-2" style="font-family: var(--font-bounded)">Tarbes</h3>
+      <div id="map-tarbes" class="w-full h-48 md:h-56 rounded-lg shadow-md"></div>
+      <p class="mt-2">8 Rue Georges Lassalle, 65000 Tarbes</p>
+    </div>
+  </div>
+
+  <!-- Infos Contact -->
+  <div class="flex-1 flex flex-col justify-center items-center text-center">
     <h2 class="text-2xl font-semibold mb-4" style="font-family: var(--font-bounded)">Contactez-nous</h2>
 
     <p class="mb-3">
       <strong>Qui sommes-nous ?</strong><br>
       Nous sommes deux développeurs indépendants travaillant en collaboration sous le nom <strong>&lt;alex²/&gt;</strong>.<br>
       Que vous nous contactiez pour un site web, une refonte, du conseil ou du développement spécifique, vous serez pris en charge par l’un de nous deux selon vos besoins.
-    </p>
-
-    <p class="mb-3">
-      <strong>Adresse :</strong><br>
-      8 Rue Charles Baudelaire,<br>
-      65100 Lourdes
     </p>
 
     <p class="mb-3">
@@ -122,7 +134,47 @@ require_once __DIR__ . '/../../config/config.php';
 </div>
 
 <?php include __DIR__ . '/../../includes/footer.php'; ?>
+<!-- SCRIPT LEAFLET POUR LES CARTES -->
+<script>
+  const rootStyles = getComputedStyle(document.documentElement);
+  const colorWhite = rootStyles.getPropertyValue('--color-white').trim() || '#e8e8e8';
+  const colorBlack = rootStyles.getPropertyValue('--color-black').trim() || '#1f2020';
+  const colorGreen = rootStyles.getPropertyValue('--color-green').trim() || '#51845C';
 
+  function createCustomMap(containerId, coords, label) {
+    const map = L.map(containerId, {
+      zoomControl: true,
+      scrollWheelZoom: true
+    }).setView(coords, 17);
+
+    map.setMinZoom(14);
+    map.setMaxZoom(18);
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+
+    // Tuiles minimalistes
+    L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(map);
+
+    // Marqueur personnalisé
+    const markerIcon = L.divIcon({
+      html: `<div style="
+        background-color: ${colorGreen};
+        width: 16px; height: 16px;
+        border-radius: 50%;
+        border: 2px solid ${colorBlack};
+      "></div>`,
+      className: ''
+    });
+
+    L.marker(coords, { icon: markerIcon }).addTo(map)
+      .bindPopup(`<b>${label}</b>`);
+  }
+
+  createCustomMap('map-lourdes', [43.096435827627595, -0.025754975680814925], "8 Rue Charles Baudelaire, Lourdes");
+  createCustomMap('map-tarbes', [43.23491777180639, 0.07188113003333478], "8 Rue Georges Lassalle, Tarbes");
+</script>
 <!-- REACT COMPONENT -->
 <script type="text/babel">
   const { useState } = React;
