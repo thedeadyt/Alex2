@@ -100,6 +100,7 @@ if ($stmt) {
       </div>
 
       <script>
+        const BASE_URL = "<?= BASE_URL ?>";
         window.projetsAccueil = <?= json_encode($projetsAccueil, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
       </script>
     </section>
@@ -151,7 +152,7 @@ if ($stmt) {
         className="bg-white rounded-2xl shadow-md p-4 mx-2 w-full md:min-w-[300px] md:max-w-sm flex-shrink-0 transition-transform hover:scale-105 cursor-pointer"
         onClick={() => onClick(projet)}
       >
-        <img src={projet.image} alt={projet.nom} className="w-32 h-32 object-cover rounded-lg mx-auto mb-4" />
+        <img src={`${BASE_URL}${projet.image}`} alt={projet.nom} className="w-32 h-32 object-cover rounded-lg mx-auto mb-4" />
         <h3 className="text-xl font-bold mb-1 text-center">{projet.nom}</h3>
         <p className="text-sm text-gray-500 text-center mb-2">{projet.annee} · {projet.type}</p>
         <p className="text-sm text-gray-700 text-center">{projet.description_courte}</p>
@@ -166,7 +167,7 @@ if ($stmt) {
             <button className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl" onClick={onClose}>
               &times;
             </button>
-            <img src={projet.image} alt={projet.nom} className="w-full h-64 object-cover rounded-lg mb-4" />
+            <img src={`${BASE_URL}${projet.image}`} alt={projet.nom} className="w-full h-64 object-cover rounded-lg mb-4" />
             <h2 className="text-2xl font-bold mb-2">{projet.nom}</h2>
             <p className="text-sm text-gray-500 mb-4">{projet.annee} · {projet.type}</p>
             <p className=" mb-6 whitespace-pre-line">{projet.description_detaillee}</p>

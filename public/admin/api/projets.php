@@ -16,21 +16,37 @@ try {
         $stmt = $pdo->query("SELECT * FROM projets ORDER BY annee DESC");
         echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
-    elseif ($method === 'POST') {
-        $d = json_body();
-        $stmt = $pdo->prepare("INSERT INTO projets (nom, annee, type, image, description_courte, description_detaillee, lien) 
-                               VALUES (?,?,?,?,?,?,?)");
-        $stmt->execute([
-            $d['nom'] ?? '',
-            $d['annee'] ?? null,
-            $d['type'] ?? null,
-            $d['image'] ?? null,
-            $d['description_courte'] ?? null,
-            $d['description_detaillee'] ?? null,
-            $d['lien'] ?? null
-        ]);
-        echo json_encode(['success'=>true,'id'=>$pdo->lastInsertId()]);
+elseif ($method === 'POST') {
+    $uploadDir = __DIR__ . '/../../asset/img/projets/';
+    if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+
+    $imagePath = null;
+    if (!empty($_FILES['image']['name'])) {
+        $fileName = uniqid() . '_' . basename($_FILES['image']['name']);
+        $targetFile = $uploadDir . $fileName;
+
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)) {
+            $imagePath = '/asset/img/projets/' . $fileName; // Chemin à enregistrer en BDD
+        } else {
+            http_response_code(500);
+            echo json_encode(['error'=>'Erreur lors de l’upload de l’image']);
+            exit;
+        }
     }
+
+    $nom = $_POST['nom'] ?? '';
+    $annee = $_POST['annee'] ?? null;
+    $type = $_POST['type'] ?? null;
+    $descCourte = $_POST['description_courte'] ?? null;
+    $descDetaillee = $_POST['description_detaillee'] ?? null;
+    $lien = $_POST['lien'] ?? null;
+
+    $stmt = $pdo->prepare("INSERT INTO projets (nom, annee, type, image, description_courte, description_detaillee, lien) 
+                        VALUES (?,?,?,?,?,?,?)");
+    $stmt->execute([$nom, $annee, $type, $imagePath, $descCourte, $descDetaillee, $lien]);
+    echo json_encode(['success'=>true,'id'=>$pdo->lastInsertId(),'image'=>$imagePath]);
+}
+
     elseif ($method === 'PUT') {
         $d = json_body();
         $stmt = $pdo->prepare("UPDATE projets 

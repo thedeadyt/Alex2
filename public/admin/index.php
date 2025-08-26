@@ -78,10 +78,6 @@ $jsonData = json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JS
 
 <div id="root" class="flex-1 flex overflow-hidden"></div>
 
-<script>
-  const BASE_URL = "<?= BASE_URL ?>";
-</script>
-
 <script type="text/babel">
 const { useState, useEffect } = React;
 const phpData = <?= $jsonData ?>;
@@ -157,6 +153,7 @@ function Table({ type, data, onEdit, onDelete }) {
 }
 
 // Modal Form
+// Modal Form
 function ModalForm({ visible, onClose, onSubmit, data, type, clientId }) {
     const [formData, setFormData] = useState(data || { client_id: clientId });
     const [projects, setProjects] = useState([]);
@@ -164,7 +161,6 @@ function ModalForm({ visible, onClose, onSubmit, data, type, clientId }) {
     useEffect(() => {
         setFormData(data || { client_id: clientId });
 
-        // Charger les projets uniquement si on est dans Notes
         if (type === "Notes") {
             fetch("api/projects.php")
                 .then(res => res.json())
@@ -174,73 +170,91 @@ function ModalForm({ visible, onClose, onSubmit, data, type, clientId }) {
 
     if (!visible) return null;
 
-    const handleChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
-    const handleSubmit = e => { e.preventDefault(); onSubmit(formData); onClose(); };
-
-    const fields = Object.values(columnsMap[type]).filter(f => f !== 'id');
+    const handleChange = e =>
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    const handleSubmit = e => {
+        e.preventDefault();
+        onSubmit(formData);
+        onClose();
+    };
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
             <div className="bg-white p-6 rounded-lg w-96">
-                <h2 className="text-xl font-bold mb-4">{data ? "Modifier" : "Ajouter"} {type}</h2>
+                <h2 className="text-xl font-bold mb-4">
+                    {data ? "Modifier" : "Ajouter"} {type}
+                </h2>
                 <form onSubmit={handleSubmit} className="space-y-3">
 
-                    {/* Champ caché client_id (utile pour Projets/Factures) */}
-                    <input type="hidden" name="client_id" value={formData.client_id || ""} />
-                    {type === "Projets en cours" && (
-                      <div className="space-y-2">
-                        {/* Sélection du client (lié automatiquement) */}
-                        <select
-                          name="client_id"
-                          value={formData.client_id || ""}
-                          onChange={handleChange}
-                          className="w-full border p-2 rounded mb-2"
-                          required
-                        >
-                          <option value="">-- Choisir un client --</option>
-                          {phpData.clients.map(c => (
-                            <option key={c.id} value={c.id}>
-                              {c.name} ({c.company})
-                            </option>
-                          ))}
-                        </select>
-
-                        {/* Sélection du statut */}
-                        <select
-                          name="status"
-                          value={formData.status || ""}
-                          onChange={handleChange}
-                          className="w-full border p-2 rounded mb-2"
-                          required
-                        >
-                          <option value="">-- Choisir un statut --</option>
-                          <option value="En cours">En cours</option>
-                          <option value="Terminé">Terminé</option>
-                          <option value="À faire">À faire</option>
-                        </select>
-
-                        {/* Date de deadline */}
-                        <input
-                          type="date"
-                          name="deadline"
-                          value={formData.deadline || ''}
-                          onChange={handleChange}
-                          className="w-full border p-2 rounded"
-                          required
-                        />
-
-                        {/* Titre du projet */}
-                        <input
-                          type="text"
-                          name="title"
-                          value={formData.title || ''}
-                          onChange={handleChange}
-                          placeholder="Titre du projet"
-                          className="w-full border p-2 rounded"
-                          required
-                        />
-                      </div>
+                    {/* Clients */}
+                    {type === "Clients" && (
+                        <>
+                            <input type="text" name="name" value={formData.name || ''} onChange={handleChange} placeholder="Nom" className="w-full border p-2 rounded" required />
+                            <input type="text" name="company" value={formData.company || ''} onChange={handleChange} placeholder="Société" className="w-full border p-2 rounded" />
+                            <input type="email" name="email" value={formData.email || ''} onChange={handleChange} placeholder="Email" className="w-full border p-2 rounded" />
+                            <input type="text" name="phone" value={formData.phone || ''} onChange={handleChange} placeholder="Téléphone" className="w-full border p-2 rounded" />
+                            <textarea name="address" value={formData.address || ''} onChange={handleChange} placeholder="Adresse" className="w-full border p-2 rounded" />
+                        </>
                     )}
+
+                    {/* Projets en cours */}
+                    {type === "Projets en cours" && (
+                        <>
+                            <select name="client_id" value={formData.client_id || ""} onChange={handleChange} className="w-full border p-2 rounded mb-2" required>
+                                <option value="">-- Choisir un client --</option>
+                                {phpData.clients.map(c => (
+                                    <option key={c.id} value={c.id}>{c.name} ({c.company})</option>
+                                ))}
+                            </select>
+                            <select name="status" value={formData.status || ""} onChange={handleChange} className="w-full border p-2 rounded mb-2" required>
+                                <option value="">-- Choisir un statut --</option>
+                                <option value="En cours">En cours</option>
+                                <option value="Terminé">Terminé</option>
+                                <option value="À faire">À faire</option>
+                            </select>
+                            <input type="date" name="deadline" value={formData.deadline || ''} onChange={handleChange} className="w-full border p-2 rounded" required />
+                            <input type="text" name="title" value={formData.title || ''} onChange={handleChange} placeholder="Titre du projet" className="w-full border p-2 rounded" required />
+                        </>
+                    )}
+
+{/* Projet portfolio */}
+{type === "Projet portfolio" && (
+    <>
+        <input type="text" name="nom" value={formData.nom || ''} onChange={handleChange} placeholder="Nom" className="w-full border p-2 rounded" required />
+        <input type="number" name="annee" value={formData.annee || ''} onChange={handleChange} placeholder="Année" className="w-full border p-2 rounded" required />
+        <input type="text" name="type" value={formData.type || ''} onChange={handleChange} placeholder="Type" className="w-full border p-2 rounded" />
+        <input type="file" name="image" onChange={e => setFormData({ ...formData, image: e.target.files[0] })} className="w-full border p-2 rounded" />
+        <textarea name="description_courte" value={formData.description_courte || ''} onChange={handleChange} placeholder="Description courte" className="w-full border p-2 rounded" />
+        <textarea name="description_detaillee" value={formData.description_detaillee || ''} onChange={handleChange} placeholder="Description détaillée" className="w-full border p-2 rounded" />
+        <input type="url" name="lien" value={formData.lien || ''} onChange={handleChange} placeholder="Lien projet" className="w-full border p-2 rounded" />
+    </>
+)}
+
+                    {/* Services */}
+                    {type === "Services" && (
+                        <>
+                            <input type="text" name="name" value={formData.name || ''} onChange={handleChange} placeholder="Nom" className="w-full border p-2 rounded" required />
+                            <input type="text" name="line1" value={formData.line1 || ''} onChange={handleChange} placeholder="Ligne 1" className="w-full border p-2 rounded" />
+                            <input type="text" name="line2" value={formData.line2 || ''} onChange={handleChange} placeholder="Ligne 2" className="w-full border p-2 rounded" />
+                            <input type="text" name="line3" value={formData.line3 || ''} onChange={handleChange} placeholder="Ligne 3" className="w-full border p-2 rounded" />
+                            <input type="text" name="line4" value={formData.line4 || ''} onChange={handleChange} placeholder="Ligne 4" className="w-full border p-2 rounded" />
+                            <input type="text" name="line5" value={formData.line5 || ''} onChange={handleChange} placeholder="Ligne 5" className="w-full border p-2 rounded" />
+                        </>
+                    )}
+
+                    {/* Notes */}
+                    {type === "Notes" && (
+                        <>
+                            <select name="project_id" value={formData.project_id || ""} onChange={handleChange} className="w-full border p-2 rounded mb-2" required>
+                                <option value="">-- Choisir un projet --</option>
+                                {projects.map(p => (
+                                    <option key={p.id} value={p.id}>{p.title}</option>
+                                ))}
+                            </select>
+                            <textarea name="content" value={formData.content || ''} onChange={handleChange} placeholder="Contenu de la note" className="w-full border p-2 rounded" required />
+                        </>
+                    )}
+
                     <div className="flex justify-end gap-2">
                         <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-300 rounded">Annuler</button>
                         <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded">{data ? "Modifier" : "Ajouter"}</button>
@@ -250,7 +264,6 @@ function ModalForm({ visible, onClose, onSubmit, data, type, clientId }) {
         </div>
     );
 }
-
 // Widgets
 function CalendarWidget({ projects }) {
     const [date, setDate] = useState(new Date());
@@ -406,9 +419,7 @@ function Dashboard() {
 
   const buildApiUrl = (type, id = null) => {
     const key = apiMap[type] || type.toLowerCase().replace(/ /g, "_");
-    return id 
-    ? `${BASE_URL}admin/api/${key}.php?id=${id}`
-    : `${BASE_URL}admin/api/${key}.php`;
+    return id ? `api/${key}.php?id=${id}` : `api/${key}.php`;
   };
 
   const refreshType = async (type) => {
@@ -473,41 +484,49 @@ function Dashboard() {
     }
   };
 
-  const handleSubmit = async (formData) => {
+const handleSubmit = async (formData) => {
     try {
-      const method = editData ? "PUT" : "POST";
-      const url = editData
-        ? buildApiUrl(currentType, editData.id)
-        : buildApiUrl(currentType);
+        const method = editData ? "PUT" : "POST";
+        const url = editData
+            ? buildApiUrl(currentType, editData.id)
+            : buildApiUrl(currentType);
 
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-      });
+        let body;
+        let headers = {};
 
-      const contentType = res.headers.get("content-type");
-      let saved;
-      if (contentType && contentType.includes("application/json")) {
-        saved = await res.json();
-      } else {
-        const text = await res.text();
-        throw new Error("Réponse non-JSON : " + text);
-      }
+        // Pour Projet Portfolio avec image
+        if (currentType === "Projet portfolio") {
+            body = new FormData();
+            for (let key in formData) {
+                if (formData[key] instanceof File) {
+                    body.append(key, formData[key]);
+                } else {
+                    body.append(key, formData[key]);
+                }
+            }
+            // Ne PAS définir Content-Type, le navigateur le fait automatiquement
+        } else {
+            body = JSON.stringify(formData);
+            headers["Content-Type"] = "application/json";
+        }
 
-      if (!res.ok) {
-        alert(`Erreur : ${saved.message || saved.error || "Inconnue"}`);
-        return;
-      }
+        const res = await fetch(url, { method, body, headers });
+        const saved = await res.json();
 
-      await refreshType(currentType);
-      setEditData(null);
-      setModalVisible(false);
+        if (!res.ok) {
+            alert(`Erreur : ${saved.message || saved.error || "Inconnue"}`);
+            return;
+        }
+
+        await refreshType(currentType);
+        setEditData(null);
+        setModalVisible(false);
     } catch (err) {
-      console.error("Erreur SUBMIT:", err);
-      alert("Erreur réseau : " + err.message);
+        console.error("Erreur SUBMIT:", err);
+        alert("Erreur réseau : " + err.message);
     }
-  };
+};
+
 
   const TableWithActions = ({ type, rows }) => (
     <div>

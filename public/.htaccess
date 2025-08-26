@@ -25,7 +25,6 @@ RewriteRule ^admin/dashboard/?$ admin/index.php [L,NC]
 ###############################################
 # 4. Protection des autres fichiers dans /admin
 ###############################################
-# Si on est dans /admin et que ce n'est ni index.php ni dashboard ni auth.php
 RewriteCond %{REQUEST_URI} ^/admin/ [NC]
 RewriteCond %{REQUEST_URI} !^/admin/auth\.php$ [NC]
 RewriteCond %{REQUEST_URI} !^/admin/index\.php$ [NC]
@@ -33,11 +32,18 @@ RewriteCond %{REQUEST_URI} !^/admin/dashboard$ [NC]
 RewriteRule ^admin/.*$ admin/auth.php [QSA,L]
 
 ###############################################
+# 4.5. Laisser passer les fichiers API
+###############################################
+RewriteCond %{REQUEST_URI} ^/api/ [NC]
+RewriteRule .* - [L]
+
+###############################################
 # 5. Réécriture générique des pages propres (publiques)
 ###############################################
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^([a-zA-Z0-9À-ÿ_-]+)$ pages/$1.php [NC,L]
+
 
 ###############################################
 # 6. Page 404 personnalisée
