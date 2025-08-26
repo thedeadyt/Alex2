@@ -78,6 +78,10 @@ $jsonData = json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JS
 
 <div id="root" class="flex-1 flex overflow-hidden"></div>
 
+<script>
+  const BASE_URL = "<?= BASE_URL ?>";
+</script>
+
 <script type="text/babel">
 const { useState, useEffect } = React;
 const phpData = <?= $jsonData ?>;
@@ -402,7 +406,9 @@ function Dashboard() {
 
   const buildApiUrl = (type, id = null) => {
     const key = apiMap[type] || type.toLowerCase().replace(/ /g, "_");
-    return id ? `api/${key}.php?id=${id}` : `api/${key}.php`;
+    return id 
+    ? `${BASE_URL}admin/api/${key}.php?id=${id}`
+    : `${BASE_URL}admin/api/${key}.php`;
   };
 
   const refreshType = async (type) => {
