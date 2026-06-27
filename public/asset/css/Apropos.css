@@ -1,0 +1,42 @@
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.founder-card {
+  opacity: 0;
+  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.founder-card:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.founder-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.value-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}

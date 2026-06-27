@@ -1,0 +1,18 @@
+# robots.txt pour alex2.dev
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /config/
+Disallow: /includes/
+Disallow: /pages/PHPMailer-master/
+Disallow: /pages/SendMailFunction.php
+Disallow: /pages/logout.php
+Disallow: /pages/login.php
+Disallow: /pages/.env
+
+# Sitemap
+Sitemap: https://alex2.dev/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1

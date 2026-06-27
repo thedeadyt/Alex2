@@ -1,0 +1,60 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Permettre l'accès aux fichiers existants
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Redirections 301 : anciennes URLs (accents/majuscules) vers nouvelles URLs propres
+    RewriteRule ^Nos-R[eé]alisations$ nos-realisations [R=301,L]
+    RewriteRule ^[AÀ]-propos$ a-propos [R=301,L]
+    RewriteRule ^Services$ services [R=301,L]
+    RewriteRule ^Contact$ contact [R=301,L]
+    RewriteRule ^Blog$ blog [R=301,L]
+    RewriteRule ^Mentions-L[eé]gales$ mentions-legales [R=301,L]
+    RewriteRule ^Politique-de-confidentialit[eé]$ politique-de-confidentialite [R=301,L]
+
+    # Pages spécifiques (nouvelles URLs propres)
+    RewriteRule ^linktree$ pages/Linktree.php [L]
+    RewriteRule ^carte-de-visite$ pages/CarteDeVisite.php [L]
+    RewriteRule ^nos-realisations$ pages/NosProjets.php [L]
+    RewriteRule ^a-propos$ pages/Apropos.php [L]
+    RewriteRule ^services$ pages/Services.php [L]
+    RewriteRule ^contact$ pages/Contact.php [L]
+    RewriteRule ^blog$ pages/Blog.php [L]
+    RewriteRule ^mentions-legales$ pages/Mentions.php [L]
+    RewriteRule ^politique-de-confidentialite pages/Confidentialité.php [L]
+
+    # Pages SEO locales
+    RewriteRule ^developpeur-web-tarbes$ pages/DeveloppeurWebTarbes.php [L]
+    RewriteRule ^developpeur-web-lourdes$ pages/DeveloppeurWebLourdes.php [L]
+    RewriteRule ^creation-site-internet-tarbes$ pages/CreationSiteTarbes.php [L]
+    RewriteRule ^creation-site-internet-lourdes$ pages/CreationSiteLourdes.php [L]
+
+    # Pages projet/blog individuelles
+    RewriteRule ^projets/([a-zA-Z0-9_-]+)$ pages/ProjetDetail.php?slug=$1 [NC,L]
+    RewriteRule ^blog/([a-zA-Z0-9_-]+)$ pages/BlogArticle.php?slug=$1 [NC,L]
+
+    # Admin
+    RewriteRule ^admin/?$ pages/login.php [L,NC]
+    RewriteRule ^admin/dashboard/?$ admin/index.php [L,NC]
+
+    # Réécriture générique
+    RewriteRule ^([a-zA-Z0-9_-]+)$ pages/$1.php [NC,L]
+</IfModule>
+
+DirectoryIndex index.php
+ErrorDocument 404 /pages/404.php
+
+# MIME types pour les polices
+AddType font/ttf .ttf
+AddType font/woff .woff
+AddType font/woff2 .woff2
+
+# Headers CORS + cache long pour les polices
+<FilesMatch "\.(ttf|woff|woff2)$">
+  Header set Access-Control-Allow-Origin "*"
+  Header set Cache-Control "public, max-age=31536000, immutable"
+</FilesMatch>

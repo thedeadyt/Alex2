@@ -1,0 +1,73 @@
+# Autoriser l'accès au répertoire
+<IfModule mod_authz_core.c>
+    Require all granted
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order allow,deny
+    Allow from all
+</IfModule>
+
+# Active le moteur de réécriture
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    ###############################################
+    # 1. Permettre l'accès aux fichiers statiques
+    ###############################################
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^.*$ - [L]
+
+    ###############################################
+    # 2. Pages spécifiques (publiques)
+    ###############################################
+    RewriteRule ^Mentions-Légales$ pages/Mentions.php [L,NC]
+    RewriteRule ^Politique-de-confidentialité$ pages/Confidentialité.php [L,NC]
+    RewriteRule ^Nos-Réalisations$ pages/NosProjets.php [L,NC]
+    RewriteRule ^À-propos$ pages/Apropos.php [L,NC]
+
+    ###############################################
+    # 3. Redirection /admin ou /admin/ vers login
+    ###############################################
+    RewriteRule ^admin/?$ pages/login.php [L,NC]
+
+    ###############################################
+    # 4. Dashboard accessible via /admin/dashboard
+    ###############################################
+    RewriteRule ^admin/dashboard/?$ admin/index.php [L,NC]
+
+    ###############################################
+    # 5. Protection des autres fichiers dans /admin
+    ###############################################
+    RewriteCond %{REQUEST_URI} ^/?admin/ [NC]
+    RewriteCond %{REQUEST_URI} !^/?admin/auth\.php$ [NC]
+    RewriteCond %{REQUEST_URI} !^/?admin/index\.php$ [NC]
+    RewriteCond %{REQUEST_URI} !^/?admin/dashboard$ [NC]
+    RewriteRule ^admin/.*$ admin/auth.php [QSA,L]
+
+    ###############################################
+    # 6. Laisser passer les fichiers API
+    ###############################################
+    RewriteCond %{REQUEST_URI} ^/?api/ [NC]
+    RewriteRule .* - [L]
+
+    ###############################################
+    # 7. Réécriture générique des pages propres (publiques)
+    ###############################################
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^([a-zA-Z0-9À-ÿ_-]+)$ pages/$1.php [NC,L]
+</IfModule>
+
+###############################################
+# Configuration générale
+###############################################
+DirectoryIndex index.php index.html
+
+# Page 404 personnalisée
+ErrorDocument 404 /pages/404.php
+
+# Configuration UTF-8
+<IfModule mod_mime.c>
+    AddDefaultCharset UTF-8
+</IfModule>

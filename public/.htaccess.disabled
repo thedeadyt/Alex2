@@ -1,0 +1,27 @@
+# Configuration minimale pour Alex2
+DirectoryIndex index.php index.html
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /Alex2/public/
+
+    # Permettre l'accès aux fichiers existants
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Pages spécifiques
+    RewriteRule ^Mentions-Légales$ pages/Mentions.php [L,NC]
+    RewriteRule ^Politique-de-confidentialité$ pages/Confidentialité.php [L,NC]
+    RewriteRule ^Nos-Réalisations$ pages/NosProjets.php [L,NC]
+    RewriteRule ^À-propos$ pages/Apropos.php [L,NC]
+
+    # Admin
+    RewriteRule ^admin/?$ pages/login.php [L,NC]
+    RewriteRule ^admin/dashboard/?$ admin/index.php [L,NC]
+
+    # Réécriture générique
+    RewriteRule ^([a-zA-Z0-9À-ÿ_-]+)$ pages/$1.php [NC,L]
+</IfModule>
+
+ErrorDocument 404 /Alex2/public/pages/404.php

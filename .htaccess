@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Rediriger tout vers le dossier Alex2/public
+    RewriteCond %{REQUEST_URI} !^/Alex2/
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ Alex2/public/$1 [L,QSA]
+</IfModule>
+
+DirectoryIndex Alex2/public/index.php
+ErrorDocument 404 /Alex2/public/pages/404.php
